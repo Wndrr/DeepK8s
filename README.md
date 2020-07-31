@@ -1,4 +1,5 @@
 # Deep K8s
+Currently this software is closed sources. The releases can be downloaded from [this page](https://github.com/Wndrr/DeepK8s/releases)
 
 ## What is the woot ?
 
