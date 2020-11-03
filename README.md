@@ -1,6 +1,7 @@
 # Deep K8s
-This project is in the heavy WIP phase. It shouldn't break your cluster but, just in case, I'll state it here: 
-I SHAN'T BE HELD RESPONSIBLE IF THE USAGE OF THIS SOFTWARE CRASHES YOUR K8S CLUSTER, NOR IS A PORTAL TO HELL OPENS
+This project is in the heavy WIP phase. It shouldn't break your cluster but, just in case, I'll state it here:
+
+I SHAN'T BE HELD RESPONSIBLE IF THE USAGE OF THIS SOFTWARE CRASHES YOUR K8S CLUSTER OR OPENS A PORTAL TO HELL.
 
 The pre-releases can be downloaded from [this page](https://github.com/Wndrr/DeepK8s/releases)
 
