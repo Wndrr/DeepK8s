@@ -1,0 +1,294 @@
+﻿@using k8s
+@using k8s.Models
+@using System.Collections.ObjectModel
+@using CertManagerDefinitions
+@using Desktop.Services
+@using Desktop.Services.StateContainers
+@implements IDisposable;
+@inject SelectedNamespacesState SelectedNamespacesState
+@inject NamespaceStateContainer NamespaceEntities
+@inject PodStateContainer V1PodEntities
+@inject DeploymentStateContainer V1DeploymentEntities;
+@inject ServiceStateContainer V1ServiceEntities;
+@inject IngressStateContainer ExtensionsV1Beta1IngressEntities;
+@inject StatefulSetStateContainer V1StatefulSetEntities;
+@inject DaemonSetStateContainer V1DaemonSetEntities;
+@inject PersistentVolumeClaimStateContainer V1PersistentVolumeClaimEntities;
+@inject PersistentVolumeStateContainer V1PersistentVolumeEntities;
+@inject ConfigMapStateContainer V1ConfigMapEntities;
+@inject SecretStateContainer V1SecretEntities;
+@inject NodeStateContainer NodeStateContainer;
+@inject CertManagerIssuerStateContainer CertManagerIssuerEntities;
+@inject StorageClassStateContainer StorageClassStateEntites;
+
+<CollapsibleSideMenu>
+    <div class="px-3">
+        <label for="HideEmpty">
+            <input type="checkbox" id="HideEmpty" @bind-value="@HideEmpty" checked="@HideEmpty"/>
+            Hide empty
+        </label>
+    </div>
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/overview" Match="NavLinkMatch.All">
+                <span class="oi oi-dashboard"></span>
+                Overview
+            </NavLink>
+        </li>
+        @if (!HideEmpty || NamespaceCount != 0)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Namespaces" Match="NavLinkMatch.All">
+                    <NamespaceReference>
+                        Namespaces (@NamespaceCount)
+                    </NamespaceReference>
+                </NavLink>
+            </li>
+        }
+        @if (!HideEmpty || NodeCount != 0)
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Nodes" Match="NavLinkMatch.All">
+                    <NodeReference>
+                        Nodes (@NodeCount)
+                    </NodeReference>
+                </NavLink>
+            </li>
+        }
+        <hr>
+        <li class="nav-item px-3">
+            <span class="oi oi-briefcase"></span>
+            Workloads
+            <ul class="nav flex-column">
+                @if (!HideEmpty || PodCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Pods" Match="NavLinkMatch.All">
+                            <PodReference>
+                                Pods (@PodCount)
+                            </PodReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || DeploymentCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Deployments" Match="NavLinkMatch.All">
+                            <DeploymentReference>
+                                Deployments (@DeploymentCount)
+                            </DeploymentReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || StatefulSetCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/StatefulSets" Match="NavLinkMatch.All">
+                            <StatefulSetReference>
+                                Stateful Sets (@StatefulSetCount)
+                            </StatefulSetReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || DaemonSetCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/DaemonSets" Match="NavLinkMatch.All">
+                            <DaemonSetReference>
+                                Daemon Sets (@DaemonSetCount)
+                            </DaemonSetReference>
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li class="nav-item px-3">
+            <span class="oi oi-link-intact"></span>
+            Network
+            <ul class="nav flex-column">
+                @if (!HideEmpty || ServiceCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Services" Match="NavLinkMatch.All">
+                            <ServiceReference>
+                                Services (@ServiceCount)
+                            </ServiceReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || IngressCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Ingresses" Match="NavLinkMatch.All">
+                            <IngressReference>
+                                Ingresses (@IngressCount)
+                            </IngressReference>
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li class="nav-item px-3">
+            <span class="oi oi-folder"></span>
+            Storage
+            <ul class="nav flex-column">
+                @if (!HideEmpty || StorageClassCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/StorageClasses" Match="NavLinkMatch.All">
+                            <StorageClassReference>
+                                StorageClasses (@StorageClassCount)
+                            </StorageClassReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || PersistentVolumeClaimCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/PersistentVolumeClaims" Match="NavLinkMatch.All">
+                            <PersistentVolumeClaimReference>
+                                PersistentVolumeClaims (@PersistentVolumeClaimCount)
+                            </PersistentVolumeClaimReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || PersistentVolumeCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/PersistentVolumes" Match="NavLinkMatch.All">
+                            <PersistentVolumeReference>
+                                PersistentVolumes (@PersistentVolumeCount)
+                            </PersistentVolumeReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || ConfigMapCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/ConfigMaps" Match="NavLinkMatch.All">
+                            <ConfigMapReference>
+                                ConfigMaps (@ConfigMapCount)
+                            </ConfigMapReference>
+                        </NavLink>
+                    </li>
+                }
+                @if (!HideEmpty || SecretCount != 0)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/Secrets" Match="NavLinkMatch.All">
+                            <SecretReference>
+                                Secrets (@SecretCount)
+                            </SecretReference>
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li class="nav-item px-3">
+            <span class="oi oi-key"></span>
+            Config
+
+            @if (!HideEmpty || CertManagerIssuerCount != 0)
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/CertManagerIssuer" Match="NavLinkMatch.All">
+                        <SecretReference>
+                            CertManager issuers (@CertManagerIssuerCount)
+                        </SecretReference>
+                    </NavLink>
+                </li>
+            }
+        </li>
+    </ul>
+</CollapsibleSideMenu>
+
+@code {
+    private bool HideEmpty = true;
+
+    private int NamespaceCount { get; set; }
+    private int StorageClassCount { get; set; }
+    private int PodCount { get; set; }
+    private int DeploymentCount { get; set; }
+    private int ServiceCount { get; set; }
+    private int IngressCount { get; set; }
+    private int StatefulSetCount { get; set; }
+    private int DaemonSetCount { get; set; }
+    private int PersistentVolumeClaimCount { get; set; }
+    private int PersistentVolumeCount { get; set; }
+    private int ConfigMapCount { get; set; }
+    private int SecretCount { get; set; }
+    private int NodeCount { get; set; }
+    private int CertManagerIssuerCount { get; set; }
+
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        RegisterUpdateEvents();
+        UpdateCounts();
+        await base.OnInitializedAsync();
+    }
+
+    private void UpdateCounts()
+    {
+        NamespaceCount = NamespaceEntities.Items.Count;
+        StorageClassCount = StorageClassStateEntites.Items.Count;
+        PodCount = V1PodEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        DeploymentCount = V1DeploymentEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        ServiceCount = V1ServiceEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        IngressCount = ExtensionsV1Beta1IngressEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        StatefulSetCount = V1StatefulSetEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        DaemonSetCount = V1DaemonSetEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        PersistentVolumeClaimCount = V1PersistentVolumeClaimEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        PersistentVolumeCount = V1PersistentVolumeEntities.Items.Count;
+        NodeCount = NodeStateContainer.Items.Count;
+        ConfigMapCount = V1ConfigMapEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        SecretCount = V1SecretEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+        CertManagerIssuerCount = CertManagerIssuerEntities.Items.Count(s => SelectedNamespacesState.Contains(s.Value.Metadata.Namespace()));
+    }
+
+    private void RegisterUpdateEvents()
+    {
+        SelectedNamespacesState.StateChanged += UpdateState;
+        NamespaceEntities.StateChanged += UpdateState;
+        StorageClassStateEntites.StateChanged += UpdateState;
+        V1PodEntities.StateChanged += UpdateState;
+        V1DeploymentEntities.StateChanged += UpdateState;
+        V1ServiceEntities.StateChanged += UpdateState;
+        ExtensionsV1Beta1IngressEntities.StateChanged += UpdateState;
+        V1StatefulSetEntities.StateChanged += UpdateState;
+        V1DaemonSetEntities.StateChanged += UpdateState;
+        V1PersistentVolumeClaimEntities.StateChanged += UpdateState;
+        V1PersistentVolumeClaimEntities.StateChanged += UpdateState;
+        V1ConfigMapEntities.StateChanged += UpdateState;
+        V1SecretEntities.StateChanged += UpdateState;
+        NodeStateContainer.StateChanged += UpdateState;
+        CertManagerIssuerEntities.StateChanged += UpdateState;
+    }
+
+    private async void UpdateState(object? sender, EventArgs e)
+    {
+        UpdateCounts();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        SelectedNamespacesState.StateChanged -= UpdateState;
+        NamespaceEntities.StateChanged -= UpdateState;
+        StorageClassStateEntites.StateChanged -= UpdateState;
+        V1PodEntities.StateChanged -= UpdateState;
+        V1DeploymentEntities.StateChanged -= UpdateState;
+        V1ServiceEntities.StateChanged -= UpdateState;
+        ExtensionsV1Beta1IngressEntities.StateChanged -= UpdateState;
+        V1StatefulSetEntities.StateChanged -= UpdateState;
+        V1DaemonSetEntities.StateChanged -= UpdateState;
+        V1PersistentVolumeClaimEntities.StateChanged -= UpdateState;
+        V1PersistentVolumeClaimEntities.StateChanged -= UpdateState;
+        V1ConfigMapEntities.StateChanged -= UpdateState;
+        V1SecretEntities.StateChanged -= UpdateState;
+        NodeStateContainer.StateChanged -= UpdateState;
+        CertManagerIssuerEntities.StateChanged -= UpdateState;
+    }
+
+}

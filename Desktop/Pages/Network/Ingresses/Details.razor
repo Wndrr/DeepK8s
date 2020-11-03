@@ -1,0 +1,136 @@
+﻿@page "/{RequestedEntityNamespace}/Ingress/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<Extensionsv1beta1Ingress>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    @if (Entity.Spec.IngressClassName != null)
+                                    {
+                                        <text>Ingress class <code>@Entity.Spec.IngressClassName</code></text>
+                                    }
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        @if (Entity?.Spec?.Tls != null)
+        {
+            <BSRow class="my-2">
+                <BSCol>
+                    <BSCard CardType="CardType.Card">
+                        <BSCard CardType="CardType.Body">
+                            <BSCard CardType="CardType.Title">
+                                TLS
+                            </BSCard>
+                            <BSCard CardType="CardType.Text">
+                                <BSRow>
+                                    <BSCol>
+                                        <ul>
+                                            @foreach (var rule in Entity?.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
+                                            {
+                                                <li>
+                                                    TLS secret <SecretReference>@rule.SecretName</SecretReference> protects
+                                                    @if (rule.Hosts.Count == 1)
+                                                    {
+                                                        <a href="//@rule.Hosts.First()" target="_blank">@rule.Hosts.First()</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <ul>
+                                                            @foreach (var host in rule.Hosts)
+                                                            {
+                                                                <li>
+                                                                    <a href="//@host" target="_blank">@host</a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    </BSCol>
+                                </BSRow>
+                            </BSCard>
+                        </BSCard>
+                    </BSCard>
+                </BSCol>
+            </BSRow>
+        }
+        @if (Entity?.Spec?.Rules != null)
+        {
+            <BSRow class="my-2">
+                <BSCol>
+                    <BSCard CardType="CardType.Card">
+                        <BSCard CardType="CardType.Body">
+                            <BSCard CardType="CardType.Title">
+                                Rules
+                            </BSCard>
+                            <BSCard CardType="CardType.Text">
+                                <BSRow>
+                                    <BSCol>
+                                        <ul>
+                                            @foreach (var rule in Entity?.Spec?.Rules ?? new List<Extensionsv1beta1IngressRule>())
+                                            {
+                                                <li>
+
+                                                    <a href="//@rule?.Host" target="_blank">
+                                                        @rule?.Host
+                                                    </a>
+                                                    <ul>
+                                                        @foreach (var path in rule?.Http?.Paths ?? new List<Extensionsv1beta1HTTPIngressPath>())
+                                                        {
+                                                            V1Service serviceEntity = null;
+                                                            try
+                                                            {
+                                                                serviceEntity = KubernetesClient.ReadNamespacedService(path.Backend.ServiceName, RequestedEntityNamespace);
+                                                            }
+                                                            catch (Exception e)
+                                                            {
+                                                                Console.WriteLine(e);
+                                                            }
+                                                            <li>
+                                                                @path.PathType @path.Path -->
+                                                                <ServiceReference Entity="@serviceEntity">
+                                                                    @path.Backend.ServiceName:@path.Backend.ServicePort
+                                                                </ServiceReference>
+
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </BSCol>
+                                </BSRow>
+                            </BSCard>
+                        </BSCard>
+                    </BSCard>
+                </BSCol>
+            </BSRow>
+        }
+    </Specifications>
+</EntityDetailsView>
+
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Ingresses";
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,103 @@
+﻿@using k8s.Models
+
+@if (Entity != null)
+{
+    @foreach (var container in Entity?.Spec?.Containers ?? new List<V1Container>())
+    {
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Container: @container.Name
+                </BSCard>
+                <BSCard CardType="CardType.Subtitle">
+                    Image: @container.Image
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    @if (container.Ports != null && container.Ports.Any())
+                    {
+                        <BSCard CardType="CardType.Card">
+                            <BSCard CardType="CardType.Body">
+                                <BSCard CardType="CardType.Title">
+                                    Ports
+                                </BSCard>
+                                <ul>
+                                    @foreach (var port in container.Ports)
+                                    {
+                                        <li>
+                                            Container port <code>@port.ContainerPort</code> exposed by <code>@port.Protocol</code>
+                                            @if (port.Name != null)
+                                            {
+                                                <text> with name <code>@port.Name</code></text>
+                                            }
+                                            @if (port.HostIP != null && port.HostPort != null)
+                                            {
+                                                <text> for source <code>@port.HostIP:@port.HostPort</code></text>
+                                            }
+                                            <br>
+                                            <PortForward Entity="@Entity" PodPort="@port.ContainerPort"/>
+                                        </li>
+                                    }
+                                </ul>
+                            </BSCard>
+                        </BSCard>
+                    }
+                    @if (container.VolumeDevices != null && container.VolumeDevices.Any())
+                    {
+                        <BSCard CardType="CardType.Card">
+                            <BSCard CardType="CardType.Body">
+                                <BSCard CardType="CardType.Title">
+                                    Volume Devices
+                                </BSCard>
+                                <ul>
+                                    @foreach (var volume in container.VolumeDevices)
+                                    {
+                                        <li>
+                                            Volume device <code>@volume?.Name</code> mounted on <code>@volume?.DevicePath</code>
+                                        </li>
+                                    }
+                                </ul>
+                            </BSCard>
+                        </BSCard>
+                    }
+                    @if (container.VolumeMounts != null && container.VolumeMounts.Any())
+                    {
+                        <BSCard CardType="CardType.Card">
+                            <BSCard CardType="CardType.Body">
+                                <BSCard CardType="CardType.Title">
+                                    Volume Mounts
+                                </BSCard>
+                                <ul>
+                                    @foreach (var volume in container.VolumeMounts)
+                                    {
+                                        <li>
+                                            <code>@volume.Name</code> mounted on <code>@volume.MountPath</code>
+                                            @if (volume.SubPath != null && volume.SubPathExpr != null)
+                                            {
+                                                <text>with sub-path <code>@(volume.SubPath ?? volume.SubPathExpr)</code></text>
+                                            }
+                                            @if (volume?.ReadOnlyProperty != null && volume.ReadOnlyProperty.Value)
+                                            {
+                                                <text> as <code>read only</code></text>
+                                            }
+                                            @if (volume.MountPropagation != null)
+                                            {
+                                                <text> and <code>@volume.MountPropagation</code> propagation policy</text>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </BSCard>
+                        </BSCard>
+                    }
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public V1Pod? Entity { get; set; }
+
+}

@@ -1,0 +1,24 @@
+﻿@using Desktop.Services.StateContainers
+@using k8s.Models
+@inject PodStateContainer PodStateContainer
+
+@if (Pods == null || PodStateContainer == null)
+{
+    <Loading />
+}
+
+else
+{
+    @foreach (var (key, pod) in Pods ?? new List<KeyValuePair<string, V1Pod>>())
+    {
+        <PodReferenceInfo Entity="pod"/>
+    }
+}
+
+@code {
+
+    private IEnumerable<KeyValuePair<string, V1Pod>> Pods => PodStateContainer?.Items?.Where(Filter);
+    [Parameter]
+    public Func<KeyValuePair<string, V1Pod>, bool> Filter { get; set; }
+
+}

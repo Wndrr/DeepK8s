@@ -1,0 +1,69 @@
+﻿@page "/StorageClasses"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.StorageClassStateContainer, V1StorageClass, V1StorageClassList>
+
+<h1>
+    Storage Classes
+</h1>
+
+<EntityListDisplay Entities="Entities">
+    <Header>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Provisioner
+            </th>
+            <th>
+                Creation date & uptime
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </Header>
+    <Body>
+    @if (Entities == null)
+    {
+        <Loading/>
+    }
+    else
+    {
+        @foreach (var (_, entity) in Entities.OrderBy(s => s.Value.Metadata.Name))
+        {
+            <tr>
+                <td>
+                    <StorageClassReference entity="@entity">
+                        @entity.Metadata.Name
+                    </StorageClassReference>
+                </td>
+                <td>
+                    @entity.Provisioner
+                </td>
+                <td>
+                    @if (entity.Metadata.CreationTimestamp.HasValue)
+                    {
+                        var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                    }
+                </td>
+                <td>
+                    <TerminateEntity Entity="@entity"/>
+                </td>
+            </tr>
+        }
+    }
+    </Body>
+</EntityListDisplay>
+
+
+@code
+{
+    private void Terminate(string name)
+    {
+        KubernetesClient.DeleteNamespace(name);
+    }
+}

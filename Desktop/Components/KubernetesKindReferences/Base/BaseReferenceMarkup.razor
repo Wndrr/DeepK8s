@@ -1,0 +1,30 @@
+﻿@if (IconClass != null)
+{
+    <span class="@IconClass"></span>
+}
+@if (Entity == null)
+{
+    <span class="@ColorClass EntityReference">@ChildContent</span>
+}
+else
+{
+    <a href="@Url" class="@ColorClass EntityReference">@ChildContent</a>
+}
+
+@code
+{
+    [Parameter]
+    public object Entity { get; set; }
+
+    [Parameter]
+    public string ColorClass { get; set; }
+    [Parameter]
+
+    public string IconClass { get; set; }
+
+    [Parameter]
+    public string Url { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

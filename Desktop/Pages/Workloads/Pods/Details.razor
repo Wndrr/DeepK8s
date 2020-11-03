@@ -1,0 +1,83 @@
+@page "/{RequestedEntityNamespace}/Pod/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@using System.Net
+@using System.Net.Sockets
+@using System.Text
+@using System.Threading
+@using Desktop.Services
+@implements IDisposable
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Pod>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <PodStatus Entity="Entity"/>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    ServiceAccount: <code>@Entity.Spec.ServiceAccountName</code>
+                                </BSCol>
+                            </BSRow>
+                            <BSRow>
+                                <BSCol>
+                                    <DisplayImagePullSecret ImagePullSecrets="@Entity.Spec.ImagePullSecrets"/>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <DisplayContainers Entity="@Entity"/>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Commands
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Open remote bash exec in pod (SSH Tunnel of sorts)
+                                    <RemoteConsoleIntoPod Entity="@Entity"/>
+                                    <br>
+                                    Show logs for pod
+                                    <GetPodLogs Entity="@Entity"/>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
+
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Pods";
+        base.OnInitialized();
+    }
+}

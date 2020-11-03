@@ -1,0 +1,17 @@
+﻿@using k8s.Models
+@inherits Desktop.Components.KubernetesKindReferences.Base.BaseReference<V1Namespace>
+
+<BaseReferenceMarkup Entity="@Entity" ColorClass="@ColorClass" IconClass="@IconClass" Url="@Url">
+    @ChildContent
+</BaseReferenceMarkup>
+
+@code
+{
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Construct("NamespaceColor", "Namespace");
+        base.OnInitialized();
+    }
+
+}

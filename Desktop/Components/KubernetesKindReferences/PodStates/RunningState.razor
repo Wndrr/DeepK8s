@@ -1,0 +1,25 @@
+﻿@using k8s.Models
+@using System.Xml
+
+@if (ContainerStatus.State.Running != null)
+{
+    @if (ContainerStatus.State.Running.StartedAt == null)
+    {
+        <i class="fa fa-thumbs-up text-danger" title="Container is NOT running"></i>
+    }
+    else
+    {
+        <i class="fa fa-thumbs-up text-success" title="Container is running"></i>
+    }
+}
+else
+{
+    <i class="fa fa-thumbs-up text-warning" title="Container's running state is unknown"></i>
+}
+
+@code
+{
+    [Parameter]
+    public V1ContainerStatus ContainerStatus { get; set; }
+
+}

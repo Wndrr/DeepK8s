@@ -1,0 +1,23 @@
+﻿@using k8s.Models
+@using k8s
+@using k8s.Fluent
+@inject Kubernetes KubernetesClient 
+
+
+<button class="btn btn-outline-danger" @onclick="@(async () => await Terminate())">
+    <span>Remove</span>
+</button>
+
+@code
+{
+    [Parameter]
+    public IMetadata<V1ObjectMeta> Entity { get; set; }
+
+    
+    private async Task Terminate()
+    {
+        var request = KubernetesClient.Request(HttpMethod.Delete, Entity.GetType(), Entity.Metadata.Namespace(), Entity.Metadata.Name);
+        var response = await request.ExecuteAsync();
+    }
+    
+}

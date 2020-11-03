@@ -1,0 +1,51 @@
+﻿@page "/StorageClass/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1StorageClass>
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <div>
+                                        Parameters :
+                                        @foreach (var (key, value) in Entity.Parameters)
+                                        {
+                                            <div>@key: <code>@value</code></div>
+                                        }
+                                    </div>
+                                    <div>
+                                        Provisioner : <code>@Entity.Provisioner</code>
+                                    </div>
+                                    <div>
+                                        ReclaimPolicy : <code>@Entity.ReclaimPolicy</code>
+                                    </div>
+                                    <div>
+                                        VolumeBindingMode : <code>@Entity.VolumeBindingMode</code>
+                                    </div>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "StorageClasses";
+        base.OnInitialized();
+    }
+}

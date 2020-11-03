@@ -1,0 +1,15 @@
+﻿@page "/Node/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Node>
+
+<EntityDetailsView Entity="@Entity"/>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Nodes";
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,29 @@
+﻿@page "/Namespace/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Namespace>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        @Entity.Status?.Phase
+        <br/>
+        @foreach (var condition in Entity.Status?.Conditions ?? new List<V1NamespaceCondition>())
+        {
+            <div>
+                <h5>@condition.Reason - @condition.LastTransitionTime</h5>
+                @condition.Type is @condition.Status: @condition.Message
+                <hr>
+            </div>
+        }
+    </Status>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "ConfigMaps";
+        base.OnInitialized();
+    }
+}

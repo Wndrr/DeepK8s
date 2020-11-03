@@ -1,0 +1,38 @@
+﻿@using k8s
+@using k8s.KubeConfigModels
+@using Desktop.Services
+@using System.Threading
+@inject Kubernetes KubernetesClient
+@inject StateContainerLoadingSupervisor StateContainerLoadingSupervisor
+
+<BSDropdown>
+    <BSDropdownToggle>@CurrentConfig</BSDropdownToggle>
+    <BSDropdownMenu>
+        @foreach (var availableContext in AvailableContexts)
+        {
+            <BSDropdownItem OnClick="@(() => SetCurrentContext(availableContext.Name))">@availableContext.Name</BSDropdownItem>
+        }
+    </BSDropdownMenu>
+</BSDropdown>
+
+@code {
+    private K8SConfiguration? Configuration { get; set; }
+    private string CurrentConfig => Configuration?.CurrentContext ?? string.Empty;
+    private List<Context> AvailableContexts => Configuration?.Contexts.ToList();
+
+    protected override void OnParametersSet()
+    {
+        Configuration = KubernetesClientConfiguration.LoadKubeConfig();
+    }
+
+    private void SetCurrentContext(string selectedContextName)
+    {
+        if (Configuration == null)
+            return;
+        
+        Configuration.CurrentContext = selectedContextName;
+        InMemoryUserPreferencesStore.CurrentContextName = selectedContextName;
+        StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
+    }
+
+}

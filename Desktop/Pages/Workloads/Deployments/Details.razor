@@ -1,0 +1,22 @@
+﻿@page "/{RequestedEntityNamespace}/Deployment/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Deployment>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
+        <br>
+        <PodsForDeployment Entity="@Entity"/>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Deployments";
+        base.OnInitialized();
+    }
+}

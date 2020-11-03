@@ -1,0 +1,44 @@
+﻿@page "/{RequestedEntityNamespace}/CertManagerIssuer/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.CertManagerIssuer>
+
+<h1>
+    CertManager Issuer @RequestedEntityName
+</h1>
+@if (Entity == null)
+{
+    <span>Loagin ...</span>
+}
+else
+{
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <h2 class="text-center">
+                Status
+            </h2>
+            </div>
+        <div class="col-lg-6 mx-auto">
+            <h2 class="text-center">
+                Metadata
+            </h2>
+            <DisplaySharedMetadata Source="@Entity.Metadata" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <h2 class="text-center">
+                Specifications
+            </h2>
+        </div>
+    </div>
+}
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "ConfigMaps";
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,75 @@
+﻿@page "/PersistentVolume/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@using Desktop.Services.StateContainers
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1PersistentVolume>
+@inject PersistentVolumeClaimStateContainer PersistentVolumeClaimStateContainer
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <div>
+            @Entity.Status.Phase via <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+        </div>
+        <div>@Entity.Status.Reason</div>
+        <div>@Entity.Status.Message</div>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <div>
+                                        Access modes :
+                                        @foreach (var accessMode in Entity.Spec.AccessModes ?? new List<string>())
+                                        {
+                                            <div>@accessMode</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        Capacity :
+                                        @foreach (var capacity in Entity.Spec.Capacity ?? new Dictionary<string, ResourceQuantity>())
+                                        {
+                                            <div>@capacity.Key: @capacity.Value</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        Reclaim policy : <code>@Entity.Spec.PersistentVolumeReclaimPolicy</code>
+                                    </div>
+                                    <div>
+                                        StorageClassName : <code>@Entity.Spec.StorageClassName</code>
+                                    </div>
+                                    <div>
+                                        VolumeMode : <code>@Entity.Spec.VolumeMode</code>
+                                    </div>
+                                    <div>
+                                        ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+                                    </div>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    private V1PersistentVolumeClaim pvc => PersistentVolumeClaimStateContainer.Items
+        .SingleOrDefault(
+            claim => claim.Value.Metadata.Namespace() == Entity.Spec.ClaimRef.NamespaceProperty
+                   && claim.Value.Metadata.Name == Entity.Spec.ClaimRef.Name).Value;
+
+    protected override void OnInitialized()
+    {
+        ParentPageName = "PersistentVolumes";
+        base.OnInitialized();
+    }
+}

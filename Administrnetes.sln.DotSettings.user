@@ -1,0 +1,14 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Mathieu VIALES\.nuget\packages\newtonsoft.json\12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dde3a771_002D9422_002D4413_002Db142_002D5478edc0a729/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CounterShouldIncrementWhenClicked" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.SelectedNamespacesStateTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.BaseReferenceMarkupTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.EntityReferenceUrlBuilderTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.BuildPodPortForwardCommandTest.BuildPodPortForwardCommand_no_namespace_is_default&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.BuildPodPortForwardCommandTest.BuildPodPortForwardCommand_with_namespace_has_namespace&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

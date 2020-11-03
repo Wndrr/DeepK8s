@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<Navigation/>
+
+<div class="main">
+    <div class="top-row px-4">
+        <SwitchContext/>
+        <NavLink class="nav-link" href="/Legend" Match="NavLinkMatch.All">
+            <span class="oi oi-book"></span>
+            Legend
+        </NavLink>
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+<Filtering/>

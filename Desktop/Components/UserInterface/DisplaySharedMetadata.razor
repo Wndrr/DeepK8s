@@ -1,0 +1,82 @@
+﻿@code{
+}
+
+@using k8s.Models
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Misc
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+
+                            Name: <code>@Source.Name</code> <br/>
+                            Uid/Version: <code>@Source.Uid</code>/<code>@Source.ResourceVersion</code> <br/>
+
+                            @if (Source.CreationTimestamp != null)
+                            {
+                                var creationTimestamp = Source.CreationTimestamp.Value.ToUniversalTime();
+                                <span>
+                                    Created 
+                                    <code><CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/></code> -
+                                    <code><Uptime BaseUtcDateTime="@creationTimestamp"/></code>
+                                </span>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+@if (Source?.Labels != null)
+{
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Labels
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            <DictionayToHmlList Source="@Source.Labels"/>
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+}
+@if (Source?.Annotations != null)
+{
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Annotations
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            <DictionayToHmlList Source="@Source.Annotations"/>
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+}
+
+@code
+{
+    [Parameter]
+    public V1ObjectMeta Source { get; set; }
+}

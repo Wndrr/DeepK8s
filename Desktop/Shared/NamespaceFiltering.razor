@@ -1,0 +1,48 @@
+﻿@using k8s
+@using k8s.Models
+@using System.Collections.ObjectModel
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.NamespaceStateContainer, V1Namespace, V1NamespaceList>
+
+<div class="btn-group btn-group-justified" role="group" aria-label="Multi selection">
+    <button @onclick="DeselectAll" type="button" class="col btn btn-outline-danger">
+        X
+    </button>
+    <button @onclick="SelectAll" type="button" class="col btn btn-outline-success">
+        *
+    </button>
+</div>
+<div>
+    @foreach (var (_, ns) in Entities.OrderBy(s => s.Value.Metadata.Name))
+    {
+        var name = ns.Metadata.Name;
+        var checkboxId = "ns_" + name;
+        <div>
+            <label for="@checkboxId">
+                <input id="@checkboxId" type="checkbox" checked="@IsNamespaceSelected(name)" @onclick="@(() => ToggleNamespaceFilter(name))"/> @name
+            </label>
+        </div>
+    }
+</div>
+
+@code {
+    private bool IsNamespaceSelected(string ns)
+    {
+        return SelectedNamespacesState.Contains(ns);
+    }
+
+    private void ToggleNamespaceFilter(string ns)
+    {
+        SelectedNamespacesState.Toggle(ns);
+    }
+
+    private void DeselectAll()
+    {
+        SelectedNamespacesState.Clear();
+    }
+
+    private void SelectAll()
+    {
+        SelectedNamespacesState.Clear();
+        SelectedNamespacesState.AddRange(Entities.Select(s => s.Value.Metadata.Name));
+    }
+}

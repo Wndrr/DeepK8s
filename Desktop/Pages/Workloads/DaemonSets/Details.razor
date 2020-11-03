@@ -1,0 +1,22 @@
+﻿@page "/{RequestedEntityNamespace}/DaemonSet/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1DaemonSet>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <DisplayLabelSelector Source="@Entity.Spec.Selector" />
+        <br>
+        <PodsForDaemonSet Entity="@Entity"/>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "DaemonSets";
+        base.OnInitialized();
+    }
+}

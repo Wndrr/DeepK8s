@@ -1,0 +1,16 @@
+﻿@using k8s.Models
+@using System.Xml
+
+
+@if (ContainerStatus.State.Waiting?.Reason != null)
+{
+    <span>@ContainerStatus.State.Waiting.Reason</span>
+    <br/>
+}
+
+@code
+{
+    [Parameter]
+    public V1ContainerStatus ContainerStatus { get; set; }
+
+}

@@ -1,0 +1,27 @@
+﻿@using k8s.Models
+@using System.Xml
+
+
+@foreach (var containerStatus in Entity.Status?.ContainerStatuses ?? new List<V1ContainerStatus>())
+{
+    @if (Entity.Status?.ContainerStatuses.Count > 1)
+    {
+        @containerStatus.Name
+    }
+
+    <WaitingState ContainerStatus="containerStatus"/>
+    <TerminatedState Pod="@Entity" ContainerStatus="containerStatus"/>
+    <RunningState ContainerStatus="containerStatus"/>
+    <Ready ContainerStatus="containerStatus"/>
+    <Started ContainerStatus="containerStatus"/>
+    
+    <br/>
+}
+
+
+@code
+{
+    [Parameter]
+    public V1Pod Entity { get; set; }
+
+}

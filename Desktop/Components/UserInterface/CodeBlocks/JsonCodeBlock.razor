@@ -1,0 +1,23 @@
+﻿@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+
+@if (Value != null)
+{
+    var jsonFormatted = JToken.Parse(Value).ToString(Formatting.Indented);
+    <pre><code class="language-json"><text>@jsonFormatted</text></code></pre>
+}
+else
+{
+    <pre><code class="language-json"><text>@ChildContent</text></code></pre>
+}
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+}

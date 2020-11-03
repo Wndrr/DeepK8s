@@ -1,0 +1,21 @@
+﻿@page "/Legend"
+@using k8s
+@inject Kubernetes KubernetesClient
+
+<h1>
+    Legend
+</h1>
+
+Kuberentes entity kinds are color-coded in this way:
+
+<ul>
+    @foreach (var kubernetesEntityKindName in Enum.GetNames(typeof(KubernetesEntityKind)))
+    {
+        var kind = Enum.Parse<KubernetesEntityKind>(kubernetesEntityKindName);
+        <li>
+            <EntityReference kind="@kind">
+                @kubernetesEntityKindName
+            </EntityReference>
+        </li>
+    }
+</ul>

@@ -1,0 +1,52 @@
+﻿@using k8s.Models
+
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Label selector
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            Expressions:
+                            <ul>
+                                @foreach (var expression in Source?.MatchExpressions ?? new List<V1LabelSelectorRequirement>())
+                                {
+                                    <li>
+                                        @expression.OperatorProperty @expression.Key
+                                        <ul>
+                                            @foreach (var value in expression.Values ?? new List<string>())
+                                            {
+                                                <li>
+                                                    @value
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                            <hr>
+                            MatchLabels:
+                            <ul>
+                                @foreach (var (key, value) in Source?.MatchLabels ?? new Dictionary<string, string>())
+                                {
+                                    <li>
+                                        @key:@value
+                                    </li>
+                                }
+                            </ul>
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+
+@code
+{
+    [Parameter]
+    public V1LabelSelector Source { get; set; }
+}

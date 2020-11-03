@@ -1,0 +1,35 @@
+{
+  "executable": "DeepK8s",
+  "splashscreen": {
+    "imageFile": ""
+  },
+  "name": "DeepK8s",
+  "author": "Mathieu VIALES",
+  "singleInstance": false,
+  "environment": "Production",
+  "build": {
+    "appId": "wndrr.deepk8s.app",
+    "productName": "DeepK8s",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "0.3.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/DeepK8s"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [ "**/*" ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [ "**/*" ]
+      },
+      "**/*"
+    ]
+  }
+}

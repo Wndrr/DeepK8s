@@ -1,0 +1,22 @@
+﻿@using k8s.Models
+@using System.Xml
+
+@if (ContainerStatus.Started == null)
+{
+    <i class="fa fa-play text-warning" title="Container's started state is unknown"></i>
+}
+else if (ContainerStatus.Started ?? false)
+{
+    <i class="fa fa-play text-success" title="Container is started"></i>
+}
+else
+{
+    <i class="fa fa-play text-danger" title="Container is NOT started"></i>
+}
+
+@code
+{
+    [Parameter]
+    public V1ContainerStatus ContainerStatus { get; set; }
+
+}

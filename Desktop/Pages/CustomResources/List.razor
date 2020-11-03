@@ -1,0 +1,71 @@
+﻿@page "/CertManagerIssuer"
+@using k8s
+@using k8s.Models
+@using Newtonsoft.Json
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.CertManagerIssuerStateContainer, CertManagerDefinitions.CertManagerIssuer, CertManagerDefinitions.CertManagerIssuerList>
+
+<h1>
+    Custom resources
+</h1>
+
+<EntityListDisplay Entities="Entities">
+    <Header>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Names
+            </th>
+            <th>
+                Creation date & uptime
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </Header>
+    <Body>
+    @if (Entities == null)
+    {
+        <Loading/>
+    }
+    else
+    {
+        @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+        {
+            <tr>
+                <td>
+                    <NamespaceReference>
+                        @entity.Metadata.Namespace()
+                    </NamespaceReference>
+                    <br/>
+                    <CertManagerIssuerReference Entity="entity">
+                        @entity.Metadata.Name
+                    </CertManagerIssuerReference>
+                </td>
+                <td>
+                    @* @JsonConvert.SerializeObject(entity.Spec.Names) *@
+                </td>
+                <td>
+                    @if (entity.Metadata.CreationTimestamp.HasValue)
+                    {
+                        var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                    }
+                </td>
+                <td>
+                    <TerminateEntity Entity="@entity"/>
+                </td>
+            </tr>
+        }
+    }
+    </Body>
+</EntityListDisplay>
+
+
+@code
+{
+
+}

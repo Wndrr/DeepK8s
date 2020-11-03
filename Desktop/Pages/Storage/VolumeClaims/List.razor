@@ -1,0 +1,65 @@
+﻿@page "/PersistentVolumeClaims"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.PersistentVolumeClaimStateContainer, V1PersistentVolumeClaim, V1PersistentVolumeClaimList>
+
+<h1>
+    Volume Claims
+</h1>
+
+<EntityListDisplay Entities="FilteredEntities">
+    <Header>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Creation date & uptime
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+    </Header>
+    <Body>
+            @if (FilteredEntities == null)
+            {
+                <Loading/>
+            }
+            else
+            {
+                @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+                {
+                    <tr>
+                        <td>
+                            <NamespaceReference>
+                                @entity.Metadata.Namespace()
+                            </NamespaceReference>
+                            <br/>
+                            <PersistentVolumeClaimReference entity="@entity">
+                                @entity.Metadata.Name
+                            </PersistentVolumeClaimReference>
+                        </td>
+                        <td>
+                            @if (entity.Metadata.CreationTimestamp.HasValue)
+                            {
+                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                                <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                                <Uptime BaseUtcDateTime="@creationTimestamp"/>
+
+                            }
+                        </td>
+                        <td>
+                            <TerminateEntity Entity="@entity"/>
+                        </td>
+                    </tr>
+                }
+            }
+    </Body>
+</EntityListDisplay>
+
+
+@code
+{
+    
+}

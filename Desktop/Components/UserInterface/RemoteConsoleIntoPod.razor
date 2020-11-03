@@ -1,0 +1,22 @@
+﻿@using CurrieTechnologies.Razor.Clipboard
+@using Desktop.Services
+@using k8s.Models
+@inject ClipboardService ClipboardService
+@inject KubernetesCommandLineBuilder KubernetesCommandLineBuilder
+
+@if (Entity != null)
+{
+    <BSRow>
+        <BSCol>
+            <kbd>
+                <Clipboard Content="@KubernetesCommandLineBuilder.RemoteShell(Entity)"/>
+            </kbd>
+        </BSCol>
+    </BSRow>
+}
+
+@code
+{
+    [Parameter]
+    public V1Pod Entity { get; set; }
+}
