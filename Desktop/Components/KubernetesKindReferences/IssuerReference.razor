@@ -1,5 +1,5 @@
 ﻿@using k8s.Models
-@inherits Desktop.Components.KubernetesKindReferences.Base.BaseReference<CertManagerDefinitions.CertManagerIssuer>
+@inherits Desktop.Components.KubernetesKindReferences.Base.BaseReference<CertManagerDefinitions.Issuer>
 
 <BaseReferenceMarkup Entity="@Entity" ColorClass="@ColorClass" IconClass="@IconClass" Url="@Url">
     <span class=""></span>
@@ -11,7 +11,7 @@
     /// <inheritdoc />
     protected override void OnInitialized()
     {
-        Construct("CertManagerIssuerColor", "CertManagerIssuer", "oi oi-fork");
+        Construct("IssuerColor", "Issuer", "oi oi-fork");
         base.OnInitialized();
     }
 

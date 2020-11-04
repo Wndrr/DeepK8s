@@ -4,8 +4,8 @@ using k8s.Models;
 
 namespace CertManagerDefinitions
 {
-    [KubernetesEntity(ApiVersion = "v1alpha1", Group = "certmanager.k8s.io", Kind = "IssuerList", PluralName = "issuers")]
-    public class CertManagerIssuerList : IKubernetesObject<V1ListMeta>, IItems<CertManagerIssuer>
+    [KubernetesEntity(ApiVersion = "v1", Group = "cert-manager.io", Kind = "IssuerList", PluralName = "issuers")]
+    public class IssuerList : IKubernetesObject<V1ListMeta>, IItems<Issuer>
     {
         /// <inheritdoc />
         public string ApiVersion { get; set; }
@@ -17,6 +17,6 @@ namespace CertManagerDefinitions
         public V1ListMeta Metadata { get; set; }
 
         /// <inheritdoc />
-        public IList<CertManagerIssuer> Items { get; set; }
+        public IList<Issuer> Items { get; set; }
     }
 }

@@ -1,0 +1,67 @@
+﻿@page "/{RequestedEntityNamespace}/Challenge/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Challenge>
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            General
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    State : <code>@Entity.Status.State</code><br>
+                                    Reason : <code>@Entity.Status.Reason</code><br>
+                                    Processing : <code>@Entity.Status.Processing</code><br>
+                                    Presented : <code>@Entity.Status.Presented</code><br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            DNS Names
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Issuer: <IssuerReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</IssuerReference> <br>
+                                    
+                                    Key: <code>@Entity.Spec.Key</code><br>
+                                    Token: <code>@Entity.Spec.Token</code><br>
+                                    Type: <code>@Entity.Spec.Type</code><br>
+                                    Url: <code>@Entity.Spec.Url</code><br>
+                                    Wildcard: <code>@Entity.Spec.Wildcard</code><br>
+                                    AuthorizationUrl: <code>@Entity.Spec.AuthorizationUrl</code><br>
+                                    DnsName: <code>@Entity.Spec.DnsName</code><br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Challenges";
+        base.OnInitialized();
+    }
+}

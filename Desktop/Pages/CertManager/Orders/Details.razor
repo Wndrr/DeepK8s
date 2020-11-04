@@ -1,0 +1,143 @@
+﻿@page "/{RequestedEntityNamespace}/Order/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Order>
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            General
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    State : <code>@Entity.Status.State</code><br>
+                                    Url : <code>@Entity.Status.Url</code><br>
+                                    FinalizeUrl : <code>@Entity.Status.FinalizeUrl</code><br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Authorizations
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                        @foreach (var authorization in Entity.Status.Authorizations)
+                                        {
+                                            <li>
+                                                Identifier : <code>@authorization.Identifier</code> <br>
+                                                Url : <code>@authorization.Url</code> <br>
+                                                Wildcard : <code>@authorization.Wildcard</code> <br>
+                                                InitialState : <code>@authorization.InitialState</code> <br>
+                                                Challenges
+                                                <ul>
+                                                    @foreach (var challenge in authorization.Challenges)
+                                                    {
+                                                        <li>
+
+                                                            Token : <code>@challenge.Token</code><br>
+                                                            Type : <code>@challenge.Type</code><br>
+                                                            Url : <code>@challenge.Url</code><br>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            DNS Names
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Issuer: <SecretReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</SecretReference> <br>
+                                    Dns names:
+                                    <ul>
+                                        @foreach (var dnsName in @Entity.Spec.DnsNames)
+                                        {
+                                            <li>
+                                                <a href="//@dnsName" target="_blank">@dnsName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Request
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <code>@Entity.Spec.Request</code>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Certificate
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <code>@Entity.Status.Certificate</code>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Orders";
+        base.OnInitialized();
+    }
+}

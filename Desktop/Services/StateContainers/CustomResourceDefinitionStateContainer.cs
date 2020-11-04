@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using CertManagerDefinitions;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
@@ -15,16 +14,5 @@ namespace Desktop.Services.StateContainers
         {
 
         }
-    }  
-    
-    public class CertManagerIssuerStateContainer : GenericStateContainer<CertManagerIssuer, CertManagerIssuerList>
-    {
-        public CertManagerIssuerStateContainer(Kubernetes kubernetesClient, ILogger<GenericStateContainer<CertManagerIssuer, CertManagerIssuerList>> logger, IServiceProvider serviceProvider) : base(kubernetesClient, logger, serviceProvider)
-        {
-            // JObject.Parse(JsonConvert.SerializeObject(obj))["kind"];
-
-            var tt = Items.Count;
-        }
     }
-
 }
