@@ -1,0 +1,87 @@
+﻿@page "/ClusterIssuer/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.ClusterIssuer>
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            General
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Uri : <code>@Entity.Status.Acme.Uri</code><br>
+                                    LastRegisteredEmail : <code>@Entity.Status.Acme.LastRegisteredEmail</code><br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Conditions
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                    @foreach (var condition in Entity.Status.Conditions)
+                                    {
+                                        <li>
+                                            Status: <code>@condition.Status</code> <br>
+                                            Type: <code>@condition.Type</code> <br>
+                                            Reason: <code>@condition.Reason</code> <br>
+                                            Message: <code>@condition.Message</code> <br>
+                                            LastTransitionTime: <code>@condition.LastTransitionTime</code>
+                                        </li>
+                                    }</ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            DNS Names
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Private key Secret: <SecretReference>@Entity.Spec.Acme.PrivateKeySecretRef.Name</SecretReference> <br>
+                                    Email: <code>@Entity.Spec.Acme.Email</code><br>
+                                    Server: <code>@Entity.Spec.Acme.Server</code><br>
+                                    PreferredChain: <code>@Entity.Spec.Acme.PreferredChain</code><br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "ClusterIssuers";
+        base.OnInitialized();
+    }
+}

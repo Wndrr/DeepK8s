@@ -125,6 +125,33 @@
     <Content Update="Pages\Workloads\DaemonSets\List.razor">
       <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
     </Content>
+    <Content Update="Pages\CertManager\Orders\List.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Pages\CertManager\Orders\Details.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Components\KubernetesKindReferences\OrderReference.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Components\KubernetesKindReferences\ChallengeReference.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Pages\CertManager\Challenges\List.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Pages\CertManager\Challenges\Details.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Components\KubernetesKindReferences\ClusterIssuerReference.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Pages\CertManager\ClusterIssuers\List.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
+    <Content Update="Pages\CertManager\ClusterIssuers\Details.razor">
+      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\StatefulSets\Details.razor" />

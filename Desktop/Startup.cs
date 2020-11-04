@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Desktop.Services;
 using Desktop.Services.StateContainers;
+using Desktop.Services.StateContainers.CertManager;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
@@ -69,6 +70,11 @@ namespace Desktop
             services.AddBlazoredSessionStorage();
             services.AddClipboard();
             // services.AddSingleton(typeof(GenericStateContainer<,>), typeof(GenericStateContainer<,>));
+            
+            
+            RegisterCertManagerStateContainers(services);
+
+
             services.AddSingleton<PodStateContainer>();
             services.AddSingleton<DeploymentStateContainer>();
             services.AddSingleton<ServiceStateContainer>();
@@ -83,13 +89,21 @@ namespace Desktop
             services.AddSingleton<StorageClassStateContainer>();
             services.AddSingleton<NodeStateContainer>();
             services.AddSingleton<CustomResourceDefinitionStateContainer>();
-            services.AddSingleton<CertManagerIssuerStateContainer>();
             services.AddSingleton<StateContainerBooter>();
             services.AddSingleton<StateContainerLoadingSupervisor>();
             services.AddSingleton<PodSelectionPredicateHelper>();
             services.AddScoped<GraphMaker>();
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
+        }
+
+        private static void RegisterCertManagerStateContainers(IServiceCollection services)
+        {
+            services.AddSingleton<IssuerStateContainer>();
+            services.AddSingleton<ClusterIssuerStateContainer>();
+            services.AddSingleton<CertificateStateContainer>();
+            services.AddSingleton<OrderStateContainer>();
+            services.AddSingleton<ChallengeStateContainer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
