@@ -3,7 +3,231 @@
 @using k8s.Models
 @inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Node>
 
-<EntityDetailsView Entity="@Entity"/>
+<EntityDetailsView Entity="@Entity">
+<Status>
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Allocatable
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var (key, value) in Entity.Status.Allocatable)
+                            {
+                                <div>
+                                    @key: <code>@value</code>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Capacity
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var (key, value) in Entity.Status.Capacity)
+                            {
+                                <div>
+                                    @key: <code>@value</code>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Addresses
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var address in Entity.Status.Addresses)
+                            {
+                                <div>
+                                    @address.Type: <code>@address.Address</code>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Node info
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            Architecture: <code>@Entity.Status.NodeInfo.Architecture</code><br>
+                            BootID: <code>@Entity.Status.NodeInfo.BootID</code><br>
+                            ContainerRuntimeVersion: <code>@Entity.Status.NodeInfo.ContainerRuntimeVersion</code><br>
+                            KernelVersion: <code>@Entity.Status.NodeInfo.KernelVersion</code><br>
+                            KubeletVersion: <code>@Entity.Status.NodeInfo.KubeletVersion</code><br>
+                            KubeletVersion: <code>@Entity.Status.NodeInfo.KubeletVersion</code><br>
+                            MachineID: <code>@Entity.Status.NodeInfo.MachineID</code><br>
+                            OperatingSystem: <code>@Entity.Status.NodeInfo.OperatingSystem</code><br>
+                            OsImage: <code>@Entity.Status.NodeInfo.OsImage</code><br>
+                            SystemUUID: <code>@Entity.Status.NodeInfo.SystemUUID</code><br>
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Conditions
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var condition in Entity.Status.Conditions)
+                            {
+                                <div>
+                                    @condition.Type: <code>@condition.Status</code><br>
+                                    @condition.Reason - @condition.Message <br>
+                                    LastTransitionTime: <code>@condition.LastTransitionTime</code>
+                                    LastHeartbeatTime: <code>@condition.LastHeartbeatTime</code>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Attached volumes
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var volume in Entity.Status.VolumesAttached)
+                            {
+                                <div>
+                                    DevicePath: <code>@volume.DevicePath</code><br>
+                                    Name: <code>@volume.Name</code><br>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    In-use volumes
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            <ul>
+                                @foreach (var volumeName in Entity.Status.VolumesInUse)
+                                {
+                                    <li>
+                                        @volumeName
+                                    </li>
+                                }
+                            </ul>
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+<BSRow class="my-2">
+    <BSCol>
+        <BSCard CardType="CardType.Card">
+            <BSCard CardType="CardType.Body">
+                <BSCard CardType="CardType.Title">
+                    Images
+                </BSCard>
+                <BSCard CardType="CardType.Text">
+                    <BSRow>
+                        <BSCol>
+                            @foreach (var image in Entity.Status.Images)
+                            {
+                                <div>
+                                    @if (image.SizeBytes != null)
+                                    {
+                                        <div>Size: <code>@image.SizeBytes</code>Bytes</div>
+                                    }
+                                    Names:
+                                    <ul>
+                                        @foreach (var name in image.Names)
+                                        {
+                                            <li>
+                                                <code>@name</code>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </BSCol>
+                    </BSRow>
+                </BSCard>
+            </BSCard>
+        </BSCard>
+    </BSCol>
+</BSRow>
+</Status>
+<Specifications>
+    <BSRow class="my-2">
+        <BSCol>
+            <BSCard CardType="CardType.Card">
+                <BSCard CardType="CardType.Body">
+                    <BSCard CardType="CardType.Title">
+                        General
+                    </BSCard>
+                    <BSCard CardType="CardType.Text">
+                        <BSRow>
+                            <BSCol>
+                                Provider: <code>@Entity.Spec.ProviderID</code><br>
+                                PodCIDR: <code>@Entity.Spec.PodCIDR</code><br>
+                            </BSCol>
+                        </BSRow>
+                    </BSCard>
+                </BSCard>
+            </BSCard>
+        </BSCol>
+    </BSRow>
+</Specifications>
+</EntityDetailsView>
 
 @code
 {
