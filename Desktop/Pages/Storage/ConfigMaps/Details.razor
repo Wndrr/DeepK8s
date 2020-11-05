@@ -38,9 +38,10 @@
                                     @foreach (var (key, value) in Entity.Data ?? new Dictionary<string, string>())
                                     {
                                         <div>
-                                            <div>
-                                                <span>@key</span>:<span><code>@value</code></span>
-                                            </div>
+                                            <span>@key</span>:
+                                            <span>
+                                                <pre><code>@value</code></pre>
+                                            </span>
                                         </div>
                                     }
                                 </BSCol>
