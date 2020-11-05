@@ -23,6 +23,7 @@
     <script src="https://d3js.org/d3-quadtree.v2.min.js"></script>
     <script src="https://d3js.org/d3-timer.v2.min.js"></script>
     <script src="https://d3js.org/d3-force.v2.min.js"></script>
+    <link href="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.css" rel="stylesheet"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
     <link rel="stylesheet" href="css/graph/site.css">
     <script src="scripts/graph/CreateGraph.js"></script>
@@ -46,6 +47,10 @@
 
 <script src="_framework/blazor.server.js"></script>
 <script src="_content/CurrieTechnologies.Razor.Clipboard/clipboard.min.js"></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+<script>require.config({ paths: { 'vs': '_content/BlazorMonaco/lib/monaco-editor/min/vs' } });</script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+<script src="_content/BlazorMonaco/jsInterop.js"></script>
 
 
 </body>

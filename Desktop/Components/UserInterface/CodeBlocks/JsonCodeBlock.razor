@@ -1,23 +1,26 @@
 ﻿@using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 
-@if (Value != null)
-{
-    var jsonFormatted = JToken.Parse(Value).ToString(Formatting.Indented);
-    <pre><code class="language-json"><text>@jsonFormatted</text></code></pre>
-}
-else
-{
-    <pre><code class="language-json"><text>@ChildContent</text></code></pre>
-}
-
+<MonacoEditor Id="editor-json" ConstructionOptions="EditorConstructionOptions"/>
 
 @code {
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    // var jsonFormatted = JToken.Parse(Value).ToString(Formatting.Indented);
 
     [Parameter]
     public string? Value { get; set; }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "json",
+            ReadOnly = true,
+            Value = Value,
+            ScrollBeyondLastLine = false,
+            RoundedSelection = true,
+        };
+    }
 
 }

@@ -14,7 +14,7 @@ else
     <h1>
         @Entity.Kind @Entity.Metadata.Name
     </h1>
-    <BSTabGroup>
+    <BSTabGroup class="h-100">
         <BSTabList>
             <BSTab>
                 <BSTabLabel IsDisabled="@(Status == null)">
@@ -45,7 +45,10 @@ else
                     JSON
                 </BSTabLabel>
                 <BSTabContent>
-                    <JsonCodeBlock>@JsonConvert.SerializeObject(Entity, Formatting.Indented)</JsonCodeBlock>
+                    @{
+                        var json = JsonConvert.SerializeObject(Entity, Formatting.Indented);
+                    }
+                    <JsonCodeBlock Value="@json"/>
                 </BSTabContent>
             </BSTab>
             <BSTab>
@@ -57,7 +60,7 @@ else
                         var serializer = new SerializerBuilder().Build();
                         var yaml = serializer.Serialize(Entity);
                     }
-                    <YamlCodeBlock>@yaml</YamlCodeBlock>
+                    <YamlCodeBlock Value="@yaml"/>
                 </BSTabContent>
             </BSTab>
         </BSTabList>
