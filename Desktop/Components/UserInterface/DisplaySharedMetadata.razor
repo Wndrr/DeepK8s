@@ -20,9 +20,13 @@
                             {
                                 var creationTimestamp = Source.CreationTimestamp.Value.ToUniversalTime();
                                 <span>
-                                    Created 
-                                    <code><CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/></code> -
-                                    <code><Uptime BaseUtcDateTime="@creationTimestamp"/></code>
+                                    Created
+                                    <code>
+                                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                                    </code> -
+                                    <code>
+                                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                                    </code>
                                 </span>
                             }
                         </BSCol>
@@ -31,6 +35,34 @@
             </BSCard>
         </BSCard>
     </BSCol>
+    @if (Source.OwnerReferences != null && Source.OwnerReferences.Any())
+    {
+        <BSCol>
+            <BSCard CardType="CardType.Card">
+                <BSCard CardType="CardType.Body">
+                    <BSCard CardType="CardType.Title">
+                        Owners
+                    </BSCard>
+                    <BSCard CardType="CardType.Text">
+                        <BSRow>
+                            <BSCol>
+                                <ul>
+                                    @foreach (var ownerReference in Source.OwnerReferences ?? new List<V1OwnerReference>())
+                                    {
+                                        <li>
+                                            @ownerReference.ApiVersion/@ownerReference.Kind/@ownerReference.Name <br>
+                                            Controller: <code>@ownerReference.Controller</code><br>
+                                            BlockOwnerDeletion: <code>@ownerReference.BlockOwnerDeletion</code><br>
+                                        </li>
+                                    }
+                                </ul>
+                            </BSCol>
+                        </BSRow>
+                    </BSCard>
+                </BSCard>
+            </BSCard>
+        </BSCol>
+    }
 </BSRow>
 @if (Source?.Labels != null)
 {
