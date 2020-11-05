@@ -5,7 +5,7 @@
             @key:
             @if (value.StartsWith("{") || value.StartsWith('['))
             {
-                <JsonCodeBlock Value="@value">@value</JsonCodeBlock>
+                <JsonCodeBlock Value="@value"/>
             }
             else
             {

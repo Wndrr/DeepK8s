@@ -1,8 +1,26 @@
 ﻿@using Newtonsoft.Json
-<pre><code class="language-yaml">@ChildContent</code></pre>
+@using Newtonsoft.Json.Linq
+
+<MonacoEditor Id="editor-yaml" ConstructionOptions="EditorConstructionOptions"/>
 
 @code {
 
+    // var jsonFormatted = JToken.Parse(Value).ToString(Formatting.Indented);
+
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public string? Value { get; set; }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "yaml",
+            ReadOnly = true,
+            Value = Value,
+            ScrollBeyondLastLine = false,
+            RoundedSelection = true,
+        };
+    }
+
 }
