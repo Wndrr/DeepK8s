@@ -1,0 +1,36 @@
+﻿<MonacoEditor Id="@EditorId" ConstructionOptions="EditorConstructionOptions"/>
+
+@code {
+
+    private Guid Guid => Guid.NewGuid();
+    private string EditorId => $"editor-{Guid.ToString()}";
+    
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public CodeLanguage Language { get; set; }
+
+    private string CodeLanguageValue()
+    {
+        return Language switch
+        {
+            CodeLanguage.Unspecified => string.Empty,
+            CodeLanguage.Yaml => "yaml",
+            CodeLanguage.Json => "json",
+            _ => throw ExhaustiveMatching.ExhaustiveMatch.Failed(Language)};
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = CodeLanguageValue(),
+            ReadOnly = true,
+            Value = Value,
+            ScrollBeyondLastLine = false,
+            RoundedSelection = true,
+        };
+    }
+}
