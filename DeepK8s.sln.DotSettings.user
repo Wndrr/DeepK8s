@@ -4,7 +4,10 @@
     &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.Components.UserInterface.CodeBlocks.CodeBlockTest.HasSpanWithColorClass&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c6d42add_002D1a9e_002D46c7_002D8cbf_002Dfbf827c45f00/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="HasSpanWithColorClass #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=704ff59f_002D2cf3_002D4262_002D97b7_002D23960b5b8a6e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c6d42add_002D1a9e_002D46c7_002D8cbf_002Dfbf827c45f00/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="HasSpanWithColorClass #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::12EA3F62-167A-45F2-B49C-E856857B2BF2::.NETCoreApp,Version=v3.1::UnitTests.Components.UserInterface.CodeBlocks.CodeBlockCallsJsCreate.CodeBlock_Test&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
