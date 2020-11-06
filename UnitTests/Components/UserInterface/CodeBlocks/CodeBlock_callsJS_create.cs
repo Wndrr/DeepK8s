@@ -1,6 +1,6 @@
 ﻿using Bunit;
 using Bunit.Rendering;
-using Bunit.TestDoubles.JSInterop;
+using Bunit.TestDoubles;
 using Desktop.Components.KubernetesKindReferences.Base;
 using Desktop.Components.UserInterface.CodeBlocks;
 using Xunit;
