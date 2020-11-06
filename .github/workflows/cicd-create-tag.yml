@@ -1,0 +1,17 @@
+name: CI/CD - Create Tag
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: GitHub Tag
+        # You may pin to the exact commit or the version.
+        # uses: mathieudutour/github-tag-action@bcb832838e1612ff92089d914bccc0fd39458223
+        uses: mathieudutour/github-tag-action@v4.6
+        with:
+          # Required for permission to tag the repo.
+          github_token: ${{ secrets.WORKFLOW }}
