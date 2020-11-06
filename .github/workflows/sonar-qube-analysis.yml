@@ -10,19 +10,16 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
       - name: SonarScanner for .NET Core with pull request decoration support
         uses: highbyte/sonarscan-dotnet@1.0
         with:
-          # The key of the SonarQube project
           sonarProjectKey: Wndrr_DeepK8s
-          # The name of the SonarQube project
           sonarProjectName:  DeepK8s
-          # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
           sonarOrganization: wndrr
           dotnetBuildArguments: ./Desktop
-          # Optional command arguments to dotnet test
           dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-          # Optional extra command arguments the the SonarScanner 'begin' command
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
         
     env:
