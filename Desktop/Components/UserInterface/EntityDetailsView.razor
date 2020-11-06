@@ -48,7 +48,7 @@ else
                     @{
                         var json = JsonConvert.SerializeObject(Entity, Formatting.Indented);
                     }
-                    <JsonCodeBlock Value="@json"/>
+                    <CodeBlock Value="@json" Language="@CodeLanguage.Json"/>
                 </BSTabContent>
             </BSTab>
             <BSTab>
@@ -60,7 +60,7 @@ else
                         var serializer = new SerializerBuilder().Build();
                         var yaml = serializer.Serialize(Entity);
                     }
-                    <YamlCodeBlock Value="@yaml"/>
+                    <CodeBlock Value="@yaml" Language="@CodeLanguage.Yaml"/>
                 </BSTabContent>
             </BSTab>
         </BSTabList>
