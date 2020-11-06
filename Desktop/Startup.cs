@@ -92,7 +92,6 @@ namespace Desktop
             services.AddSingleton<StateContainerBooter>();
             services.AddSingleton<StateContainerLoadingSupervisor>();
             services.AddSingleton<PodSelectionPredicateHelper>();
-            services.AddScoped<GraphMaker>();
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
         }
