@@ -11,6 +11,7 @@ using JsonDiffPatchDotNet;
 using k8s;
 using k8s.Fluent;
 using k8s.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,6 +25,8 @@ namespace Desktop.Services.StateContainers
         private CancellationToken _cancellationToken;
         protected Kubernetes KubernetesClient { get; set; }
         protected IServiceProvider  IServiceProvider  { get; set; }
+        [Inject]
+        protected SelectedNamespacesState  SelectedNamespacesState  { get; set; }
         public ConcurrentDictionary<string, TEntityType> Items { get; set; } = new ConcurrentDictionary<string, TEntityType>();
 
         public GenericStateContainer(Kubernetes kubernetesClient,
@@ -40,7 +43,11 @@ namespace Desktop.Services.StateContainers
         public async Task<int> Load(CancellationToken? cancellationToken = null)
         {
             if (InMemoryUserPreferencesStore.CurrentContextName != _currentlyLoadedContext)
+            {
+                SelectedNamespacesState.Clear();
+                SelectedNamespacesState.Add("default");
                 ContextHasChanged();
+            }
             
             if (_isLoaded) return Items.Count;
             

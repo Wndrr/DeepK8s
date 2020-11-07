@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using BlazorStrap;
@@ -17,6 +18,8 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
 using Microsoft.AspNetCore.Http;
+using Stl.DependencyInjection;
+using Stl.Fusion;
 
 namespace Desktop
 {
@@ -94,6 +97,10 @@ namespace Desktop
             services.AddSingleton<PodSelectionPredicateHelper>();
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
+            
+            
+            services.AddFusion();
+            services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
         }
 
         private static void RegisterCertManagerStateContainers(IServiceCollection services)
