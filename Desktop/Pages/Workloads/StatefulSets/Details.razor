@@ -1,0 +1,23 @@
+﻿@page "/{RequestedEntityNamespace}/StatefulSet/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1StatefulSet>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
+        <br>
+        <PodsForStatefulSet Entity="@Entity"/>
+    </Specifications>
+</EntityDetailsView>
+
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "StatefulSets";
+        base.OnInitialized();
+    }
+}

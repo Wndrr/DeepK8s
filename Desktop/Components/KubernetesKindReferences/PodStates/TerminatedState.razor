@@ -1,0 +1,25 @@
+﻿@using k8s.Models
+@using System.Xml
+
+
+@if (ContainerStatus.State.Terminated != null)
+{
+    if (ContainerStatus.State.Terminated.FinishedAt != null)
+    {
+        <span>Terminated</span>
+    }
+    <br/>
+}
+else if (Pod?.Metadata?.DeletionTimestamp != null)
+{
+    <span>Terminating</span>
+    <br/>
+}
+@code
+{
+    [Parameter]
+    public V1ContainerStatus ContainerStatus { get; set; }
+    [Parameter]
+    public V1Pod Pod { get; set; }
+
+}

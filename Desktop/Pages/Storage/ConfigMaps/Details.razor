@@ -1,0 +1,64 @@
+﻿@page "/{RequestedEntityNamespace}/ConfigMap/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1ConfigMap>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Is immutable: <code>@Entity.Immutable</code>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Data
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    @foreach (var (key, value) in Entity.Data ?? new Dictionary<string, string>())
+                                    {
+                                        <div>
+                                            <span>@key</span>:
+                                            <span>
+                                                <pre><code>@value</code></pre>
+                                            </span>
+                                        </div>
+                                    }
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "ConfigMaps";
+        base.OnInitialized();
+    }
+}

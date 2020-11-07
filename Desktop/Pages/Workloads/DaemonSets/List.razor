@@ -1,0 +1,99 @@
+﻿@page "/DaemonSets"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.DaemonSetStateContainer, V1DaemonSet, V1DaemonSetList>
+
+<h1>
+    DaemonSets
+</h1>
+
+<EntityListDisplay Entities="FilteredEntities" T="V1DaemonSet">
+    <Header>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Owners
+                </th>
+                <th>
+                    Creation date & uptime
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+    </Header>
+    <Body>
+            @if (FilteredEntities == null)
+            {
+                <Loading/>
+            }
+            else
+            {
+                @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+                {
+                    <tr>
+                        <td>
+                            <NamespaceReference>
+                                @entity.Metadata.Namespace()
+                            </NamespaceReference>
+                            <br/>
+                            <DaemonSetReference entity="@entity">
+                                @entity.Metadata.Name
+                            </DaemonSetReference>
+                        </td>
+                        <td>
+
+                            @{
+                                var metadataOwnerReferences = entity.Metadata?.OwnerReferences;
+                                foreach (var ownerReference in metadataOwnerReferences ?? new List<V1OwnerReference>())
+                                {
+                                    switch (ownerReference.Kind)
+                                    {
+                                        case "ReplicaSet":
+                                            <ReplicaSetReference>
+                                                @ownerReference.Name
+                                            </ReplicaSetReference>
+                                            break;
+                                        case "DaemonSet":
+                                            <DaemonSetReference>
+                                                @ownerReference.Name
+                                            </DaemonSetReference>
+                                            break;
+                                        case "StatefulSet":
+                                            <StatefulSetReference>
+                                                @ownerReference.Name
+                                            </StatefulSetReference>
+                                            break;
+                                        default:
+                                            <span>
+                                                @ownerReference.Name
+                                            </span>
+                                            break;
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (entity.Metadata.CreationTimestamp.HasValue)
+                            {
+                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                                <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                                <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                                
+                            }
+                        </td>
+                        <td>
+                            <TerminateEntity Entity="@entity"/>
+                        </td>
+                    </tr>
+                }
+            }
+    </Body>
+</EntityListDisplay>
+
+
+@code
+{
+}

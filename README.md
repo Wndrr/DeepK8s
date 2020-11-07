@@ -1,4 +1,9 @@
 # Deep K8s
+This project is in the heavy WIP phase. It shouldn't break your cluster but, just in case, I'll state it here:
+
+I SHAN'T BE HELD RESPONSIBLE IF THE USAGE OF THIS SOFTWARE CRASHES YOUR K8S CLUSTER OR OPENS A PORTAL TO HELL.
+
+The pre-releases can be downloaded from [this page](https://github.com/Wndrr/DeepK8s/releases)
 
 ## What is the woot ?
 
@@ -6,9 +11,13 @@ Pronounce "Deep Case" (diːp keɪs) is an overview, dashboard and administration
 
 This project aims at being an alternative to the kubectl command line aswell as an helper project for its usage. Many of the operations normally executed through the kubectl CLI can be performed within the Deep K8s GUI but the executed commands are also available to copy/paste if need be.
 
+## Plateforms
+At the moment, the executables have been compiled only for windows.
+The software was tested on windows 10 64 bits exclusively.
+
 ## Documentation
 
-There isn't any so far. But it'll come, rest assured, it'll come ... in time
+Not much doc for now ... All you really need to know is that the software will look for your cluster configuration in the `/user/***/.kube` folder (as per the kubectl's default behaviour) 
 
 ## Motivation
 

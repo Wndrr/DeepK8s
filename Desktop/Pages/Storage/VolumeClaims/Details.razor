@@ -1,0 +1,111 @@
+﻿@page "/{RequestedEntityNamespace}/PersistentVolumeClaim/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@using Desktop.Services.StateContainers
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1PersistentVolumeClaim>
+@inject PersistentVolumeStateContainer PersistentVolumeStateContainer
+
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <div>
+            Capacity :
+            @foreach (var capacity in Entity.Status.Capacity ?? new Dictionary<string, ResourceQuantity>())
+            {
+                <div>- @capacity.Key: @capacity.Value</div>
+            }
+        </div>
+        <div>
+            AccessModes :
+            @foreach (var accessMode in Entity.Status.AccessModes ?? new List<string>())
+            {
+                <div>
+                    - @accessMode
+                </div>
+            }
+        </div>
+        <div>
+            Conditions :
+            @foreach (var condition in Entity.Status.Conditions ?? new List<V1PersistentVolumeClaimCondition>())
+            {
+                <div>
+                    Message : @condition.Message <br>
+                    Reason : @condition.Reason <br>
+                    Status : @condition.Status <br>
+                    Type : @condition.Type <br>
+                    LastProbeTime : @condition.LastProbeTime <br>
+                    LastTransitionTime : @condition.LastTransitionTime <br>
+                </div>
+            }
+        </div>
+
+        <div>
+            @Entity.Status.Phase
+        </div>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <div>
+                                        Access modes :
+                                        @foreach (var accessMode in Entity.Spec.AccessModes)
+                                        {
+                                            <div>@accessMode</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        Limits :
+                                        @foreach (var capacity in Entity.Spec.Resources.Limits ?? new Dictionary<string, ResourceQuantity>())
+                                        {
+                                            <div>@capacity.Key: @capacity.Value.Format</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        Requests :
+                                        @foreach (var capacity in Entity.Spec.Resources.Requests ?? new Dictionary<string, ResourceQuantity>())
+                                        {
+                                            <div>@capacity.Key: @capacity.Value.CanonicalizeString()</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        StorageClassName : <code>@Entity.Spec.StorageClassName</code>
+                                    </div>
+                                    <div>
+                                        VolumeMode : <code>@Entity.Spec.VolumeMode</code>
+                                    </div>
+                                    <div>
+                                        Volume : <PersistentVolumeReference Entity="pv">@pv.Metadata.Name</PersistentVolumeReference>
+                                    </div>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        
+        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
+    </Specifications>
+</EntityDetailsView>
+
+
+@code
+{
+    private V1PersistentVolume pv => PersistentVolumeStateContainer.Items
+        .SingleOrDefault(
+            vol => vol.Value.Metadata.Name == Entity.Spec.VolumeName).Value;
+
+    protected override void OnInitialized()
+    {
+        ParentPageName = "PersistentVolumeClaims";
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,15 @@
+﻿@typeparam T
+@if (Content == null)
+{
+    <Loading />
+}
+else
+{
+    @Content
+}
+
+@code
+{
+    [Parameter]
+    public T Content { get; set; }
+}

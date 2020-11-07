@@ -1,0 +1,97 @@
+﻿@page "/{RequestedEntityNamespace}/Certificate/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Certificate>
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            General
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    RenewalTime: <code>@Entity.Status.RenewalTime</code> <br>
+                                    NotBefore: <code>@Entity.Status.NotBefore</code> <br>
+                                    NotAfter: <code>@Entity.Status.NotAfter</code> <br>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Conditions
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                    @foreach (var condition in Entity.Status.Conditions)
+                                    {
+                                        <li>
+                                            Status: <code>@condition.Status</code> <br>
+                                            Type: <code>@condition.Type</code> <br>
+                                            Reason: <code>@condition.Reason</code> <br>
+                                            Message: <code>@condition.Message</code> <br>
+                                            LastTransitionTime: <code>@condition.LastTransitionTime</code>
+                                        </li>
+                                    }</ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            DNS Names
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Secret: <SecretReference>@Entity.Spec.SecretName</SecretReference> <br>
+                                    Issuer: <SecretReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</SecretReference> <br>
+                                    
+                                    Dns names:
+                                    <ul>
+                                        @foreach (var dnsName in @Entity.Spec.DnsNames)
+                                        {
+                                            <li>
+                                                <a href="@dnsName" target="_blank">@dnsName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Certificates";
+        base.OnInitialized();
+    }
+}

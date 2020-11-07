@@ -1,0 +1,15 @@
+﻿@using k8s.Models
+@foreach (var labelSelector in Entity.Spec?.Selector ?? new Dictionary<string, string>())
+{
+    <div>
+        <div>
+            <span>@labelSelector.Key</span>:<span>@labelSelector.Value</span>
+        </div>
+    </div>
+}
+
+@code
+{
+    [Parameter]
+    public V1Service Entity { get; set; }
+}

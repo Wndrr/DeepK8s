@@ -1,0 +1,13 @@
+﻿@using CurrieTechnologies.Razor.Clipboard
+@inject ClipboardService ClipboardService
+
+<span>
+    @Content
+    <button @onclick="@(async e => await ClipboardService.WriteTextAsync(Content))">Cp</button>
+</span>
+
+@code
+{
+    [Parameter]
+    public string Content { get; set; }
+}

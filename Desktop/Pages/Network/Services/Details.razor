@@ -1,0 +1,129 @@
+﻿@page "/{RequestedEntityNamespace}/Service/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inject Desktop.Services.StateContainers.NodeStateContainer NodeStateContainer
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Service>
+
+<EntityDetailsView Entity="@Entity">
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Misc
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Service type <code>@Entity.Spec.Type</code> exposed
+                                    @if (Entity.Spec.LoadBalancerIP != null)
+                                    {
+                                        <text> <code>externally</code> with load balancer IP <code>@Entity.Spec.LoadBalancerIP</code></text>
+                                    }
+                                    @if (Entity.Spec.ClusterIP != null)
+                                    {
+                                        <text> <code>internally</code> with cluster IP <code>@Entity.Spec.ClusterIP</code></text>
+                                    }
+                                    @if (Entity.Spec.ExternalName != null)
+                                    {
+                                        <text> using external name <code>@Entity.Spec.ExternalName</code></text>
+                                    }
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Ports
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                        @foreach (var port in Entity.Spec.Ports)
+                                        {
+                                            <li>
+                                                @if (port.NodePort != null)
+                                                {
+                                                    <text>Service port <code>@port.Port</code> is exposed <code>externally</code>  with port <code>@port.NodePort</code> on every node.</text>
+
+                                                    var firstFoundNode = NodeStateContainer.Items.FirstOrDefault().Value;
+                                                    var firstAvailableExternalIp = @firstFoundNode?.Status.Addresses.FirstOrDefault(node => node.Type == "ExternalIP");
+
+                                                    if (firstAvailableExternalIp != null)
+                                                    {
+                                                        var address = $"http://{firstAvailableExternalIp.Address}:{port.NodePort}";
+                                                        <text> Exemple with node <code>@firstFoundNode.Metadata.Name</code>'s address: <code><a href="@address" target="_blank">@address</a></code></text>
+                                                    }
+                                                    <br>
+                                                }
+                                                Service port <code>@port.Port</code>
+                                                @if (@port.Protocol != null)
+                                                {
+                                                    <text>(<code>@port.Protocol</code>) </text>
+                                                }
+                                                @if (port.TargetPort != null)
+                                                {
+                                                    <text>mapps to application port <code>@port.TargetPort.Value</code></text>
+
+                                                    @if (port.AppProtocol != null)
+                                                    {
+                                                        <text>(<code>@port.AppProtocol</code>)</text>
+                                                    }
+                                                }
+                                                <br>
+                                                <PortForward Entity="@Entity" PodPort="@port.Port"/>
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        @if (Entity.Spec.Selector != null && Entity.Spec.Selector.Any())
+        {
+            <BSRow class="my-2">
+                <BSCol>
+                    <BSCard CardType="CardType.Card">
+                        <BSCard CardType="CardType.Body">
+                            <BSCard CardType="CardType.Title">
+                                Selectors
+                            </BSCard>
+                            <BSCard CardType="CardType.Text">
+                                <BSRow>
+                                    <BSCol>
+                                        <DisplayLabelsSelector Entity="@Entity"></DisplayLabelsSelector>
+                                        <br>
+                                        <PodsForService Entity="@Entity"/>
+                                    </BSCol>
+                                </BSRow>
+                            </BSCard>
+                        </BSCard>
+                    </BSCard>
+                </BSCol>
+            </BSRow>
+        }
+
+    </Specifications>
+</EntityDetailsView>
+
+
+@code
+{
+
+    protected override void OnInitialized()
+    {
+        ParentPageName = "Services";
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,87 @@
+﻿@page "/Namespace/{RequestedEntityName}"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Namespace>
+
+
+<EntityDetailsView Entity="@Entity">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Status
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    @Entity.Status?.Phase
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Conditions
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    @foreach (var condition in Entity.Status?.Conditions ?? new List<V1NamespaceCondition>())
+                                    {
+                                        <div>
+                                            <h5>@condition.Reason - @condition.LastTransitionTime</h5>
+                                            @condition.Type is @condition.Status: @condition.Message
+                                            <hr>
+                                        </div>
+                                    }
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
+    <Specifications>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Finalizers
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                        @foreach (var finalizer in Entity.Spec.Finalizers ?? new List<string>())
+                                        {
+                                            <li>
+                                                @finalizer
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Specifications>
+</EntityDetailsView>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        ParentPageName = "ConfigMaps";
+        base.OnInitialized();
+    }
+}

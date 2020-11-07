@@ -1,0 +1,48 @@
+﻿@using CurrieTechnologies.Razor.Clipboard
+@using Desktop.Services
+@using k8s
+@using k8s.Models
+@inject ClipboardService ClipboardService
+@inject KubernetesCommandLineBuilder KubernetesCommandLineBuilder
+
+@if (Entity != null)
+{
+    <BSRow>
+        <BSCol>
+            <kbd>
+                <Clipboard Content="@KubernetesCommandLineBuilder.PortForward(Entity, LocalPort ?? 8080, PodPort)"/>
+            </kbd>
+        </BSCol>
+    </BSRow>
+    <BSRow>
+        <BSCol>
+            Forward
+            <label>
+                <code>localhost:<input type="number" @bind="LocalPort"/></code>
+            </label>
+            to
+            <label>
+                <code>container:<input type="number" @bind="PodPort"/></code>
+            </label>
+        </BSCol>
+    </BSRow>
+}
+
+@code
+{
+    [Parameter]
+    public int? LocalPort { get; set; }
+
+    [Parameter]
+    public int PodPort { get; set; } = 80;
+
+    [Parameter]
+    public IKubernetesObject<V1ObjectMeta> Entity { get; set; }
+
+    protected override void OnInitialized()
+    {
+        LocalPort ??= new Random().Next(6000, 40000);
+
+        base.OnInitialized();
+    }
+}

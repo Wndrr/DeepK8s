@@ -1,0 +1,86 @@
+﻿@page "/Services"
+@using k8s
+@using k8s.Models
+@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.ServiceStateContainer, V1Service, V1ServiceList>
+
+<h1>
+    Services
+</h1>
+<EntityListDisplay Entities="FilteredEntities">
+    <Header>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Port
+                </th>
+                <th>
+                    Selector
+                </th>
+                <th>
+                    Creation date & uptime
+                </th>
+            </tr>
+    </Header>
+    <Body>
+            @if (FilteredEntities == null)
+            {
+                <Loading/>
+            }
+            else
+            {
+                @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+                {
+                    <tr>
+                        <td>
+                            <NamespaceReference>
+                                @entity.Metadata.Namespace()
+                            </NamespaceReference>
+                            <br/>
+                            <ServiceReference entity="@entity">
+                                @entity.Metadata.Name
+                            </ServiceReference>
+                        </td>
+                        <td>
+                            @entity.Spec.Type
+                        </td>
+                        <td>
+                            @foreach (var port in entity.Spec.Ports)
+                            {
+                                <span>@port.Port:@port.TargetPort</span>
+                                <br/>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var (key, value) in entity.Spec.Selector ?? new Dictionary<string, string>())
+                            {
+                                <span><span>@key</span>:<span>@value</span></span>
+                                <br/>
+                            }
+                        </td>
+                        <td>
+                            @if (entity.Metadata.CreationTimestamp.HasValue)
+                            {
+                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                                <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                                <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                                
+                            }
+                        </td>
+                        <td>
+                            <TerminateEntity Entity="@entity"/>
+                        </td>
+                    </tr>
+                }
+            }
+    </Body>
+</EntityListDisplay>
+
+@code
+{
+    
+}

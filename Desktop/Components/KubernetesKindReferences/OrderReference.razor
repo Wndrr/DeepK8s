@@ -1,0 +1,18 @@
+﻿@using k8s.Models
+@inherits Desktop.Components.KubernetesKindReferences.Base.BaseReference<CertManagerDefinitions.Order>
+
+<BaseReferenceMarkup Entity="@Entity" ColorClass="@ColorClass" IconClass="@IconClass" Url="@Url">
+    <span class=""></span>
+    @ChildContent
+</BaseReferenceMarkup>
+
+@code
+{
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        Construct("OrderColor", "Order", "oi oi-fork");
+        base.OnInitialized();
+    }
+
+}

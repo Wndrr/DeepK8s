@@ -1,0 +1,37 @@
+﻿@using CurrieTechnologies.Razor.Clipboard
+@using Desktop.Services.StateContainers
+@using k8s.Models
+@inject ClipboardService ClipboardService
+@inject ServiceStateContainer ServiceStateContainer
+
+ @foreach (var rules in Entity?.Spec?.Rules ?? new List<Extensionsv1beta1IngressRule>())
+{
+    <a href="//@rules?.Host" target="_blank">
+        @rules?.Host
+    </a>
+    foreach (var path in rules?.Http?.Paths ?? new List<Extensionsv1beta1HTTPIngressPath>())
+    {
+        <br/>
+        @foreach(var service in GetServicesForPath(path))
+        {
+            <div>
+                @path.Path --&gt; <ServiceReference Entity="service">@path?.Backend?.ServiceName</ServiceReference>:@path?.Backend?.ServicePort
+            </div>
+        }
+    }
+}
+
+@code
+{
+    [Parameter]
+    public Extensionsv1beta1Ingress Entity { get; set; }
+
+    private List<V1Service> GetServicesForPath(Extensionsv1beta1HTTPIngressPath path)
+    {
+        var services = ServiceStateContainer.Items
+            .Where(s => s.Value.Metadata.Name == path.Backend.ServiceName && s.Value.Metadata.Namespace() == Entity.Metadata.Namespace())
+            .Select(s => s.Value)
+            .ToList();
+        return services;
+    }
+}

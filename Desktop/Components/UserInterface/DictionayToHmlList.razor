@@ -1,0 +1,22 @@
+﻿@foreach (var (key, value) in Source ?? new Dictionary<string, string>())
+{
+<BSRow>
+    <BSCol>
+            @key:
+            @if (value.StartsWith("{") || value.StartsWith('['))
+            {
+                <CodeBlock Value="@value" Language="@CodeLanguage.Json"/>
+            }
+            else
+            {
+                <code>@value</code>
+            }
+    </BSCol>
+</BSRow>
+}
+
+@code
+{
+    [Parameter]
+    public IDictionary<string, string> Source { get; set; }
+}

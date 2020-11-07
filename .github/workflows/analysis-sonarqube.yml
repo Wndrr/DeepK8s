@@ -1,0 +1,27 @@
+name: Analysis - SonarQube (Code Health)
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: SonarScanner for .NET Core with pull request decoration support
+        uses: highbyte/sonarscan-dotnet@1.0
+        with:
+          sonarProjectKey: Wndrr_DeepK8s
+          sonarProjectName:  DeepK8s
+          sonarOrganization: wndrr
+          dotnetBuildArguments: ./Desktop
+          dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+        
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
