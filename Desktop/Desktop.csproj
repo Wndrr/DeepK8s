@@ -55,16 +55,10 @@
     <Content Update="Components\SecretReference.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-    <Content Update="Components\NamespaceReference.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Pages\Legend.razor">
+    <Content Update="Components\EntityReference.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\UserInterface\Uptime.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\KubernetesKindReferences\DeploymentReference.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Shared\NamespaceFiltering.razor">
@@ -130,19 +124,10 @@
     <Content Update="Pages\CertManager\Orders\Details.razor">
       <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
     </Content>
-    <Content Update="Components\KubernetesKindReferences\OrderReference.razor">
-      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
-    </Content>
-    <Content Update="Components\KubernetesKindReferences\ChallengeReference.razor">
-      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
-    </Content>
     <Content Update="Pages\CertManager\Challenges\List.razor">
       <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
     </Content>
     <Content Update="Pages\CertManager\Challenges\Details.razor">
-      <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
-    </Content>
-    <Content Update="Components\KubernetesKindReferences\ClusterIssuerReference.razor">
       <Generator>MSBuild:RazorGenerateComponentDeclarationDesignTime</Generator>
     </Content>
     <Content Update="Pages\CertManager\ClusterIssuers\List.razor">

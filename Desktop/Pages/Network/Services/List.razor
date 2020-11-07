@@ -35,13 +35,13 @@
                 {
                     <tr>
                         <td>
-                            <NamespaceReference>
+                            <EntityReference>
                                 @entity.Metadata.Namespace()
-                            </NamespaceReference>
+                            </EntityReference>
                             <br/>
-                            <ServiceReference entity="@entity">
+                            <EntityReference entity="@entity">
                                 @entity.Metadata.Name
-                            </ServiceReference>
+                            </EntityReference>
                         </td>
                         <td>
                             @entity.Spec.Type

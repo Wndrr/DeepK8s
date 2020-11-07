@@ -30,13 +30,13 @@
                 {
                     <tr>
                         <td>
-                            <NamespaceReference>
+                            <EntityReference>
                                 @entity.Metadata.Namespace()
-                            </NamespaceReference>
+                            </EntityReference>
                             <br/>
-                            <PersistentVolumeClaimReference entity="@entity">
+                            <EntityReference entity="@entity">
                                 @entity.Metadata.Name
-                            </PersistentVolumeClaimReference>
+                            </EntityReference>
                         </td>
                         <td>
                             @if (entity.Metadata.CreationTimestamp.HasValue)

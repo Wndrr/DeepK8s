@@ -1,0 +1,40 @@
+﻿@using k8s
+@using k8s.Models
+@using Microsoft.Extensions.Logging
+@using Desktop.Services
+
+    @if (@ChildContent == null)
+    {
+        <a href="@Url" class="EntityReference">@Name</a>
+        
+    }
+    else
+    {
+        <a href="@Url" class="EntityReference">@ChildContent</a>
+    }
+
+@code
+{
+
+    [Inject]
+    public EntityReferenceUrlBuilder EntityReferenceUrlBuilder { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Kind { get; set; }
+    [Parameter]
+    public string Name { get; set; }
+    [Parameter]
+    public string Namespace { get; set; }
+
+    private string Url
+    {
+        get
+        {
+            var uri = EntityReferenceUrlBuilder.BuildEntityReferenceUri(Kind, Name, Namespace);
+            return uri.ToString();
+        }
+    }
+}

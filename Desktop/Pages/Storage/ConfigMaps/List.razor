@@ -30,13 +30,13 @@
                 {
                     <tr>
                         <td>
-                            <NamespaceReference>
+                            <EntityReference>
                                 @entity.Metadata.Namespace()
-                            </NamespaceReference>
+                            </EntityReference>
                             <br/>
-                            <ConfigMapReference entity="@entity">
+                            <EntityReference entity="@entity">
                                 @entity.Metadata.Name
-                            </ConfigMapReference>
+                            </EntityReference>
                         </td>
                         <td>
                             @if (entity.Metadata.CreationTimestamp.HasValue)

@@ -23,4 +23,8 @@
       <ProjectReference Include="..\Desktop\Desktop.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\KubernetesKindReferences" />
+    </ItemGroup>
+
 </Project>

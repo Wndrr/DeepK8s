@@ -26,13 +26,13 @@
         {
             <tr>
                 <td>
-                    <NamespaceReference>
+                    <EntityReference>
                         @entity.Metadata.Namespace()
-                    </NamespaceReference>
+                    </EntityReference>
                     <br/>
-                    <PodReference entity="@entity">
+                    <EntityReference entity="@entity">
                         @entity.Metadata.Name
-                    </PodReference>
+                    </EntityReference>
                 </td>
                 <td>
                     <PodStatus Entity="entity" />
