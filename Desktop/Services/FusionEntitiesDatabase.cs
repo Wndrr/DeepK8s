@@ -15,9 +15,9 @@ namespace Desktop.Services
         where TEntityType : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
         private Kubernetes KubernetesClient { get; set; }
-        private SelectedNamespacesState SelectedNamespaces { get; set; }
+        private FusionSelectedNamespacesState SelectedNamespaces { get; set; }
 
-        public FusionEntitiesDatabase(Kubernetes kubernetesClient, SelectedNamespacesState selectedNamespaces)
+        public FusionEntitiesDatabase(Kubernetes kubernetesClient, FusionSelectedNamespacesState selectedNamespaces)
         {
             KubernetesClient = kubernetesClient;
             SelectedNamespaces = selectedNamespaces;
@@ -33,6 +33,17 @@ namespace Desktop.Services
             var kubernetesObjects = _items.Select(s => s.Value).ToList();
             
             Console.WriteLine($"EntitiesDatabase.GetAll - Got {kubernetesObjects.Count} items");
+            return kubernetesObjects;
+        }
+
+        [ComputeMethod]
+        public virtual async Task<List<TEntityType>> GetAllNamespaced()
+        {
+            await EnsureInitialized();
+            var items = _items.Select(s => s.Value);
+            var selectedNamespaces = await SelectedNamespaces.ToList();
+            var kubernetesObjects = items.Where(i => selectedNamespaces.Contains(i.Namespace())).ToList();
+            
             return kubernetesObjects;
         }
 

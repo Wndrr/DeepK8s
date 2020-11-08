@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Stl.Fusion;
 
@@ -12,9 +13,9 @@ namespace Desktop.Services
         private List<string> Namespaces { get; set; } = GetDefaultState();
 
         [ComputeMethod]
-        public virtual async Task<ReadOnlyCollection<string>> ToList()
+        public virtual async Task<List<string>> ToList()
         {
-            return Namespaces.AsReadOnly();
+            return Namespaces.ToList();
         }
         
         public void Add(string ns)
@@ -54,11 +55,9 @@ namespace Desktop.Services
                 throw new ArgumentNullException(nameof(ns));
         }
 
-        [ComputeMethod]
-        public virtual async Task<bool> Contains(string ns)
+        public bool Contains(string ns)
         {
-            var all = await ToList();
-            return all.Contains(ns);
+            return Namespaces.Contains(ns);
         }
 
         public void Clear()
