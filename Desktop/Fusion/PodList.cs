@@ -24,10 +24,10 @@ namespace Desktop.Fusion
         private readonly ConcurrentDictionary<string, V1Pod> _items = new ConcurrentDictionary<string, V1Pod>();
 
         [ComputeMethod]
-        public virtual async Task<ImmutableList<V1Pod>> GetAll()
+        public virtual async Task<List<V1Pod>> GetAll()
         {
             await EnsureInitialized();
-            return _items.Select(s => s.Value).ToImmutableList();
+            return _items.Select(s => s.Value).ToList();
         }
 
         [ComputeMethod]
@@ -47,10 +47,11 @@ namespace Desktop.Fusion
             var kubernetesRequest = KubernetesClient.Request<V1PodList>();
             var initialRequest = await kubernetesRequest.ExecuteAsync<V1PodList>();
             if (initialRequest?.Items != null)
-                for (var index = 0; index < initialRequest.Items.Count; index++)
+                foreach (var initialRequestItem in initialRequest.Items)
                 {
-                    var initialRequestItem = initialRequest.Items[index];
-                    _items.TryAdd(initialRequestItem.Uid(), initialRequestItem);
+                    var fullPod = await KubernetesClient.Request<V1Pod>(initialRequestItem.Namespace(),
+                        initialRequestItem.Metadata.Name).ExecuteAsync<V1Pod>();
+                    _items.TryAdd(fullPod.Uid(), fullPod);
                 }
 
             _watch = kubernetesRequest.ToWatch<V1Pod>(initialRequest.ResourceVersion());

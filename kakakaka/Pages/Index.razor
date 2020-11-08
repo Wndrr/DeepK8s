@@ -1,0 +1,18 @@
+﻿@page "/"
+@using System.Collections.Concurrent
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?"/>
+
+@{
+    ConcurrentDictionary<string, string> dic = null;
+}
+@foreach (var pod in dic)
+{
+    <li>
+        in
+    </li>
+}

@@ -2,21 +2,23 @@
 @using System.Threading
 @using Desktop.Fusion
 @using System.Collections.Immutable
-@inherits LiveComponentBase<ImmutableList<V1Pod>>
+@using Stl.Concurrency
+@using System.Collections.Concurrent
+@inherits LiveComponentBase<List<V1Pod>>
 @inject PodList Pods
 
 <h3>FusionPodList</h3>
 <ul>
-    @foreach (var pod in State.Computed.Value.ToList())
+    @foreach (var pod in State.LastValue ?? new List<V1Pod>())
     {
         <li>
-           @pod.Metadata.Name
+            @pod.Kind
         </li>
     }
 </ul>
 @code {
     
-    protected override async Task<ImmutableList<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
+    protected override async Task<List<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
     {
         return await Pods.GetAll();
     }
