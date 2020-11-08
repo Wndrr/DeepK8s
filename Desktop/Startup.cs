@@ -101,6 +101,11 @@ namespace Desktop
             services.AddBootstrapCss();
             
             var fusion = services.AddFusion();
+            
+            services.AddSingleton(c => new UpdateDelayer.Options() {
+                // Default update delayer options 
+                Delay = TimeSpan.FromSeconds(0.1),
+            });
             RegisterFusionDb(fusion);
             services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
         }
