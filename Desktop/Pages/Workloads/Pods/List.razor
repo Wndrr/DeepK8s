@@ -1,15 +1,13 @@
 ﻿@page "/Pods"
-@using k8s
-@using k8s.Fluent
-@using k8s.Models
-@using Desktop.Services.StateContainers
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<PodStateContainer, V1Pod, V1PodList>
-@inject SecretStateContainer StateContainer
+@using Desktop.Services
+@using System.Threading
+@inherits LiveComponentBase<List<V1Pod>>
+@inject FusionEntitiesDatabase<V1PodList, V1Pod> Pods
 
 <h1>
     Pods
 </h1>
-<EntityListDisplay Entities="FilteredEntities">
+<DisplayEntities Entities="State.LastValue">
     <Header>
         <tr>
             <th>
@@ -27,7 +25,7 @@
         </tr>
     </Header>
     <Body>
-        @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+        @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
         {
             <tr>
                 <td>
@@ -56,8 +54,13 @@
             </tr>
         }
     </Body>
-</EntityListDisplay>
+</DisplayEntities>
 
-@code
-{
+@code {
+    
+    protected override async Task<List<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
+    {
+        var v1Pods = await Pods.GetAllNamespaced();
+        return v1Pods;
+    }
 }
