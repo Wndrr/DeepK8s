@@ -1,3 +1,9 @@
+![CI/CD - UnitTests](https://github.com/Wndrr/DeepK8s/workflows/CI/CD%20-%20Run%20test%20&%20Generate%20report/badge.svg)
+
+![Analysis - SonarQube (Code Health)](https://github.com/Wndrr/DeepK8s/workflows/Analysis%20-%20SonarQube%20(Code%20Health)/badge.svg)
+
+![Analysis - CodeQL (Security)](https://github.com/Wndrr/DeepK8s/workflows/Analysis%20-%20CodeQL%20(Security)/badge.svg)
+
 # Deep K8s
 This project is in the heavy WIP phase. It shouldn't break your cluster but, just in case, I'll state it here:
 
