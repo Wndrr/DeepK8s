@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: UnitTests
-        uses: zyborg/dotnet-tests-report@v1.0.0
+        uses: zyborg/dotnet-tests-report@v1.2.0
         with:
           project_path: UnitTests
           report_name: DeepK8s - Unit Tests
