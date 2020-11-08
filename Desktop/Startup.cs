@@ -99,7 +99,7 @@ namespace Desktop
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
             
-
+            
             services.AddSingleton(typeof(EntitiesDatabase<,>));
 
             services.AddFusion();

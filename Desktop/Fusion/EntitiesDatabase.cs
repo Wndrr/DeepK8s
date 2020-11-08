@@ -13,7 +13,6 @@ namespace Desktop.Fusion
 {
     [ComputeService]
     public class EntitiesDatabase<TListType, TEntityType> 
-        : ICache<TEntityType>
         where TListType : class, IKubernetesObject<V1ListMeta>, IItems<TEntityType>
         where TEntityType : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {

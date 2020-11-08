@@ -1,6 +1,7 @@
 ﻿@page "/FusionPodList"
 @using System.Threading
 @using Desktop.Fusion
+@using Stl.Fusion
 @inherits LiveComponentBase<List<V1Pod>>
 @inject EntitiesDatabase<V1PodList, V1Pod> Pods
 
@@ -18,7 +19,7 @@
     protected override async Task<List<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("Component.ComputeStateAsync");
-        var v1Pods = await Pods.GetAll().ConfigureAwait(false);
+        var v1Pods = await Pods.GetAll();
         Console.WriteLine($"Component.ComputeStateAsync - Got {v1Pods.Count} items");
         return v1Pods;
     }
