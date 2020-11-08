@@ -1,0 +1,24 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: unit tests for Contoso Business Layer
+        uses: zyborg/dotnet-tests-report@v1.0.0
+        with:
+          project_path: UnitTests
+          report_name: UnitTests
+          report_title: UnitTests
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          gist_name: UnitTests_tests.md
+          gist_badge_label: 'UnitTests: %Counters_passed%/%Counters_total%'
+          gist_token: ${{ secrets.GIST_TOKEN }}
