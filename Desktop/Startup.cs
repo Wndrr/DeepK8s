@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -6,7 +7,6 @@ using Blazored.SessionStorage;
 using BlazorStrap;
 using CurrieTechnologies.Razor.Clipboard;
 using Desktop.Components.UserInterface;
-using Desktop.Fusion;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +18,7 @@ using Desktop.Services.StateContainers.CertManager;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Http;
 using Stl.DependencyInjection;
 using Stl.Fusion;
@@ -99,11 +100,40 @@ namespace Desktop
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
             
-            
-            services.AddSingleton(typeof(EntitiesDatabase<,>));
-
-            services.AddFusion();
+            var fusion = services.AddFusion();
+            RegisterFusionDb(fusion);
             services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
+        }
+
+        private static void RegisterFusionDb(FusionBuilder fusion)
+        {
+            
+            var listTypeDefinition = typeof(IKubernetesObject<V1ListMeta>);
+            var listTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => listTypeDefinition.IsAssignableFrom(p))
+                .ToList();
+            
+            var typeDefinition = typeof(IKubernetesObject<V1ObjectMeta>);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeDefinition.IsAssignableFrom(p))
+                .ToList();
+
+            foreach (var listType in listTypes)
+            {
+                try
+                {
+                    var selectedSingleType = types.Single(type => listType.Name.Replace("List", "") == type.Name);
+                    var serviceType = typeof(FusionEntitiesDatabase<,>);
+                    var typeToAdd = serviceType.MakeGenericType(listType, selectedSingleType);
+                    fusion.AddComputeService(typeToAdd);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
         }
 
         private static void RegisterCertManagerStateContainers(IServiceCollection services)

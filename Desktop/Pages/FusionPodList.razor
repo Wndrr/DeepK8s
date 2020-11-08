@@ -1,9 +1,9 @@
 ﻿@page "/FusionPodList"
 @using System.Threading
-@using Desktop.Fusion
+@using Desktop.Services
 @using Stl.Fusion
 @inherits LiveComponentBase<List<V1Pod>>
-@inject EntitiesDatabase<V1PodList, V1Pod> Pods
+@inject FusionEntitiesDatabase<V1PodList, V1Pod> Pods
 
 <h3>FusionPodList</h3>
 <ul>

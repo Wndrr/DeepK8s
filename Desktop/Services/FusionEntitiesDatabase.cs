@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using k8s;
@@ -9,18 +8,19 @@ using k8s.Fluent;
 using k8s.Models;
 using Stl.Fusion;
 
-namespace Desktop.Fusion
+namespace Desktop.Services
 {
-    [ComputeService]
-    public class EntitiesDatabase<TListType, TEntityType> 
+    public class FusionEntitiesDatabase<TListType, TEntityType>
         where TListType : class, IKubernetesObject<V1ListMeta>, IItems<TEntityType>
         where TEntityType : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
         private Kubernetes KubernetesClient { get; set; }
+        private SelectedNamespacesState SelectedNamespaces { get; set; }
 
-        public EntitiesDatabase(Kubernetes kubernetesClient)
+        public FusionEntitiesDatabase(Kubernetes kubernetesClient, SelectedNamespacesState selectedNamespaces)
         {
             KubernetesClient = kubernetesClient;
+            SelectedNamespaces = selectedNamespaces;
         }
 
         private readonly ConcurrentDictionary<string, TEntityType> _items = new ConcurrentDictionary<string, TEntityType>();
