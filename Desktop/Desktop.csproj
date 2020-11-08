@@ -180,6 +180,8 @@
     <_ContentIncludedByDefault Remove="Pages\Entities\ConfigMaps\List.razor" />
     <_ContentIncludedByDefault Remove="Pages\Entities\Namespaces\Details.razor" />
     <_ContentIncludedByDefault Remove="Pages\Entities\Namespaces\List.razor" />
+    <_ContentIncludedByDefault Remove="Components\Fusion\TestBody.razor" />
+    <_ContentIncludedByDefault Remove="Components\Fusion\TestHead.razor" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CertManagerDefinitions\CertManagerDefinitions.csproj" />

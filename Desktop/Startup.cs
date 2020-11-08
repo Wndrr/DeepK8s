@@ -6,6 +6,7 @@ using Blazored.SessionStorage;
 using BlazorStrap;
 using CurrieTechnologies.Razor.Clipboard;
 using Desktop.Components.UserInterface;
+using Desktop.Fusion;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -98,7 +99,9 @@ namespace Desktop
             services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
             
-            
+
+            services.AddSingleton(typeof(EntitiesDatabase<,>));
+
             services.AddFusion();
             services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
         }
