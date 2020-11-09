@@ -1,8 +1,5 @@
 ﻿@page "/DaemonSets"
-@using Desktop.Services
-@using System.Threading
-@inherits LiveComponentBase<List<V1DaemonSet>>
-@inject KubernetesRepository<V1DaemonSetList, V1DaemonSet> K8SRepository
+@inherits Desktop.Components.Bases.Fusion.LiveListNamespaced<V1DaemonSetList, V1DaemonSet>
 
 <h1>
     DaemonSets
@@ -93,12 +90,3 @@
             }
     </Body>
 </DisplayEntities>
-
-
-@code
-{
-    protected override async Task<List<V1DaemonSet>> ComputeStateAsync(CancellationToken cancellationToken)
-    {
-        return await K8SRepository.GetAllNamespaced();
-    }
-}

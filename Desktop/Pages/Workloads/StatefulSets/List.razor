@@ -1,8 +1,5 @@
 ﻿@page "/StatefulSets"
-@using Desktop.Services
-@using System.Threading
-@inherits LiveComponentBase<List<V1StatefulSet>>
-@inject KubernetesRepository<V1StatefulSetList, V1StatefulSet> K8SRepository
+@inherits Desktop.Components.Bases.Fusion.LiveListNamespaced<V1StatefulSetList, V1StatefulSet>
 
 <h1>
     StatefulSets
@@ -93,12 +90,3 @@
             }
     </Body>
 </DisplayEntities>
-
-
-@code
-{
-    protected override async Task<List<V1StatefulSet>> ComputeStateAsync(CancellationToken cancellationToken)
-    {
-        return await K8SRepository.GetAllNamespaced();
-    }
-}
