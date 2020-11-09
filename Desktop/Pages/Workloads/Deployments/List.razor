@@ -1,8 +1,5 @@
 ﻿@page "/Deployments"
-@using Desktop.Services
-@using System.Threading
-@inherits LiveComponentBase<List<V1Deployment>>
-@inject KubernetesRepository<V1DeploymentList, V1Deployment> K8SRepository
+@inherits Desktop.Components.Bases.Fusion.LiveListNamespaced<V1DeploymentList, V1Deployment>
 
 <h1>
     Deployments
@@ -57,12 +54,3 @@
             }
     </Body>
 </DisplayEntities>
-
-
-@code
-{
-    protected override async Task<List<V1Deployment>> ComputeStateAsync(CancellationToken cancellationToken)
-    {
-        return await K8SRepository.GetAllNamespaced();
-    }
-}

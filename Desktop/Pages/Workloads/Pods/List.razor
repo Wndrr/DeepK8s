@@ -1,8 +1,5 @@
 ﻿@page "/Pods"
-@using Desktop.Services
-@using System.Threading
-@inherits LiveComponentBase<List<V1Pod>>
-@inject KubernetesRepository<V1PodList, V1Pod> K8SRepository
+@inherits Desktop.Components.Bases.Fusion.LiveListNamespaced<V1PodList, V1Pod>
 
 <h1>
     Pods
@@ -55,11 +52,3 @@
         }
     </Body>
 </DisplayEntities>
-
-@code {
-    
-    protected override async Task<List<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
-    {
-        return await K8SRepository.GetAllNamespaced();
-    }
-}
