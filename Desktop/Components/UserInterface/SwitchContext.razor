@@ -2,14 +2,17 @@
 @using k8s.KubeConfigModels
 @using Desktop.Services
 @using System.Threading
+@using Desktop.Services.Context
+@inherits LiveComponentBase<List<string>, string>
 @inject Kubernetes KubernetesClient
+@inject CurrentContext CurrentContext
 
 <BSDropdown>
     <BSDropdownToggle>@CurrentConfig</BSDropdownToggle>
     <BSDropdownMenu>
-        @foreach (var availableContext in AvailableContexts)
+        @foreach (var contextName in State.LastValue ?? new List<string>())
         {
-            <BSDropdownItem OnClick="@(() => SetCurrentContext(availableContext.Name))">@availableContext.Name</BSDropdownItem>
+            <BSDropdownItem OnClick="@(() => SetCurrentContext(contextName))">@contextName</BSDropdownItem>
         }
     </BSDropdownMenu>
 </BSDropdown>
@@ -31,7 +34,14 @@
         
         Configuration.CurrentContext = selectedContextName;
         InMemoryUserPreferencesStore.CurrentContextName = selectedContextName;
+        CurrentContext.Set(selectedContextName);
         // StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
+    }
+
+    protected override Task<List<string>> ComputeStateAsync(CancellationToken cancellationToken)
+    {
+        var config = KubernetesClientConfiguration.LoadKubeConfig();
+        return Task.FromResult(config?.Contexts.Select(context => context.Name).ToList());
     }
 
 }

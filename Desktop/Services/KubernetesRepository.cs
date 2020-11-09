@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Desktop.Services.Context;
 using k8s;
 using k8s.Fluent;
 using k8s.Models;
@@ -14,13 +15,16 @@ namespace Desktop.Services
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
-        private Kubernetes KubernetesClient { get; set; }
+        private KubernetesClientFactory KubernetesClientFactory { get; set; }
         private FusionSelectedNamespacesState SelectedNamespaces { get; set; }
+        private CurrentContext CurrentContext { get; set; }
 
-        public KubernetesRepository(Kubernetes kubernetesClient, FusionSelectedNamespacesState selectedNamespaces)
+        public KubernetesRepository(FusionSelectedNamespacesState selectedNamespaces, CurrentContext currentContext,
+            KubernetesClientFactory kubernetesClientFactory)
         {
-            KubernetesClient = kubernetesClient;
             SelectedNamespaces = selectedNamespaces;
+            CurrentContext = currentContext;
+            KubernetesClientFactory = kubernetesClientFactory;
         }
 
         private readonly ConcurrentDictionary<string, TEntity> _items = new ConcurrentDictionary<string, TEntity>();
@@ -31,7 +35,7 @@ namespace Desktop.Services
             Console.WriteLine("EntitiesDatabase.GetAll");
             await EnsureInitialized();
             var kubernetesObjects = _items.Select(s => s.Value).ToList();
-            
+
             Console.WriteLine($"EntitiesDatabase.GetAll - Got {kubernetesObjects.Count} items");
             return kubernetesObjects;
         }
@@ -39,34 +43,43 @@ namespace Desktop.Services
         [ComputeMethod]
         public virtual async Task<List<TEntity>> GetAllNamespaced()
         {
-            await EnsureInitialized();
-            var items = _items.Select(s => s.Value);
+            var items = await GetAll();
             var selectedNamespaces = await SelectedNamespaces.ToList();
             var kubernetesObjects = items.Where(i => selectedNamespaces.Contains(i.Namespace())).ToList();
-            
+
             return kubernetesObjects;
         }
 
         [ComputeMethod]
         public virtual async Task<TEntity?> Get(string entityName, string? entityNamespace)
         {
-            await EnsureInitialized();
-
-            return _items.Select(s => s.Value).SingleOrDefault(
-                entity => entity.Name() == entityName && entity.Namespace() == entityNamespace);
+            var items = await GetAll();
+            return items.SingleOrDefault(entity =>
+                entity.Name() == entityName && entity.Namespace() == entityNamespace);
         }
+
+        private string _currentAppliedContext = string.Empty;
 
         private async Task EnsureInitialized()
         {
+            var currentSelectedContext = await CurrentContext.Get();
+            if (_currentAppliedContext != currentSelectedContext)
+            {
+                _isInitialized = false;
+                _items.Clear();
+                _currentAppliedContext = currentSelectedContext;
+                Computed.Invalidate(GetAll);
+            }
+
             if (_isInitialized)
                 return;
-
-            var kubernetesRequest = KubernetesClient.Request<TList>();
+            var client = await KubernetesClientFactory.Get();
+            var kubernetesRequest = client.Request<TList>();
             var initialRequest = await kubernetesRequest.ExecuteAsync<TList>();
             if (initialRequest?.Items != null)
                 foreach (var initialRequestItem in initialRequest.Items)
                 {
-                    var fullPod = await KubernetesClient.Request<TEntity>(initialRequestItem.Namespace(),
+                    var fullPod = await client.Request<TEntity>(initialRequestItem.Namespace(),
                         initialRequestItem.Metadata.Name).ExecuteAsync<TEntity>();
                     _items.TryAdd(fullPod.Uid(), fullPod);
                 }
@@ -109,28 +122,22 @@ namespace Desktop.Services
             }
         }
 
-        private void Invalidate(string entityName, string entityNamespace)
-        {
-            Computed.Invalidate(() => GetAll());
-            Computed.Invalidate(() => Get(entityName, entityNamespace));
-        }
-
         private void Add(TEntity entity)
         {
             _items.TryAdd(entity.Uid(), entity);
-            Invalidate(entity.Metadata.Name, entity.Namespace());
+            Computed.Invalidate(() => Get(entity.Metadata.Name, entity.Namespace()));
         }
 
         private void Update(TEntity entity)
         {
             _items.TryUpdate(entity.Uid(), entity, _items[entity.Uid()]);
-            Invalidate(entity.Metadata.Name, entity.Namespace());
+            Computed.Invalidate(() => Get(entity.Metadata.Name, entity.Namespace()));
         }
 
         private void Delete(TEntity entity)
         {
             _items.Remove(entity.Uid(), out var _);
-            Invalidate(entity.Metadata.Name, entity.Namespace());
+            Computed.Invalidate(() => Get(entity.Metadata.Name, entity.Namespace()));
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Desktop
             services.AddSingleton<SelectedNamespacesState>();
             services.AddBlazoredSessionStorage();
             services.AddClipboard();
-
+        
             services.AddBootstrapCss();
             var fusion = services.AddFusion();
             services.AddSingleton(c => new UpdateDelayer.Options() {
