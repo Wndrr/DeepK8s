@@ -10,7 +10,7 @@
 @inherits LiveDetails<V1PodList, V1Pod>
 
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <PodStatus Entity="State.LastValue"/>
     </Status>
@@ -66,7 +66,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

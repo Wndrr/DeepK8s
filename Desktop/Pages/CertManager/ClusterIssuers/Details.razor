@@ -1,7 +1,7 @@
 ﻿@page "/ClusterIssuer/{RequestedEntityName}"
 @inherits LiveDetails<Desktop.CustomResourceDefinitions.ClusterIssuerList, Desktop.CustomResourceDefinitions.ClusterIssuer>
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -74,7 +74,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 @code
 {
     protected override void OnInitialized()

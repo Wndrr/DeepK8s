@@ -4,7 +4,7 @@
 @inherits LiveDetails<V1PersistentVolumeClaimList, V1PersistentVolumeClaim>
 
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <div>
             Capacity :
@@ -92,7 +92,7 @@
         
         <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 
 @code

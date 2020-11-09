@@ -1,7 +1,7 @@
 ﻿@page "/PersistentVolume/{RequestedEntityName}"
 @inherits LiveDetails<V1PersistentVolumeList, V1PersistentVolume>
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <div>
             @State.LastValue.Status.Phase via 
@@ -55,7 +55,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

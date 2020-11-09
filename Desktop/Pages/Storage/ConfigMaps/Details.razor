@@ -4,7 +4,7 @@
 @inherits LiveDetails<V1ConfigMapList, V1ConfigMap>
 
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -52,7 +52,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

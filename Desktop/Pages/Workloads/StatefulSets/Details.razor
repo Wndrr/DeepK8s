@@ -4,12 +4,12 @@
 @inherits LiveDetails<V1StatefulSetList, V1StatefulSet>
 
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
         <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
         <br>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 
 @code

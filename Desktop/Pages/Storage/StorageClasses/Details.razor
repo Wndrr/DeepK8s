@@ -3,7 +3,7 @@
 @using k8s.Models
 @inherits LiveDetails<V1StorageClassList, V1StorageClass>
 
-<EntityDetailsView Entity="@State.LastValue">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -39,7 +39,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {
