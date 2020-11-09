@@ -23,40 +23,33 @@
         </tr>
     </Header>
     <Body>
-    @if (State.LastValue == null)
+    @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
     {
-        <Loading/>
-    }
-    else
-    {
-        @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
-        {
-            <tr>
-                <td>
-                    <NamespaceReference>
-                        @entity.Metadata.Namespace()
-                    </NamespaceReference>
-                    <br/>
-                    <CertificateReference Entity="entity">
-                        @entity.Metadata.Name
-                    </CertificateReference>
-                </td>
-                <td>
-                    @* @JsonConvert.SerializeObject(entity.Spec.Names) *@
-                </td>
-                <td>
-                    @if (entity.Metadata.CreationTimestamp.HasValue)
-                    {
-                        var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
-                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
-                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
-                    }
-                </td>
-                <td>
-                    <TerminateEntity Entity="@entity"/>
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>
+                <NamespaceReference>
+                    @entity.Metadata.Namespace()
+                </NamespaceReference>
+                <br/>
+                <CertificateReference Entity="entity">
+                    @entity.Metadata.Name
+                </CertificateReference>
+            </td>
+            <td>
+                @* @JsonConvert.SerializeObject(entity.Spec.Names) *@
+            </td>
+            <td>
+                @if (entity.Metadata.CreationTimestamp.HasValue)
+                {
+                    var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                    <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                    <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                }
+            </td>
+            <td>
+                <TerminateEntity Entity="@entity"/>
+            </td>
+        </tr>
     }
     </Body>
 </DisplayEntities>
