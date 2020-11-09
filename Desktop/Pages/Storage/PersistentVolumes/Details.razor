@@ -1,14 +1,11 @@
 ﻿@page "/PersistentVolume/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@using Desktop.Services.StateContainers
 @inherits LiveDetails<V1PersistentVolumeList, V1PersistentVolume>
-@inject PersistentVolumeClaimStateContainer PersistentVolumeClaimStateContainer
 
 <EntityDetailsView Entity="@State.LastValue">
     <Status>
         <div>
-            @State.LastValue.Status.Phase via <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+            @State.LastValue.Status.Phase via 
+            @* <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
         </div>
         <div>@State.LastValue.Status.Reason</div>
         <div>@State.LastValue.Status.Message</div>
@@ -48,7 +45,7 @@
                                         VolumeMode : <code>@State.LastValue.Spec.VolumeMode</code>
                                     </div>
                                     <div>
-                                        ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+                                        @* ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
                                     </div>
                                 </BSCol>
                             </BSRow>
@@ -62,10 +59,6 @@
 
 @code
 {
-    private V1PersistentVolumeClaim pvc => PersistentVolumeClaimStateContainer.Items
-        .SingleOrDefault(
-            claim => claim.Value.Metadata.Namespace() == State.LastValue.Spec.ClaimRef.NamespaceProperty
-                   && claim.Value.Metadata.Name == State.LastValue.Spec.ClaimRef.Name).Value;
 
     protected override void OnInitialized()
     {

@@ -11,9 +11,6 @@
                     Name
                 </th>
                 <th>
-                    Rules
-                </th>
-                <th>
                     TLS Secret
                 </th>
                 <th>
@@ -39,9 +36,6 @@
                             <IngressReference entity="@entity">
                                 @entity.Metadata.Name
                             </IngressReference>
-                        </td>
-                        <td>
-                           <IngressRules Entity="@entity"></IngressRules>
                         </td>
                         <td>
                             @foreach (var tls in entity.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())

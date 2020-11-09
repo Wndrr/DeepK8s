@@ -13,8 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Desktop.Services;
-using Desktop.Services.StateContainers;
-using Desktop.Services.StateContainers.CertManager;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
@@ -115,16 +113,7 @@ namespace Desktop
                 }
             }
         }
-
-        private static void RegisterCertManagerStateContainers(IServiceCollection services)
-        {
-            services.AddSingleton<IssuerStateContainer>();
-            services.AddSingleton<ClusterIssuerStateContainer>();
-            services.AddSingleton<CertificateStateContainer>();
-            services.AddSingleton<OrderStateContainer>();
-            services.AddSingleton<ChallengeStateContainer>();
-        }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

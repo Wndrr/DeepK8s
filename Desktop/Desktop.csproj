@@ -182,6 +182,12 @@
     <_ContentIncludedByDefault Remove="Pages\Entities\Namespaces\List.razor" />
     <_ContentIncludedByDefault Remove="Components\Fusion\TestBody.razor" />
     <_ContentIncludedByDefault Remove="Components\Fusion\TestHead.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodReferenceInfo.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodReferenceList.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodsForDaemonSet.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodsForDeployment.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodsForService.razor" />
+    <_ContentIncludedByDefault Remove="Components\Interconnexion\PodsForStatefulSet.razor" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CertManagerDefinitions\CertManagerDefinitions.csproj" />
