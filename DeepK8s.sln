@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{12EA3F62-167A-45F2-B49C-E856857B2BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertManagerDefinitions", "CertManagerDefinitions\CertManagerDefinitions.csproj", "{80B5A308-ACDE-4127-9CB8-4B1DAB41FB4E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{12EA3F62-167A-45F2-B49C-E856857B2BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12EA3F62-167A-45F2-B49C-E856857B2BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12EA3F62-167A-45F2-B49C-E856857B2BF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80B5A308-ACDE-4127-9CB8-4B1DAB41FB4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80B5A308-ACDE-4127-9CB8-4B1DAB41FB4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80B5A308-ACDE-4127-9CB8-4B1DAB41FB4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80B5A308-ACDE-4127-9CB8-4B1DAB41FB4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

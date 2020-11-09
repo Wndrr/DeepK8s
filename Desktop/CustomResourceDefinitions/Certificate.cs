@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace CertManagerDefinitions
+namespace Desktop.CustomResourceDefinitions
 {
     [KubernetesEntity(ApiVersion = "v1", Group = "cert-manager.io", Kind = "Certificate", PluralName = "certificates")]
     public class Certificate : IKubernetesObject<V1ObjectMeta>, ISpec<CertificateSpec>, IStatus<CertificateStatus>

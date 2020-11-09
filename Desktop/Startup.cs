@@ -97,7 +97,7 @@ namespace Desktop
                 .SelectMany(s => s.GetTypes())
                 .Where(p => typeDefinition.IsAssignableFrom(p))
                 .ToList();
-
+            
             foreach (var listType in listTypes)
             {
                 try

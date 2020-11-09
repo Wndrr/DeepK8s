@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace CertManagerDefinitions
+namespace Desktop.CustomResourceDefinitions
 {
     [KubernetesEntity(ApiVersion = "v1", Group = "acme.cert-manager.io", Kind = "Order", PluralName = "orders")]
     public class Order : IKubernetesObject<V1ObjectMeta>, ISpec<OrderSpec>, IStatus<OrderStatus>

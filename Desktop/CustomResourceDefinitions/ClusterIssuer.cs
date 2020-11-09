@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace CertManagerDefinitions
+namespace Desktop.CustomResourceDefinitions
 {
     [KubernetesEntity(ApiVersion = "v1", Group = "cert-manager.io", Kind = "ClusterIssuer", PluralName = "clusterissuers")]
     public class ClusterIssuer : IKubernetesObject<V1ObjectMeta>, ISpec<IssuerSpec>, IStatus<IssuerStatus>

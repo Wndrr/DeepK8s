@@ -1,5 +1,6 @@
 ﻿@page "/{RequestedEntityNamespace}/Certificate/{RequestedEntityName}"
-@inherits LiveDetails<CertificateList, Certificate>
+@using Desktop.CustomResourceDefinitions
+@inherits LiveDetails<Desktop.CustomResourceDefinitions.CertificateList, Desktop.CustomResourceDefinitions.Certificate>
 
 <EntityDetailsView Entity="@State.LastValue">
     <Status>

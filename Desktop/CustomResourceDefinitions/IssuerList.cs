@@ -2,10 +2,10 @@
 using k8s;
 using k8s.Models;
 
-namespace CertManagerDefinitions
+namespace Desktop.CustomResourceDefinitions
 {
-    [KubernetesEntity(ApiVersion = "v1", Group = "acme.cert-manager.io", Kind = "OrderList", PluralName = "orders")]
-    public class OrderList : IKubernetesObject<V1ListMeta>, IItems<Order>
+    [KubernetesEntity(ApiVersion = "v1", Group = "cert-manager.io", Kind = "IssuerList", PluralName = "issuers")]
+    public class IssuerList : IKubernetesObject<V1ListMeta>, IItems<Issuer>
     {
         /// <inheritdoc />
         public string ApiVersion { get; set; }
@@ -17,6 +17,6 @@ namespace CertManagerDefinitions
         public V1ListMeta Metadata { get; set; }
 
         /// <inheritdoc />
-        public IList<Order> Items { get; set; }
+        public IList<Issuer> Items { get; set; }
     }
 }

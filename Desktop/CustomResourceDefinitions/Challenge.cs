@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using k8s;
+﻿using k8s;
 using k8s.Models;
 
-namespace CertManagerDefinitions
+namespace Desktop.CustomResourceDefinitions
 {
     [KubernetesEntity(ApiVersion = "v1", Group = "acme.cert-manager.io", Kind = "Challenge", PluralName = "challenges")]
     public class Challenge : IKubernetesObject<V1ObjectMeta>, ISpec<ChallengeSpec>, IStatus<ChallengeStatus>
