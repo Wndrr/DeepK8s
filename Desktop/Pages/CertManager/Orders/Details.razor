@@ -1,9 +1,7 @@
 ﻿@page "/{RequestedEntityNamespace}/Order/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Order>
+@inherits Desktop.Components.Bases.Fusion.LiveDetails<OrderList, Order>
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -15,9 +13,9 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    State : <code>@Entity.Status.State</code><br>
-                                    Url : <code>@Entity.Status.Url</code><br>
-                                    FinalizeUrl : <code>@Entity.Status.FinalizeUrl</code><br>
+                                    State : <code>@State.LastValue.Status.State</code><br>
+                                    Url : <code>@State.LastValue.Status.Url</code><br>
+                                    FinalizeUrl : <code>@State.LastValue.Status.FinalizeUrl</code><br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -36,7 +34,7 @@
                             <BSRow>
                                 <BSCol>
                                     <ul>
-                                        @foreach (var authorization in Entity.Status.Authorizations)
+                                        @foreach (var authorization in State.LastValue.Status.Authorizations)
                                         {
                                             <li>
                                                 Identifier : <code>@authorization.Identifier</code> <br>
@@ -77,10 +75,10 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Issuer: <SecretReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</SecretReference> <br>
+                                    Issuer: <SecretReference>@State.LastValue.Spec.IssuerRef.Kind/@State.LastValue.Spec.IssuerRef.Name</SecretReference> <br>
                                     Dns names:
                                     <ul>
-                                        @foreach (var dnsName in @Entity.Spec.DnsNames)
+                                        @foreach (var dnsName in @State.LastValue.Spec.DnsNames)
                                         {
                                             <li>
                                                 <a href="//@dnsName" target="_blank">@dnsName</a>
@@ -104,7 +102,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    <code>@Entity.Spec.Request</code>
+                                    <code>@State.LastValue.Spec.Request</code>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -122,7 +120,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    <code>@Entity.Status.Certificate</code>
+                                    <code>@State.LastValue.Status.Certificate</code>
                                 </BSCol>
                             </BSRow>
                         </BSCard>

@@ -48,7 +48,7 @@ namespace Desktop.Services
         }
 
         [ComputeMethod]
-        public virtual async Task<TEntity?> Get(string entityName, string entityNamespace)
+        public virtual async Task<TEntity?> Get(string entityName, string? entityNamespace)
         {
             await EnsureInitialized();
 

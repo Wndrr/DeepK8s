@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Desktop.Services;
@@ -9,7 +10,7 @@ using Stl.Fusion.Blazor;
 
 namespace Desktop.Components.Bases.Fusion
 {
-    public class LiveDetails<TList, TEntity> : LiveComponentBase<TEntity?>
+    public class LiveDetails<TList, TEntity> : LiveComponentBase<TEntity>
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
@@ -22,22 +23,26 @@ namespace Desktop.Components.Bases.Fusion
 
         protected string? ParentPageName { get; set; }
 
-        protected override async Task<TEntity?> ComputeStateAsync(CancellationToken cancellationToken)
+        protected override async Task<TEntity> ComputeStateAsync(CancellationToken cancellationToken)
         {
-            if (RequestedEntityName == null || RequestedEntityNamespace == null)
+            if (RequestedEntityName == null)
             {
                 if (ParentPageName != null)
                     NavigationManager.NavigateTo(ParentPageName);
 
-                return null;
             }
 
-            var kubernetesObject = await K8SRepository.Get(RequestedEntityName, RequestedEntityNamespace);
+            else
+            {
+                var kubernetesObject = await K8SRepository.Get(RequestedEntityName, RequestedEntityNamespace);
 
-            if (kubernetesObject == null && ParentPageName != null)
-                NavigationManager.NavigateTo(ParentPageName);
-
-            return kubernetesObject;
+                if (kubernetesObject == null)
+                    NavigationManager.NavigateTo(ParentPageName ?? "/");
+                else
+                    return kubernetesObject;
+            }
+            
+            throw new InvalidOperationException();
         }
     }
 }
