@@ -19,9 +19,9 @@ namespace UnitTests.Services
             Assert.Throws<ArgumentNullException>(() => state.Add(null));
         }
 
-        private static FusionSelectedNamespacesState ConstructSelectedNamespacesStateObject()
+        private static SelectedNamespacesState ConstructSelectedNamespacesStateObject()
         {
-            var state = new FusionSelectedNamespacesState();
+            var state = new SelectedNamespacesState();
             return state;
         }
 

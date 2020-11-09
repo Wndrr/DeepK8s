@@ -16,10 +16,10 @@ namespace Desktop.Services
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
         private KubernetesClientFactory KubernetesClientFactory { get; set; }
-        private FusionSelectedNamespacesState SelectedNamespaces { get; set; }
+        private SelectedNamespacesState SelectedNamespaces { get; set; }
         private CurrentContext CurrentContext { get; set; }
 
-        public KubernetesRepository(FusionSelectedNamespacesState selectedNamespaces, CurrentContext currentContext,
+        public KubernetesRepository(SelectedNamespacesState selectedNamespaces, CurrentContext currentContext,
             KubernetesClientFactory kubernetesClientFactory)
         {
             SelectedNamespaces = selectedNamespaces;

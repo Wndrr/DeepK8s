@@ -8,7 +8,7 @@ using Stl.Fusion;
 namespace Desktop.Services
 {
     [ComputeService]
-    public class FusionSelectedNamespacesState
+    public class SelectedNamespacesState
     {
         private List<string> Namespaces { get; set; } = GetDefaultState();
 
