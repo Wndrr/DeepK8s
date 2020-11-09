@@ -11,7 +11,6 @@ namespace Desktop.Components.Bases.Fusion
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
-        [Inject]
-        public KubernetesRepository<TList, TEntity> K8SRepository { get; set; }
+        [Inject] protected KubernetesRepository<TList, TEntity> K8SRepository { get; set; } = null!;
     }
 }

@@ -11,7 +11,6 @@ namespace Desktop.Components.Bases.Fusion
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
-
         protected override async Task<List<TEntity>> ComputeStateAsync(CancellationToken cancellationToken)
         {
             return await K8SRepository.GetAll();
