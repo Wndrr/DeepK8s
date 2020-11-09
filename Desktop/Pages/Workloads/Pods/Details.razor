@@ -7,12 +7,12 @@
 @using System.Threading
 @using Desktop.Services
 @implements IDisposable
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Pod>
+@inherits LiveDetails<V1PodList, V1Pod>
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Status>
-        <PodStatus Entity="Entity"/>
+        <PodStatus Entity="State.LastValue"/>
     </Status>
     <Specifications>
         <BSRow class="my-2">
@@ -25,12 +25,12 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    ServiceAccount: <code>@Entity.Spec.ServiceAccountName</code>
+                                    ServiceAccount: <code>@State.LastValue.Spec.ServiceAccountName</code>
                                 </BSCol>
                             </BSRow>
                             <BSRow>
                                 <BSCol>
-                                    <DisplayImagePullSecret ImagePullSecrets="@Entity.Spec.ImagePullSecrets"/>
+                                    <DisplayImagePullSecret ImagePullSecrets="@State.LastValue.Spec.ImagePullSecrets"/>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -40,7 +40,7 @@
         </BSRow>
         <BSRow class="my-2">
             <BSCol>
-                <DisplayContainers Entity="@Entity"/>
+                <DisplayContainers Entity="@State.LastValue"/>
             </BSCol>
         </BSRow>
         <BSRow class="my-2">
@@ -54,10 +54,10 @@
                             <BSRow>
                                 <BSCol>
                                     Open remote bash exec in pod (SSH Tunnel of sorts)
-                                    <RemoteConsoleIntoPod Entity="@Entity"/>
+                                    <RemoteConsoleIntoPod Entity="@State.LastValue"/>
                                     <br>
                                     Show logs for pod
-                                    <GetPodLogs Entity="@Entity"/>
+                                    <GetPodLogs Entity="@State.LastValue"/>
                                 </BSCol>
                             </BSRow>
                         </BSCard>

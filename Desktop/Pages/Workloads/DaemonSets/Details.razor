@@ -1,14 +1,14 @@
 ﻿@page "/{RequestedEntityNamespace}/DaemonSet/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1DaemonSet>
+@inherits LiveDetails<V1DaemonSetList, V1DaemonSet>
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Specifications>
-        <DisplayLabelSelector Source="@Entity.Spec.Selector" />
+        <DisplayLabelSelector Source="@State.LastValue.Spec.Selector" />
         <br>
-        <PodsForDaemonSet Entity="@Entity"/>
+        <PodsForDaemonSet Entity="@State.LastValue"/>
     </Specifications>
 </EntityDetailsView>
 
