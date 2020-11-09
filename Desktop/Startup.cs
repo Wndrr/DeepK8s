@@ -74,34 +74,9 @@ namespace Desktop
             services.AddSingleton<SelectedNamespacesState>();
             services.AddBlazoredSessionStorage();
             services.AddClipboard();
-            // services.AddSingleton(typeof(GenericStateContainer<,>), typeof(GenericStateContainer<,>));
-            
-            
-            RegisterCertManagerStateContainers(services);
 
-
-            services.AddSingleton<PodStateContainer>();
-            services.AddSingleton<DeploymentStateContainer>();
-            services.AddSingleton<ServiceStateContainer>();
-            services.AddSingleton<IngressStateContainer>();
-            services.AddSingleton<StatefulSetStateContainer>();
-            services.AddSingleton<DaemonSetStateContainer>();
-            services.AddSingleton<PersistentVolumeClaimStateContainer>();
-            services.AddSingleton<PersistentVolumeStateContainer>();
-            services.AddSingleton<ConfigMapStateContainer>();
-            services.AddSingleton<SecretStateContainer>();
-            services.AddSingleton<NamespaceStateContainer>();
-            services.AddSingleton<StorageClassStateContainer>();
-            services.AddSingleton<NodeStateContainer>();
-            services.AddSingleton<CustomResourceDefinitionStateContainer>();
-            services.AddSingleton<StateContainerBooter>();
-            services.AddSingleton<StateContainerLoadingSupervisor>();
-            services.AddSingleton<PodSelectionPredicateHelper>();
-            services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
             services.AddBootstrapCss();
-            
             var fusion = services.AddFusion();
-            
             services.AddSingleton(c => new UpdateDelayer.Options() {
                 // Default update delayer options 
                 Delay = TimeSpan.FromSeconds(0.1),

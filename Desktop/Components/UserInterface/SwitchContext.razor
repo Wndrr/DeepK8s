@@ -3,7 +3,6 @@
 @using Desktop.Services
 @using System.Threading
 @inject Kubernetes KubernetesClient
-@inject StateContainerLoadingSupervisor StateContainerLoadingSupervisor
 
 <BSDropdown>
     <BSDropdownToggle>@CurrentConfig</BSDropdownToggle>
@@ -32,7 +31,7 @@
         
         Configuration.CurrentContext = selectedContextName;
         InMemoryUserPreferencesStore.CurrentContextName = selectedContextName;
-        StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
+        // StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
     }
 
 }
