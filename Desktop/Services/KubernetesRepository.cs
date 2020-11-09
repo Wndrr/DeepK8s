@@ -10,14 +10,14 @@ using Stl.Fusion;
 
 namespace Desktop.Services
 {
-    public class FusionEntitiesDatabase<TListType, TEntityType>
+    public class KubernetesRepository<TListType, TEntityType>
         where TListType : class, IKubernetesObject<V1ListMeta>, IItems<TEntityType>
         where TEntityType : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
         private Kubernetes KubernetesClient { get; set; }
         private FusionSelectedNamespacesState SelectedNamespaces { get; set; }
 
-        public FusionEntitiesDatabase(Kubernetes kubernetesClient, FusionSelectedNamespacesState selectedNamespaces)
+        public KubernetesRepository(Kubernetes kubernetesClient, FusionSelectedNamespacesState selectedNamespaces)
         {
             KubernetesClient = kubernetesClient;
             SelectedNamespaces = selectedNamespaces;

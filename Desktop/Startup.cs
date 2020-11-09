@@ -130,7 +130,7 @@ namespace Desktop
                 try
                 {
                     var selectedSingleType = types.Single(type => listType.Name.Replace("List", "") == type.Name);
-                    var serviceType = typeof(FusionEntitiesDatabase<,>);
+                    var serviceType = typeof(KubernetesRepository<,>);
                     var typeToAdd = serviceType.MakeGenericType(listType, selectedSingleType);
                     fusion.AddComputeService(typeToAdd);
                 }

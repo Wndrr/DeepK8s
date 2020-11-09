@@ -2,7 +2,7 @@
 @using Desktop.Services
 @using System.Threading
 @inherits LiveComponentBase<List<V1Pod>>
-@inject FusionEntitiesDatabase<V1PodList, V1Pod> Pods
+@inject KubernetesRepository<V1PodList, V1Pod> K8SRepository
 
 <h1>
     Pods
@@ -60,7 +60,6 @@
     
     protected override async Task<List<V1Pod>> ComputeStateAsync(CancellationToken cancellationToken)
     {
-        var v1Pods = await Pods.GetAllNamespaced();
-        return v1Pods;
+        return await K8SRepository.GetAllNamespaced();
     }
 }

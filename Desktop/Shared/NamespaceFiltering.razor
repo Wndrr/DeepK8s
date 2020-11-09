@@ -6,7 +6,7 @@
 @using Stl.Fusion
 @inherits LiveComponentBase<List<string>>
 @inject FusionSelectedNamespacesState SelectedNamespacesState
-@inject FusionEntitiesDatabase<V1NamespaceList, V1Namespace> NamespaceDb
+@inject KubernetesRepository<V1NamespaceList, V1Namespace> NamespaceDb
 
 <div class="btn-group btn-group-justified" role="group" aria-label="Multi selection">
     <button @onclick="DeselectAll" type="button" class="col btn btn-outline-danger">

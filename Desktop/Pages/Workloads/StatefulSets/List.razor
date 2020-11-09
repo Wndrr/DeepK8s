@@ -1,13 +1,14 @@
 ﻿@page "/StatefulSets"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.StatefulSetStateContainer, V1StatefulSet, V1StatefulSetList>
+@using Desktop.Services
+@using System.Threading
+@inherits LiveComponentBase<List<V1StatefulSet>>
+@inject KubernetesRepository<V1StatefulSetList, V1StatefulSet> K8SRepository
 
 <h1>
     StatefulSets
 </h1>
 
-<EntityListDisplay Entities="FilteredEntities">
+<DisplayEntities Entities="State.LastValue">
     <Header>
             <tr>
                 <th>
@@ -25,13 +26,13 @@
             </tr>
     </Header>
     <Body>
-            @if (FilteredEntities == null)
+            @if (State.LastValue == null)
             {
                 <Loading/>
             }
             else
             {
-                @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+                @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
                 {
                     <tr>
                         <td>
@@ -91,9 +92,13 @@
                 }
             }
     </Body>
-</EntityListDisplay>
+</DisplayEntities>
 
 
 @code
 {
+    protected override async Task<List<V1StatefulSet>> ComputeStateAsync(CancellationToken cancellationToken)
+    {
+        return await K8SRepository.GetAllNamespaced();
+    }
 }
