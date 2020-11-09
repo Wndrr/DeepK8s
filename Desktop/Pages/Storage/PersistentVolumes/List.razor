@@ -1,13 +1,11 @@
 ﻿@page "/PersistentVolumes"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.PersistentVolumeStateContainer, V1PersistentVolume, V1PersistentVolumeList>
+@inherits Desktop.Components.Bases.Fusion.LiveList<V1PersistentVolumeList, V1PersistentVolume>
 
 <h1>
     Volumes
 </h1>
 
-<EntityListDisplay Entities="Entities">
+<DisplayEntities Entities="State.LastValue">
     <Header>
             <tr>
                 <th>
@@ -22,13 +20,13 @@
             </tr>
     </Header>
     <Body>
-            @if (Entities == null)
+            @if (State.LastValue == null)
             {
                 <Loading/>
             }
             else
             {
-                @foreach (var (_, entity) in Entities.OrderBy(s => s.Value.Metadata.Name))
+                @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
                 {
                     <tr>
                         <td>
@@ -56,10 +54,4 @@
                 }
             }
     </Body>
-</EntityListDisplay>
-
-
-@code
-{
-    
-}
+</DisplayEntities>
