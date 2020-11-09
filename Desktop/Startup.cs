@@ -69,7 +69,6 @@ namespace Desktop
             services.AddSingleton<KubernetesHelper>();
             services.AddSingleton<EntityReferenceUrlBuilder>();
             services.AddSingleton<KubernetesCommandLineBuilder>();
-            services.AddSingleton<SelectedNamespacesState>();
             services.AddBlazoredSessionStorage();
             services.AddClipboard();
         

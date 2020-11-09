@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using Desktop.Services;
 using Moq;
@@ -18,21 +19,20 @@ namespace UnitTests.Services
             Assert.Throws<ArgumentNullException>(() => state.Add(null));
         }
 
-        private static SelectedNamespacesState ConstructSelectedNamespacesStateObject()
+        private static FusionSelectedNamespacesState ConstructSelectedNamespacesStateObject()
         {
-            var ss = new Mock<ISessionStorageService>();
-            var state = new SelectedNamespacesState();
+            var state = new FusionSelectedNamespacesState();
             return state;
         }
 
         [Fact]
-        public void Add_value_adds()
+        public async Task Add_value_adds()
         {
             var state = ConstructSelectedNamespacesStateObject();
             state.Add("testnamespace");
-            Assert.Contains("testnamespace", state.ToList());
+            Assert.Contains("testnamespace", await state.ToList());
         }
-        
+
         #endregion
 
         #region REMOVE
@@ -46,11 +46,11 @@ namespace UnitTests.Services
         }
 
         [Fact]
-        public void Remove_value_removes()
+        public async Task Remove_value_removes()
         {
             var state = ConstructSelectedNamespacesStateObject();
             state.Remove("default");
-            Assert.Empty(state.ToList());
+            Assert.Empty(await state.ToList());
         }
 
         #endregion
@@ -58,20 +58,20 @@ namespace UnitTests.Services
         #region CLEAR
 
         [Fact]
-        public void Clear_clears()
+        public async Task Clear_clears()
         {
             var state = ConstructSelectedNamespacesStateObject();
             state.Clear();
-            Assert.Empty(state.ToList());
+            Assert.Empty(await state.ToList());
         }
 
         #endregion
 
         [Fact]
-        public void default_value_by_default()
+        public async Task default_value_by_default()
         {
             var state = ConstructSelectedNamespacesStateObject();
-            Assert.Contains("default", state.ToList());
+            Assert.Contains("default", await state.ToList());
         }
     }
 }
