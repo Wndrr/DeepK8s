@@ -1,14 +1,11 @@
 ﻿@page "/Certificates"
-@using k8s
-@using k8s.Models
-@using Newtonsoft.Json
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.CertManager.CertificateStateContainer, CertManagerDefinitions.Certificate, CertManagerDefinitions.CertificateList>
+@inherits Desktop.Components.Bases.Fusion.LiveListNamespaced<CertificateList, Certificate>
 
 <h1>
     Certificates
 </h1>
 
-<EntityListDisplay Entities="Entities">
+<DisplayEntities Entities="State.LastValue">
     <Header>
         <tr>
             <th>
@@ -26,13 +23,13 @@
         </tr>
     </Header>
     <Body>
-    @if (Entities == null)
+    @if (State.LastValue == null)
     {
         <Loading/>
     }
     else
     {
-        @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+        @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
         {
             <tr>
                 <td>
@@ -62,10 +59,4 @@
         }
     }
     </Body>
-</EntityListDisplay>
-
-
-@code
-{
-
-}
+</DisplayEntities>
