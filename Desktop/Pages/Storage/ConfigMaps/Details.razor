@@ -1,10 +1,10 @@
 ﻿@page "/{RequestedEntityNamespace}/ConfigMap/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1ConfigMap>
+@inherits LiveDetails<V1ConfigMapList, V1ConfigMap>
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -16,7 +16,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Is immutable: <code>@Entity.Immutable</code>
+                                    Is immutable: <code>@State.LastValue.Immutable</code>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -35,7 +35,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    @foreach (var (key, value) in Entity.Data ?? new Dictionary<string, string>())
+                                    @foreach (var (key, value) in State.LastValue.Data ?? new Dictionary<string, string>())
                                     {
                                         <div>
                                             <span>@key</span>:

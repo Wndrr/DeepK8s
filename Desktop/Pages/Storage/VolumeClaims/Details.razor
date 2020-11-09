@@ -2,22 +2,22 @@
 @using k8s
 @using k8s.Models
 @using Desktop.Services.StateContainers
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1PersistentVolumeClaim>
+@inherits LiveDetails<V1PersistentVolumeClaimList, V1PersistentVolumeClaim>
 @inject PersistentVolumeStateContainer PersistentVolumeStateContainer
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Status>
         <div>
             Capacity :
-            @foreach (var capacity in Entity.Status.Capacity ?? new Dictionary<string, ResourceQuantity>())
+            @foreach (var capacity in State.LastValue.Status.Capacity ?? new Dictionary<string, ResourceQuantity>())
             {
                 <div>- @capacity.Key: @capacity.Value</div>
             }
         </div>
         <div>
             AccessModes :
-            @foreach (var accessMode in Entity.Status.AccessModes ?? new List<string>())
+            @foreach (var accessMode in State.LastValue.Status.AccessModes ?? new List<string>())
             {
                 <div>
                     - @accessMode
@@ -26,7 +26,7 @@
         </div>
         <div>
             Conditions :
-            @foreach (var condition in Entity.Status.Conditions ?? new List<V1PersistentVolumeClaimCondition>())
+            @foreach (var condition in State.LastValue.Status.Conditions ?? new List<V1PersistentVolumeClaimCondition>())
             {
                 <div>
                     Message : @condition.Message <br>
@@ -40,7 +40,7 @@
         </div>
 
         <div>
-            @Entity.Status.Phase
+            @State.LastValue.Status.Phase
         </div>
     </Status>
     <Specifications>
@@ -56,30 +56,30 @@
                                 <BSCol>
                                     <div>
                                         Access modes :
-                                        @foreach (var accessMode in Entity.Spec.AccessModes)
+                                        @foreach (var accessMode in State.LastValue.Spec.AccessModes)
                                         {
                                             <div>@accessMode</div>
                                         }
                                     </div>
                                     <div>
                                         Limits :
-                                        @foreach (var capacity in Entity.Spec.Resources.Limits ?? new Dictionary<string, ResourceQuantity>())
+                                        @foreach (var capacity in State.LastValue.Spec.Resources.Limits ?? new Dictionary<string, ResourceQuantity>())
                                         {
                                             <div>@capacity.Key: @capacity.Value.Format</div>
                                         }
                                     </div>
                                     <div>
                                         Requests :
-                                        @foreach (var capacity in Entity.Spec.Resources.Requests ?? new Dictionary<string, ResourceQuantity>())
+                                        @foreach (var capacity in State.LastValue.Spec.Resources.Requests ?? new Dictionary<string, ResourceQuantity>())
                                         {
                                             <div>@capacity.Key: @capacity.Value.CanonicalizeString()</div>
                                         }
                                     </div>
                                     <div>
-                                        StorageClassName : <code>@Entity.Spec.StorageClassName</code>
+                                        StorageClassName : <code>@State.LastValue.Spec.StorageClassName</code>
                                     </div>
                                     <div>
-                                        VolumeMode : <code>@Entity.Spec.VolumeMode</code>
+                                        VolumeMode : <code>@State.LastValue.Spec.VolumeMode</code>
                                     </div>
                                     <div>
                                         Volume : <PersistentVolumeReference Entity="pv">@pv.Metadata.Name</PersistentVolumeReference>
@@ -92,7 +92,7 @@
             </BSCol>
         </BSRow>
         
-        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
+        <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
     </Specifications>
 </EntityDetailsView>
 
@@ -101,7 +101,7 @@
 {
     private V1PersistentVolume pv => PersistentVolumeStateContainer.Items
         .SingleOrDefault(
-            vol => vol.Value.Metadata.Name == Entity.Spec.VolumeName).Value;
+            vol => vol.Value.Metadata.Name == State.LastValue.Spec.VolumeName).Value;
 
     protected override void OnInitialized()
     {
