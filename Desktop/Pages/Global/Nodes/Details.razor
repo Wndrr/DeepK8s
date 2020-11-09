@@ -1,9 +1,9 @@
 ﻿@page "/Node/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Node>
+@inherits Desktop.Components.Bases.Fusion.LiveDetails<V1NodeList, V1Node>
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
 <Status>
 <BSRow class="my-2">
     <BSCol>
@@ -15,7 +15,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var (key, value) in Entity.Status.Allocatable)
+                            @foreach (var (key, value) in State.LastValue.Status.Allocatable)
                             {
                                 <div>
                                     @key: <code>@value</code>
@@ -36,7 +36,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var (key, value) in Entity.Status.Capacity)
+                            @foreach (var (key, value) in State.LastValue.Status.Capacity)
                             {
                                 <div>
                                     @key: <code>@value</code>
@@ -59,7 +59,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var address in Entity.Status.Addresses)
+                            @foreach (var address in State.LastValue.Status.Addresses)
                             {
                                 <div>
                                     @address.Type: <code>@address.Address</code>
@@ -80,16 +80,16 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            Architecture: <code>@Entity.Status.NodeInfo.Architecture</code><br>
-                            BootID: <code>@Entity.Status.NodeInfo.BootID</code><br>
-                            ContainerRuntimeVersion: <code>@Entity.Status.NodeInfo.ContainerRuntimeVersion</code><br>
-                            KernelVersion: <code>@Entity.Status.NodeInfo.KernelVersion</code><br>
-                            KubeletVersion: <code>@Entity.Status.NodeInfo.KubeletVersion</code><br>
-                            KubeletVersion: <code>@Entity.Status.NodeInfo.KubeletVersion</code><br>
-                            MachineID: <code>@Entity.Status.NodeInfo.MachineID</code><br>
-                            OperatingSystem: <code>@Entity.Status.NodeInfo.OperatingSystem</code><br>
-                            OsImage: <code>@Entity.Status.NodeInfo.OsImage</code><br>
-                            SystemUUID: <code>@Entity.Status.NodeInfo.SystemUUID</code><br>
+                            Architecture: <code>@State.LastValue.Status.NodeInfo.Architecture</code><br>
+                            BootID: <code>@State.LastValue.Status.NodeInfo.BootID</code><br>
+                            ContainerRuntimeVersion: <code>@State.LastValue.Status.NodeInfo.ContainerRuntimeVersion</code><br>
+                            KernelVersion: <code>@State.LastValue.Status.NodeInfo.KernelVersion</code><br>
+                            KubeletVersion: <code>@State.LastValue.Status.NodeInfo.KubeletVersion</code><br>
+                            KubeletVersion: <code>@State.LastValue.Status.NodeInfo.KubeletVersion</code><br>
+                            MachineID: <code>@State.LastValue.Status.NodeInfo.MachineID</code><br>
+                            OperatingSystem: <code>@State.LastValue.Status.NodeInfo.OperatingSystem</code><br>
+                            OsImage: <code>@State.LastValue.Status.NodeInfo.OsImage</code><br>
+                            SystemUUID: <code>@State.LastValue.Status.NodeInfo.SystemUUID</code><br>
                         </BSCol>
                     </BSRow>
                 </BSCard>
@@ -107,7 +107,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var condition in Entity.Status.Conditions)
+                            @foreach (var condition in State.LastValue.Status.Conditions)
                             {
                                 <div>
                                     @condition.Type: <code>@condition.Status</code><br>
@@ -133,7 +133,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var volume in Entity.Status.VolumesAttached)
+                            @foreach (var volume in State.LastValue.Status.VolumesAttached)
                             {
                                 <div>
                                     DevicePath: <code>@volume.DevicePath</code><br>
@@ -156,7 +156,7 @@
                     <BSRow>
                         <BSCol>
                             <ul>
-                                @foreach (var volumeName in Entity.Status.VolumesInUse)
+                                @foreach (var volumeName in State.LastValue.Status.VolumesInUse)
                                 {
                                     <li>
                                         @volumeName
@@ -180,7 +180,7 @@
                 <BSCard CardType="CardType.Text">
                     <BSRow>
                         <BSCol>
-                            @foreach (var image in Entity.Status.Images)
+                            @foreach (var image in State.LastValue.Status.Images)
                             {
                                 <div>
                                     @if (image.SizeBytes != null)
@@ -217,8 +217,8 @@
                     <BSCard CardType="CardType.Text">
                         <BSRow>
                             <BSCol>
-                                Provider: <code>@Entity.Spec.ProviderID</code><br>
-                                PodCIDR: <code>@Entity.Spec.PodCIDR</code><br>
+                                Provider: <code>@State.LastValue.Spec.ProviderID</code><br>
+                                PodCIDR: <code>@State.LastValue.Spec.PodCIDR</code><br>
                             </BSCol>
                         </BSRow>
                     </BSCard>

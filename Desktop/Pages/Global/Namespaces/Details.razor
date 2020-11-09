@@ -1,10 +1,10 @@
 ﻿@page "/Namespace/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Namespace>
+@inherits Desktop.Components.Bases.Fusion.LiveDetails<V1NamespaceList, V1Namespace>
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -16,7 +16,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    @Entity.Status?.Phase
+                                    @State.LastValue.Status?.Phase
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -32,7 +32,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    @foreach (var condition in Entity.Status?.Conditions ?? new List<V1NamespaceCondition>())
+                                    @foreach (var condition in State.LastValue.Status?.Conditions ?? new List<V1NamespaceCondition>())
                                     {
                                         <div>
                                             <h5>@condition.Reason - @condition.LastTransitionTime</h5>
@@ -60,7 +60,7 @@
                             <BSRow>
                                 <BSCol>
                                     <ul>
-                                        @foreach (var finalizer in Entity.Spec.Finalizers ?? new List<string>())
+                                        @foreach (var finalizer in State.LastValue.Spec.Finalizers ?? new List<string>())
                                         {
                                             <li>
                                                 @finalizer
