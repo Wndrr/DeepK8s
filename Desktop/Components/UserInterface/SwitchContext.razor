@@ -8,7 +8,7 @@
 @inject CurrentContext CurrentContext
 
 <BSDropdown>
-    <BSDropdownToggle>@CurrentConfig</BSDropdownToggle>
+    <BSDropdownToggle>@Locals.Value</BSDropdownToggle>
     <BSDropdownMenu>
         @foreach (var contextName in State.LastValue ?? new List<string>())
         {
@@ -18,30 +18,17 @@
 </BSDropdown>
 
 @code {
-    private K8SConfiguration? Configuration { get; set; }
-    private string CurrentConfig => Configuration?.CurrentContext ?? string.Empty;
-    private List<Context> AvailableContexts => Configuration?.Contexts.ToList();
-
-    protected override void OnParametersSet()
-    {
-        Configuration = KubernetesClientConfiguration.LoadKubeConfig();
-    }
 
     private void SetCurrentContext(string selectedContextName)
     {
-        if (Configuration == null)
-            return;
-        
-        Configuration.CurrentContext = selectedContextName;
-        InMemoryUserPreferencesStore.CurrentContextName = selectedContextName;
         CurrentContext.Set(selectedContextName);
-        // StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
     }
 
-    protected override Task<List<string>> ComputeStateAsync(CancellationToken cancellationToken)
+    protected override async Task<List<string>> ComputeStateAsync(CancellationToken cancellationToken)
     {
+        Locals.Value = await CurrentContext.Get();
         var config = KubernetesClientConfiguration.LoadKubeConfig();
-        return Task.FromResult(config?.Contexts.Select(context => context.Name).ToList());
+        return config?.Contexts.Select(context => context.Name).ToList();
     }
 
 }
