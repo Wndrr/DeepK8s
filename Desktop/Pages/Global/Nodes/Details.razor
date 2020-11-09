@@ -1,7 +1,7 @@
 ﻿@page "/Node/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.Fusion.LiveDetails<V1NodeList, V1Node>
+@inherits LiveDetails<V1NodeList, V1Node>
 
 <EntityDetailsView Entity="@State.LastValue">
 <Status>

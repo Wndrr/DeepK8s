@@ -1,5 +1,5 @@
 ﻿@page "/{RequestedEntityNamespace}/Order/{RequestedEntityName}"
-@inherits Desktop.Components.Bases.Fusion.LiveDetails<OrderList, Order>
+@inherits LiveDetails<OrderList, Order>
 
 <EntityDetailsView Entity="@State.LastValue">
     <Status>

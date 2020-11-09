@@ -1,7 +1,7 @@
 ﻿@page "/{RequestedEntityNamespace}/Issuer/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.Fusion.LiveDetails<IssuerList, Issuer>
+@inherits LiveDetails<IssuerList, Issuer>
 
 
 <EntityDetailsView Entity="@State.LastValue">

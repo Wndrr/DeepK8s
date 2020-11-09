@@ -1,10 +1,10 @@
 ﻿@page "/{RequestedEntityNamespace}/Ingress/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<Extensionsv1beta1Ingress>
+@inherits LiveDetails<Extensionsv1beta1IngressList, Extensionsv1beta1Ingress>
 
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -16,9 +16,9 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    @if (Entity.Spec.IngressClassName != null)
+                                    @if (State.LastValue.Spec.IngressClassName != null)
                                     {
-                                        <text>Ingress class <code>@Entity.Spec.IngressClassName</code></text>
+                                        <text>Ingress class <code>@State.LastValue.Spec.IngressClassName</code></text>
                                     }
                                 </BSCol>
                             </BSRow>
@@ -27,7 +27,7 @@
                 </BSCard>
             </BSCol>
         </BSRow>
-        @if (Entity?.Spec?.Tls != null)
+        @if (State.LastValue?.Spec?.Tls != null)
         {
             <BSRow class="my-2">
                 <BSCol>
@@ -40,7 +40,7 @@
                                 <BSRow>
                                     <BSCol>
                                         <ul>
-                                            @foreach (var rule in Entity?.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
+                                            @foreach (var rule in State.LastValue?.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
                                             {
                                                 <li>
                                                     TLS secret <SecretReference>@rule.SecretName</SecretReference> protects
@@ -70,7 +70,7 @@
                 </BSCol>
             </BSRow>
         }
-        @if (Entity?.Spec?.Rules != null)
+        @if (State.LastValue?.Spec?.Rules != null)
         {
             <BSRow class="my-2">
                 <BSCol>
@@ -83,7 +83,7 @@
                                 <BSRow>
                                     <BSCol>
                                         <ul>
-                                            @foreach (var rule in Entity?.Spec?.Rules ?? new List<Extensionsv1beta1IngressRule>())
+                                            @foreach (var rule in State.LastValue?.Spec?.Rules ?? new List<Extensionsv1beta1IngressRule>())
                                             {
                                                 <li>
 
@@ -96,7 +96,7 @@
                                                             V1Service serviceEntity = null;
                                                             try
                                                             {
-                                                                serviceEntity = KubernetesClient.ReadNamespacedService(path.Backend.ServiceName, RequestedEntityNamespace);
+                                                                // serviceEntity = KubernetesClient.ReadNamespacedService(path.Backend.ServiceName, RequestedEntityNamespace);
                                                             }
                                                             catch (Exception e)
                                                             {

@@ -1,10 +1,9 @@
 ﻿@page "/{RequestedEntityNamespace}/Service/{RequestedEntityName}"
 @using k8s
 @using k8s.Models
-@inject Desktop.Services.StateContainers.NodeStateContainer NodeStateContainer
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Service>
+@inherits LiveDetails<V1ServiceList, V1Service>
 
-<EntityDetailsView Entity="@Entity">
+<EntityDetailsView Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -16,18 +15,18 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Service type <code>@Entity.Spec.Type</code> exposed
-                                    @if (Entity.Spec.LoadBalancerIP != null)
+                                    Service type <code>@State.LastValue.Spec.Type</code> exposed
+                                    @if (State.LastValue.Spec.LoadBalancerIP != null)
                                     {
-                                        <text> <code>externally</code> with load balancer IP <code>@Entity.Spec.LoadBalancerIP</code></text>
+                                        <text> <code>externally</code> with load balancer IP <code>@State.LastValue.Spec.LoadBalancerIP</code></text>
                                     }
-                                    @if (Entity.Spec.ClusterIP != null)
+                                    @if (State.LastValue.Spec.ClusterIP != null)
                                     {
-                                        <text> <code>internally</code> with cluster IP <code>@Entity.Spec.ClusterIP</code></text>
+                                        <text> <code>internally</code> with cluster IP <code>@State.LastValue.Spec.ClusterIP</code></text>
                                     }
-                                    @if (Entity.Spec.ExternalName != null)
+                                    @if (State.LastValue.Spec.ExternalName != null)
                                     {
-                                        <text> using external name <code>@Entity.Spec.ExternalName</code></text>
+                                        <text> using external name <code>@State.LastValue.Spec.ExternalName</code></text>
                                     }
                                 </BSCol>
                             </BSRow>
@@ -47,21 +46,21 @@
                             <BSRow>
                                 <BSCol>
                                     <ul>
-                                        @foreach (var port in Entity.Spec.Ports)
+                                        @foreach (var port in State.LastValue.Spec.Ports)
                                         {
                                             <li>
                                                 @if (port.NodePort != null)
                                                 {
                                                     <text>Service port <code>@port.Port</code> is exposed <code>externally</code>  with port <code>@port.NodePort</code> on every node.</text>
 
-                                                    var firstFoundNode = NodeStateContainer.Items.FirstOrDefault().Value;
-                                                    var firstAvailableExternalIp = @firstFoundNode?.Status.Addresses.FirstOrDefault(node => node.Type == "ExternalIP");
-
-                                                    if (firstAvailableExternalIp != null)
-                                                    {
-                                                        var address = $"http://{firstAvailableExternalIp.Address}:{port.NodePort}";
-                                                        <text> Exemple with node <code>@firstFoundNode.Metadata.Name</code>'s address: <code><a href="@address" target="_blank">@address</a></code></text>
-                                                    }
+@*                                                     var firstFoundNode = NodeStateContainer.Items.FirstOrDefault().Value; *@
+@*                                                     var firstAvailableExternalIp = @firstFoundNode?.Status.Addresses.FirstOrDefault(node => node.Type == "ExternalIP"); *@
+@* *@
+@*                                                     if (firstAvailableExternalIp != null) *@
+@*                                                     { *@
+@*                                                         var address = $"http://{firstAvailableExternalIp.Address}:{port.NodePort}"; *@
+@*                                                         <text> Exemple with node <code>@firstFoundNode.Metadata.Name</code>'s address: <code><a href="@address" target="_blank">@address</a></code></text> *@
+@*                                                     } *@
                                                     <br>
                                                 }
                                                 Service port <code>@port.Port</code>
@@ -79,7 +78,7 @@
                                                     }
                                                 }
                                                 <br>
-                                                <PortForward Entity="@Entity" PodPort="@port.Port"/>
+                                                <PortForward Entity="@State.LastValue" PodPort="@port.Port"/>
                                             </li>
                                         }
                                     </ul>
@@ -90,7 +89,7 @@
                 </BSCard>
             </BSCol>
         </BSRow>
-        @if (Entity.Spec.Selector != null && Entity.Spec.Selector.Any())
+        @if (State.LastValue.Spec.Selector != null && State.LastValue.Spec.Selector.Any())
         {
             <BSRow class="my-2">
                 <BSCol>
@@ -102,9 +101,9 @@
                             <BSCard CardType="CardType.Text">
                                 <BSRow>
                                     <BSCol>
-                                        <DisplayLabelsSelector Entity="@Entity"></DisplayLabelsSelector>
+                                        <DisplayLabelsSelector Entity="@State.LastValue"></DisplayLabelsSelector>
                                         <br>
-                                        <PodsForService Entity="@Entity"/>
+                                        <PodsForService Entity="@State.LastValue"/>
                                     </BSCol>
                                 </BSRow>
                             </BSCard>
