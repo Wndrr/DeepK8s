@@ -32,11 +32,9 @@ namespace Desktop.Services
         [ComputeMethod]
         public virtual async Task<List<TEntity>> GetAll()
         {
-            Console.WriteLine("EntitiesDatabase.GetAll");
             await EnsureInitialized();
             var kubernetesObjects = _items.Select(s => s.Value).ToList();
 
-            Console.WriteLine($"EntitiesDatabase.GetAll - Got {kubernetesObjects.Count} items");
             return kubernetesObjects;
         }
 
@@ -90,7 +88,6 @@ namespace Desktop.Services
             var _ = _watch.Run();
 
             _isInitialized = true;
-            Console.WriteLine("Initialized");
         }
 
         private bool _isInitialized;
@@ -99,7 +96,6 @@ namespace Desktop.Services
 
         private void EventReceived(Watch<TEntity> watch, WatchEventType eventType, TEntity entity)
         {
-            Console.WriteLine($"{entity.Kind}/{entity.Namespace()}/{entity.Metadata.Name}: {eventType.ToString()}");
             var hasKey = _items.ContainsKey(entity.Uid());
             switch (eventType)
             {
