@@ -7,51 +7,45 @@ using Stl.Fusion;
 namespace Desktop.Services
 {
     [ComputeService]
-    public class SelectedNamespacesState
+    public sealed class SelectedNamespacesState
     {
         private List<string> Namespaces { get; set; } = GetDefaultState();
 
         [ComputeMethod]
-        public virtual async Task<List<string>> ToList()
+        public Task<List<string>> ToList()
         {
-            return Namespaces.ToList();
+            return Task.FromResult(Namespaces.ToList());
         }
-        
+
         public void Add(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
             Namespaces.Add(ns);
-            Invalidate(ns);
+            Invalidate();
         }
 
         public void Remove(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
             Namespaces.Remove(ns);
-            Invalidate(ns);
+            Invalidate();
         }
 
-        private void Invalidate(string? ns = null)
+        private void Invalidate()
         {
             Computed.Invalidate(ToList);
         }
-        
+
         public void Toggle(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
 
             if (Namespaces.Contains(ns))
                 Remove(ns);
             else
                 Add(ns);
-            
-            Invalidate(ns);
-        }
 
-        private static void ThrowIfNull(string ns)
-        {
-            if (ns == null) 
-                throw new ArgumentNullException(nameof(ns));
+            Invalidate();
         }
 
         public bool Contains(string ns)
@@ -71,7 +65,7 @@ namespace Desktop.Services
             Invalidate();
         }
 
-        public static List<string> GetDefaultState()
+        private static List<string> GetDefaultState()
         {
             return new List<string> {"default"};
         }
