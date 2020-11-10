@@ -1,9 +1,7 @@
 ﻿@page "/{RequestedEntityNamespace}/Challenge/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Challenge>
+@inherits LiveDetails<Desktop.CustomResourceDefinitions.ChallengeList, Desktop.CustomResourceDefinitions.Challenge>
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -15,10 +13,10 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    State : <code>@Entity.Status.State</code><br>
-                                    Reason : <code>@Entity.Status.Reason</code><br>
-                                    Processing : <code>@Entity.Status.Processing</code><br>
-                                    Presented : <code>@Entity.Status.Presented</code><br>
+                                    State : <code>@State.LastValue.Status.State</code><br>
+                                    Reason : <code>@State.LastValue.Status.Reason</code><br>
+                                    Processing : <code>@State.LastValue.Status.Processing</code><br>
+                                    Presented : <code>@State.LastValue.Status.Presented</code><br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -38,15 +36,15 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Issuer: <IssuerReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</IssuerReference> <br>
+                                    Issuer: <IssuerReference>@State.LastValue.Spec.IssuerRef.Kind/@State.LastValue.Spec.IssuerRef.Name</IssuerReference> <br>
                                     
-                                    Key: <code>@Entity.Spec.Key</code><br>
-                                    Token: <code>@Entity.Spec.Token</code><br>
-                                    Type: <code>@Entity.Spec.Type</code><br>
-                                    Url: <code>@Entity.Spec.Url</code><br>
-                                    Wildcard: <code>@Entity.Spec.Wildcard</code><br>
-                                    AuthorizationUrl: <code>@Entity.Spec.AuthorizationUrl</code><br>
-                                    DnsName: <code>@Entity.Spec.DnsName</code><br>
+                                    Key: <code>@State.LastValue.Spec.Key</code><br>
+                                    Token: <code>@State.LastValue.Spec.Token</code><br>
+                                    Type: <code>@State.LastValue.Spec.Type</code><br>
+                                    Url: <code>@State.LastValue.Spec.Url</code><br>
+                                    Wildcard: <code>@State.LastValue.Spec.Wildcard</code><br>
+                                    AuthorizationUrl: <code>@State.LastValue.Spec.AuthorizationUrl</code><br>
+                                    DnsName: <code>@State.LastValue.Spec.DnsName</code><br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -55,7 +53,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

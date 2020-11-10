@@ -1,9 +1,8 @@
 ﻿@page "/{RequestedEntityNamespace}/Certificate/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.Certificate>
+@using Desktop.CustomResourceDefinitions
+@inherits LiveDetails<Desktop.CustomResourceDefinitions.CertificateList, Desktop.CustomResourceDefinitions.Certificate>
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -15,9 +14,9 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    RenewalTime: <code>@Entity.Status.RenewalTime</code> <br>
-                                    NotBefore: <code>@Entity.Status.NotBefore</code> <br>
-                                    NotAfter: <code>@Entity.Status.NotAfter</code> <br>
+                                    RenewalTime: <code>@State.LastValue.Status.RenewalTime</code> <br>
+                                    NotBefore: <code>@State.LastValue.Status.NotBefore</code> <br>
+                                    NotAfter: <code>@State.LastValue.Status.NotAfter</code> <br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -36,16 +35,17 @@
                             <BSRow>
                                 <BSCol>
                                     <ul>
-                                    @foreach (var condition in Entity.Status.Conditions)
-                                    {
-                                        <li>
-                                            Status: <code>@condition.Status</code> <br>
-                                            Type: <code>@condition.Type</code> <br>
-                                            Reason: <code>@condition.Reason</code> <br>
-                                            Message: <code>@condition.Message</code> <br>
-                                            LastTransitionTime: <code>@condition.LastTransitionTime</code>
-                                        </li>
-                                    }</ul>
+                                        @foreach (var condition in State.LastValue.Status.Conditions ?? new List<CertificateCondition>())
+                                        {
+                                            <li>
+                                                Status: <code>@condition.Status</code> <br>
+                                                Type: <code>@condition.Type</code> <br>
+                                                Reason: <code>@condition.Reason</code> <br>
+                                                Message: <code>@condition.Message</code> <br>
+                                                LastTransitionTime: <code>@condition.LastTransitionTime</code>
+                                            </li>
+                                        }
+                                    </ul>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -65,12 +65,12 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Secret: <SecretReference>@Entity.Spec.SecretName</SecretReference> <br>
-                                    Issuer: <SecretReference>@Entity.Spec.IssuerRef.Kind/@Entity.Spec.IssuerRef.Name</SecretReference> <br>
-                                    
+                                    Secret: <SecretReference>@State.LastValue.Spec.SecretName</SecretReference> <br>
+                                    Issuer: <SecretReference>@State.LastValue.Spec.IssuerRef.Kind/@State.LastValue.Spec.IssuerRef.Name</SecretReference> <br>
+
                                     Dns names:
                                     <ul>
-                                        @foreach (var dnsName in @Entity.Spec.DnsNames)
+                                        @foreach (var dnsName in @State.LastValue.Spec.DnsNames ?? new List<string>())
                                         {
                                             <li>
                                                 <a href="@dnsName" target="_blank">@dnsName</a>
@@ -85,7 +85,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

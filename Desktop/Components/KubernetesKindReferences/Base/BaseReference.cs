@@ -6,15 +6,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Desktop.Components.KubernetesKindReferences.Base
 {
-    public abstract class BaseReference<T> : ComponentBase where T : k8s.IMetadata<k8s.Models.V1ObjectMeta>
+    public abstract class BaseReference : ComponentBase
     {
         [Parameter] public RenderFragment ChildContent { get; set; }
 
-        [Parameter] public T Entity { get; set; }
+        [Parameter] public k8s.IMetadata<V1ObjectMeta> Entity { get; set; }
 
         [Inject] public EntityReferenceUrlBuilder EntityReferenceUrlBuilder { get; set; }
 
-        [Inject] public ILogger<BaseReference<T>> Logger { get; set; }
+        [Inject] public ILogger<BaseReference> Logger { get; set; }
 
         protected string ColorClass = string.Empty;
         protected string IconClass = string.Empty;

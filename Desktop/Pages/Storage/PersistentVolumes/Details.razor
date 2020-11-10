@@ -1,17 +1,14 @@
 ﻿@page "/PersistentVolume/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@using Desktop.Services.StateContainers
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1PersistentVolume>
-@inject PersistentVolumeClaimStateContainer PersistentVolumeClaimStateContainer
+@inherits LiveDetails<V1PersistentVolumeList, V1PersistentVolume>
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <div>
-            @Entity.Status.Phase via <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+            @State.LastValue.Status.Phase via 
+            @* <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
         </div>
-        <div>@Entity.Status.Reason</div>
-        <div>@Entity.Status.Message</div>
+        <div>@State.LastValue.Status.Reason</div>
+        <div>@State.LastValue.Status.Message</div>
     </Status>
     <Specifications>
         <BSRow class="my-2">
@@ -26,29 +23,29 @@
                                 <BSCol>
                                     <div>
                                         Access modes :
-                                        @foreach (var accessMode in Entity.Spec.AccessModes ?? new List<string>())
+                                        @foreach (var accessMode in State.LastValue.Spec.AccessModes ?? new List<string>())
                                         {
                                             <div>@accessMode</div>
                                         }
                                     </div>
                                     <div>
                                         Capacity :
-                                        @foreach (var capacity in Entity.Spec.Capacity ?? new Dictionary<string, ResourceQuantity>())
+                                        @foreach (var capacity in State.LastValue.Spec.Capacity ?? new Dictionary<string, ResourceQuantity>())
                                         {
                                             <div>@capacity.Key: @capacity.Value</div>
                                         }
                                     </div>
                                     <div>
-                                        Reclaim policy : <code>@Entity.Spec.PersistentVolumeReclaimPolicy</code>
+                                        Reclaim policy : <code>@State.LastValue.Spec.PersistentVolumeReclaimPolicy</code>
                                     </div>
                                     <div>
-                                        StorageClassName : <code>@Entity.Spec.StorageClassName</code>
+                                        StorageClassName : <code>@State.LastValue.Spec.StorageClassName</code>
                                     </div>
                                     <div>
-                                        VolumeMode : <code>@Entity.Spec.VolumeMode</code>
+                                        VolumeMode : <code>@State.LastValue.Spec.VolumeMode</code>
                                     </div>
                                     <div>
-                                        ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference>
+                                        @* ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
                                     </div>
                                 </BSCol>
                             </BSRow>
@@ -58,14 +55,10 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {
-    private V1PersistentVolumeClaim pvc => PersistentVolumeClaimStateContainer.Items
-        .SingleOrDefault(
-            claim => claim.Value.Metadata.Namespace() == Entity.Spec.ClaimRef.NamespaceProperty
-                   && claim.Value.Metadata.Name == Entity.Spec.ClaimRef.Name).Value;
 
     protected override void OnInitialized()
     {

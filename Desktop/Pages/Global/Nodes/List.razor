@@ -1,62 +1,53 @@
 ﻿@page "/Nodes"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.NodeStateContainer, V1Node, V1NodeList>
+@inherits LiveList<V1NodeList, V1Node>
 
 <h1>
     Nodes
 </h1>
 
-<EntityListDisplay Entities="Entities">
+<KubernetesResourcesList Entities="State.LastValue">
     <Header>
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Creation date & uptime
-                </th>
-                <th>
-                    Actions
-                </th>
-            </tr>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Creation date & uptime
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
     </Header>
     <Body>
-            @if (Entities == null)
-            {
-                <Loading/>
-            }
-            else
-            {
-                @foreach (var (_, entity) in Entities.OrderBy(s => s.Value.Metadata.Name))
-                {
-                    <tr>
-                        <td>
-                            <NamespaceReference>
-                                @entity.Metadata.Namespace()
-                            </NamespaceReference>
-                            <br/>
-                            <NodeReference entity="@entity">
-                                @entity.Metadata.Name
-                            </NodeReference>
-                        </td>
-                        <td>
-                            @if (entity.Metadata.CreationTimestamp.HasValue)
-                            {
-                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
-                                <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
-                                <Uptime BaseUtcDateTime="@creationTimestamp"/>
-
-                            }
-                        </td>
-                    </tr>
-                }
-            }
+    @if (State.LastValue == null)
+    {
+        <Loading/>
+    }
+    else
+    {
+        @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
+        {
+            <tr>
+                <td>
+                    <NamespaceReference>
+                        @entity.Metadata.Namespace()
+                    </NamespaceReference>
+                    <br/>
+                    <NodeReference entity="@entity">
+                        @entity.Metadata.Name
+                    </NodeReference>
+                </td>
+                <td>
+                    @if (entity.Metadata.CreationTimestamp.HasValue)
+                    {
+                        var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                    }
+                </td>
+            </tr>
+        }
+    }
     </Body>
-</EntityListDisplay>
-
-
-@code
-{
-    
-}
+</KubernetesResourcesList>

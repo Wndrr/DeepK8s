@@ -1,14 +1,11 @@
 ﻿@page "/Orders"
-@using k8s
-@using k8s.Models
-@using Newtonsoft.Json
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.CertManager.OrderStateContainer, CertManagerDefinitions.Order, CertManagerDefinitions.OrderList>
+@inherits LiveListNamespaced<Desktop.CustomResourceDefinitions.OrderList, Desktop.CustomResourceDefinitions.Order>
 
 <h1>
     Certificates
 </h1>
 
-<EntityListDisplay Entities="Entities">
+<KubernetesResourcesList Entities="State.LastValue">
     <Header>
         <tr>
             <th>
@@ -26,46 +23,33 @@
         </tr>
     </Header>
     <Body>
-    @if (Entities == null)
+    @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
     {
-        <Loading/>
-    }
-    else
-    {
-        @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
-        {
-            <tr>
-                <td>
-                    <NamespaceReference>
-                        @entity.Metadata.Namespace()
-                    </NamespaceReference>
-                    <br/>
-                    <OrderReference Entity="entity">
-                        @entity.Metadata.Name
-                    </OrderReference>
-                </td>
-                <td>
-                    @entity.Status.State
-                </td>
-                <td>
-                    @if (entity.Metadata.CreationTimestamp.HasValue)
-                    {
-                        var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
-                        <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
-                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
-                    }
-                </td>
-                <td>
-                    <TerminateEntity Entity="@entity"/>
-                </td>
-            </tr>
-        }
+        <tr>
+            <td>
+                <NamespaceReference>
+                    @entity.Metadata.Namespace()
+                </NamespaceReference>
+                <br/>
+                <OrderReference Entity="entity">
+                    @entity.Metadata.Name
+                </OrderReference>
+            </td>
+            <td>
+                @entity.Status.State
+            </td>
+            <td>
+                @if (entity.Metadata.CreationTimestamp.HasValue)
+                {
+                    var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
+                    <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
+                    <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                }
+            </td>
+            <td>
+                <TerminateEntity Entity="@entity"/>
+            </td>
+        </tr>
     }
     </Body>
-</EntityListDisplay>
-
-
-@code
-{
-
-}
+</KubernetesResourcesList>

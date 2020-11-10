@@ -1,7 +1,12 @@
 ﻿@using k8s
 @using k8s.Models
 @using System.Collections.ObjectModel
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.NamespaceStateContainer, V1Namespace, V1NamespaceList>
+@using System.Threading
+@using Desktop.Services
+@using Stl.Fusion
+@inherits LiveComponentBase<List<string>>
+@inject SelectedNamespacesState SelectedNamespacesState
+@inject KubernetesRepository<V1NamespaceList, V1Namespace> K8SRepository
 
 <div class="btn-group btn-group-justified" role="group" aria-label="Multi selection">
     <button @onclick="DeselectAll" type="button" class="col btn btn-outline-danger">
@@ -12,13 +17,12 @@
     </button>
 </div>
 <div>
-    @foreach (var (_, ns) in Entities.OrderBy(s => s.Value.Metadata.Name))
+    @foreach (var names in State.LastValue.OrderBy(s => s))
     {
-        var name = ns.Metadata.Name;
-        var checkboxId = "ns_" + name;
+        var checkboxId = "ns_" + names;
         <div>
             <label for="@checkboxId">
-                <input id="@checkboxId" type="checkbox" checked="@IsNamespaceSelected(name)" @onclick="@(() => ToggleNamespaceFilter(name))"/> @name
+                <input id="@checkboxId" type="checkbox" checked="@(IsNamespaceSelected(names))" @onclick="@(() => ToggleNamespaceFilter(names))"/> @names
             </label>
         </div>
     }
@@ -33,16 +37,29 @@
     private void ToggleNamespaceFilter(string ns)
     {
         SelectedNamespacesState.Toggle(ns);
+        State.Invalidate();
+        State.CancelUpdateDelay();
     }
 
     private void DeselectAll()
     {
         SelectedNamespacesState.Clear();
+        State.Invalidate();
+        State.CancelUpdateDelay();
     }
 
     private void SelectAll()
     {
         SelectedNamespacesState.Clear();
-        SelectedNamespacesState.AddRange(Entities.Select(s => s.Value.Metadata.Name));
+        SelectedNamespacesState.AddRange(State.Value.Select(s => s));
+        State.Invalidate();
+        State.CancelUpdateDelay();
     }
+
+    protected override async Task<List<string>> ComputeStateAsync(CancellationToken cancellationToken)
+    {
+        var namespaces = await K8SRepository.GetAll();
+        return namespaces.Select(s => s.Metadata.Name).ToList();
+    }
+
 }

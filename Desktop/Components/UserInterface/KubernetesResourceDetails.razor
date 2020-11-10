@@ -1,0 +1,82 @@
+﻿@using Desktop.Services
+@using k8s
+@using k8s.Models
+@using Newtonsoft.Json
+@using YamlDotNet.Serialization
+
+
+@if (Entity?.Metadata == null)
+{
+    <Loading/>
+}
+else
+{
+    <h1>
+        @Entity.Kind @Entity.Metadata.Name
+    </h1>
+    <BSTabGroup class="h-100">
+        <BSTabList>
+            <BSTab>
+                <BSTabLabel IsDisabled="@(Status == null)">
+                    Status
+                </BSTabLabel>
+                <BSTabContent>
+                    @Status
+                </BSTabContent>
+            </BSTab>
+            <BSTab InitialSelection="@(Status == null)">
+                <BSTabLabel>
+                    Metadata
+                </BSTabLabel>
+                <BSTabContent>
+                    <DisplaySharedMetadata Source="@Entity.Metadata"/>
+                </BSTabContent>
+            </BSTab>
+            <BSTab>
+                <BSTabLabel IsDisabled="@(Specifications == null)">
+                    Specifications
+                </BSTabLabel>
+                <BSTabContent>
+                    @Specifications
+                </BSTabContent>
+            </BSTab>
+            <BSTab>
+                <BSTabLabel>
+                    JSON
+                </BSTabLabel>
+                <BSTabContent>
+                    @{
+                        var json = JsonConvert.SerializeObject(Entity, Formatting.Indented);
+                    }
+                    <CodeBlock Value="@json" Language="@CodeLanguage.Json"/>
+                </BSTabContent>
+            </BSTab>
+            <BSTab>
+                <BSTabLabel>
+                    YAML
+                </BSTabLabel>
+                <BSTabContent>
+                    @{
+                        var serializer = new SerializerBuilder().Build();
+                        var yaml = serializer.Serialize(Entity);
+                    }
+                    <CodeBlock Value="@yaml" Language="@CodeLanguage.Yaml"/>
+                </BSTabContent>
+            </BSTab>
+        </BSTabList>
+        <BSTabSelectedContent/>
+    </BSTabGroup>
+}
+
+@code
+{
+    [Parameter]
+    public RenderFragment Specifications { get; set; }
+
+    [Parameter]
+    public RenderFragment Status { get; set; }
+
+
+    [Parameter]
+    public IKubernetesObject<V1ObjectMeta> Entity { get; set; }
+}

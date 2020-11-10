@@ -1,5 +1,4 @@
 ﻿using Bunit;
-using Bunit.Rendering;
 using Desktop.Components.KubernetesKindReferences.Base;
 using Xunit;
 

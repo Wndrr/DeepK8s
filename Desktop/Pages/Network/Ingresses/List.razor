@@ -1,20 +1,14 @@
 ﻿@page "/Ingresses"
-@using k8s
-@using k8s.Models
-@using Desktop.Services.StateContainers
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.IngressStateContainer, Extensionsv1beta1Ingress, Extensionsv1beta1IngressList>
+@inherits LiveListNamespaced<Extensionsv1beta1IngressList, Extensionsv1beta1Ingress>
 
 <h1>
     Ingresses
 </h1>
-<EntityListDisplay Entities="FilteredEntities">
+<KubernetesResourcesList Entities="State.LastValue">
     <Header>
             <tr>
                 <th>
                     Name
-                </th>
-                <th>
-                    Rules
                 </th>
                 <th>
                     TLS Secret
@@ -25,13 +19,13 @@
             </tr>
     </Header>
     <Body>
-            @if (FilteredEntities == null)
+            @if (State.LastValue == null)
             {
                 <Loading/>
             }
             else
             {
-                @foreach (var (_, entity) in FilteredEntities.OrderBy(s => s.Value.Metadata.Name))
+                @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
                 {
                     <tr>
                         <td>
@@ -42,9 +36,6 @@
                             <IngressReference entity="@entity">
                                 @entity.Metadata.Name
                             </IngressReference>
-                        </td>
-                        <td>
-                           <IngressRules Entity="@entity"></IngressRules>
                         </td>
                         <td>
                             @foreach (var tls in entity.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
@@ -70,7 +61,7 @@
                 }
             }
     </Body>
-</EntityListDisplay>
+</KubernetesResourcesList>
 
 @code
 {

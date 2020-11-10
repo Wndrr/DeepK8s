@@ -1,9 +1,7 @@
 ﻿@page "/StorageClass/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1StorageClass>
+@inherits LiveDetails<V1StorageClassList, V1StorageClass>
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
         <BSRow class="my-2">
             <BSCol>
@@ -17,19 +15,19 @@
                                 <BSCol>
                                     <div>
                                         Parameters :
-                                        @foreach (var (key, value) in Entity.Parameters)
+                                        @foreach (var (key, value) in State.LastValue.Parameters)
                                         {
                                             <div>@key: <code>@value</code></div>
                                         }
                                     </div>
                                     <div>
-                                        Provisioner : <code>@Entity.Provisioner</code>
+                                        Provisioner : <code>@State.LastValue.Provisioner</code>
                                     </div>
                                     <div>
-                                        ReclaimPolicy : <code>@Entity.ReclaimPolicy</code>
+                                        ReclaimPolicy : <code>@State.LastValue.ReclaimPolicy</code>
                                     </div>
                                     <div>
-                                        VolumeBindingMode : <code>@Entity.VolumeBindingMode</code>
+                                        VolumeBindingMode : <code>@State.LastValue.VolumeBindingMode</code>
                                     </div>
                                 </BSCol>
                             </BSRow>
@@ -39,7 +37,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

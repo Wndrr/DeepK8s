@@ -1,55 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Stl.Fusion;
 
 namespace Desktop.Services
 {
-    public class SelectedNamespacesState
+    [ComputeService]
+    public sealed class SelectedNamespacesState
     {
         private List<string> Namespaces { get; set; } = GetDefaultState();
 
-        public ReadOnlyCollection<string> ToList()
+        [ComputeMethod]
+        public Task<List<string>> ToList()
         {
-            return Namespaces.AsReadOnly();
+            return Task.FromResult(Namespaces.ToList());
         }
-        
+
         public void Add(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
             Namespaces.Add(ns);
-            NotifyUpdate();
+            Invalidate();
         }
 
         public void Remove(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
             Namespaces.Remove(ns);
-            NotifyUpdate();
+            Invalidate();
         }
 
-
-        public EventHandler<EventArgs> StateChanged;
-
-        private void NotifyUpdate()
+        private void Invalidate()
         {
-            if(StateChanged != null)
-                StateChanged.Invoke(this, EventArgs.Empty);
+            Computed.Invalidate(ToList);
         }
-        
+
         public void Toggle(string ns)
         {
-            ThrowIfNull(ns);
+            if (ns == null) throw new ArgumentNullException(nameof(ns));
 
             if (Namespaces.Contains(ns))
                 Remove(ns);
             else
                 Add(ns);
-        }
 
-        private static void ThrowIfNull(string ns)
-        {
-            if (ns == null) 
-                throw new ArgumentNullException(nameof(ns));
+            Invalidate();
         }
 
         public bool Contains(string ns)
@@ -60,16 +56,16 @@ namespace Desktop.Services
         public void Clear()
         {
             Namespaces.Clear();
-            NotifyUpdate();
+            Invalidate();
         }
 
         public void AddRange(IEnumerable<string> range)
         {
             Namespaces.AddRange(range);
-            NotifyUpdate();
+            Invalidate();
         }
 
-        public static List<string> GetDefaultState()
+        private static List<string> GetDefaultState()
         {
             return new List<string> {"default"};
         }

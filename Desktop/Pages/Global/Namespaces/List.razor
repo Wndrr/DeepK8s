@@ -1,13 +1,11 @@
 ﻿@page "/Namespaces"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.NamespacedListAutoRefresh<Desktop.Services.StateContainers.NamespaceStateContainer, V1Namespace, V1NamespaceList>
+@inherits LiveList<V1NamespaceList, V1Namespace>
 
 <h1>
     Config map
 </h1>
 
-<EntityListDisplay Entities="Entities">
+<KubernetesResourcesList Entities="State.LastValue">
     <Header>
         <tr>
             <th>
@@ -25,13 +23,13 @@
         </tr>
     </Header>
     <Body>
-    @if (Entities == null)
+    @if (State.LastValue == null)
     {
         <Loading/>
     }
     else
     {
-        @foreach (var (_, entity) in Entities.OrderBy(s => s.Value.Metadata.Name))
+        @foreach (var entity in State.LastValue.OrderBy(s => s.Metadata.Name))
         {
             <tr>
                 <td>
@@ -57,13 +55,4 @@
         }
     }
     </Body>
-</EntityListDisplay>
-
-
-@code
-{
-    private void Terminate(string name)
-    {
-        KubernetesClient.DeleteNamespace(name);
-    }
-}
+</KubernetesResourcesList>

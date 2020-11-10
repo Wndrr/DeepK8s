@@ -1,16 +1,13 @@
 ﻿@page "/{RequestedEntityNamespace}/StatefulSet/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1StatefulSet>
+@inherits LiveDetails<V1StatefulSetList, V1StatefulSet>
 
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
-        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
+        <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
         <br>
-        <PodsForStatefulSet Entity="@Entity"/>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 
 @code

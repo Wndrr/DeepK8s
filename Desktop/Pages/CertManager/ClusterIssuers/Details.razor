@@ -1,9 +1,7 @@
 ﻿@page "/ClusterIssuer/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<CertManagerDefinitions.ClusterIssuer>
+@inherits LiveDetails<Desktop.CustomResourceDefinitions.ClusterIssuerList, Desktop.CustomResourceDefinitions.ClusterIssuer>
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <BSRow class="my-2">
             <BSCol>
@@ -15,8 +13,8 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Uri : <code>@Entity.Status.Acme.Uri</code><br>
-                                    LastRegisteredEmail : <code>@Entity.Status.Acme.LastRegisteredEmail</code><br>
+                                    Uri : <code>@State.LastValue.Status.Acme.Uri</code><br>
+                                    LastRegisteredEmail : <code>@State.LastValue.Status.Acme.LastRegisteredEmail</code><br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -35,7 +33,7 @@
                             <BSRow>
                                 <BSCol>
                                     <ul>
-                                    @foreach (var condition in Entity.Status.Conditions)
+                                    @foreach (var condition in State.LastValue.Status.Conditions)
                                     {
                                         <li>
                                             Status: <code>@condition.Status</code> <br>
@@ -64,10 +62,10 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Private key Secret: <SecretReference>@Entity.Spec.Acme.PrivateKeySecretRef.Name</SecretReference> <br>
-                                    Email: <code>@Entity.Spec.Acme.Email</code><br>
-                                    Server: <code>@Entity.Spec.Acme.Server</code><br>
-                                    PreferredChain: <code>@Entity.Spec.Acme.PreferredChain</code><br>
+                                    Private key Secret: <SecretReference>@State.LastValue.Spec.Acme.PrivateKeySecretRef.Name</SecretReference> <br>
+                                    Email: <code>@State.LastValue.Spec.Acme.Email</code><br>
+                                    Server: <code>@State.LastValue.Spec.Acme.Server</code><br>
+                                    PreferredChain: <code>@State.LastValue.Spec.Acme.PreferredChain</code><br>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
@@ -76,7 +74,7 @@
             </BSCol>
         </BSRow>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 @code
 {
     protected override void OnInitialized()

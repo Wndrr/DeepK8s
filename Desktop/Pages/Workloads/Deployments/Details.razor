@@ -1,16 +1,12 @@
 ﻿@page "/{RequestedEntityNamespace}/Deployment/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
-@inherits Desktop.Components.Bases.SingleNamespacedAutoRefresh<V1Deployment>
+@inherits LiveDetails<V1DeploymentList, V1Deployment>
 
 
-<EntityDetailsView Entity="@Entity">
+<KubernetesResourceDetails Entity="@State.LastValue">
     <Specifications>
-        <DisplayLabelSelector Source="@Entity.Spec.Selector"/>
-        <br>
-        <PodsForDeployment Entity="@Entity"/>
+        <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
     </Specifications>
-</EntityDetailsView>
+</KubernetesResourceDetails>
 
 @code
 {

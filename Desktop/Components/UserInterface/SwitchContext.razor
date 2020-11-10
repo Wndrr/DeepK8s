@@ -2,37 +2,33 @@
 @using k8s.KubeConfigModels
 @using Desktop.Services
 @using System.Threading
+@using Desktop.Services.Context
+@inherits LiveComponentBase<List<string>, string>
 @inject Kubernetes KubernetesClient
-@inject StateContainerLoadingSupervisor StateContainerLoadingSupervisor
+@inject CurrentContext CurrentContext
 
 <BSDropdown>
-    <BSDropdownToggle>@CurrentConfig</BSDropdownToggle>
+    <BSDropdownToggle>@Locals.Value</BSDropdownToggle>
     <BSDropdownMenu>
-        @foreach (var availableContext in AvailableContexts)
+        @foreach (var contextName in State.LastValue ?? new List<string>())
         {
-            <BSDropdownItem OnClick="@(() => SetCurrentContext(availableContext.Name))">@availableContext.Name</BSDropdownItem>
+            <BSDropdownItem OnClick="@(() => SetCurrentContext(contextName))">@contextName</BSDropdownItem>
         }
     </BSDropdownMenu>
 </BSDropdown>
 
 @code {
-    private K8SConfiguration? Configuration { get; set; }
-    private string CurrentConfig => Configuration?.CurrentContext ?? string.Empty;
-    private List<Context> AvailableContexts => Configuration?.Contexts.ToList();
-
-    protected override void OnParametersSet()
-    {
-        Configuration = KubernetesClientConfiguration.LoadKubeConfig();
-    }
 
     private void SetCurrentContext(string selectedContextName)
     {
-        if (Configuration == null)
-            return;
-        
-        Configuration.CurrentContext = selectedContextName;
-        InMemoryUserPreferencesStore.CurrentContextName = selectedContextName;
-        StateContainerLoadingSupervisor.LoadAllAsync(CancellationToken.None);
+        CurrentContext.Set(selectedContextName);
+    }
+
+    protected override async Task<List<string>> ComputeStateAsync(CancellationToken cancellationToken)
+    {
+        Locals.Value = await CurrentContext.Get();
+        var config = KubernetesClientConfiguration.LoadKubeConfig();
+        return config?.Contexts.Select(context => context.Name).ToList();
     }
 
 }

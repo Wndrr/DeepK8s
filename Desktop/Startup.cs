@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using BlazorStrap;
@@ -11,12 +12,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Desktop.Services;
-using Desktop.Services.StateContainers;
-using Desktop.Services.StateContainers.CertManager;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Http;
+using Stl.DependencyInjection;
+using Stl.Fusion;
 
 namespace Desktop
 {
@@ -66,45 +68,50 @@ namespace Desktop
             services.AddSingleton<KubernetesHelper>();
             services.AddSingleton<EntityReferenceUrlBuilder>();
             services.AddSingleton<KubernetesCommandLineBuilder>();
-            services.AddSingleton<SelectedNamespacesState>();
             services.AddBlazoredSessionStorage();
             services.AddClipboard();
-            // services.AddSingleton(typeof(GenericStateContainer<,>), typeof(GenericStateContainer<,>));
-            
-            
-            RegisterCertManagerStateContainers(services);
-
-
-            services.AddSingleton<PodStateContainer>();
-            services.AddSingleton<DeploymentStateContainer>();
-            services.AddSingleton<ServiceStateContainer>();
-            services.AddSingleton<IngressStateContainer>();
-            services.AddSingleton<StatefulSetStateContainer>();
-            services.AddSingleton<DaemonSetStateContainer>();
-            services.AddSingleton<PersistentVolumeClaimStateContainer>();
-            services.AddSingleton<PersistentVolumeStateContainer>();
-            services.AddSingleton<ConfigMapStateContainer>();
-            services.AddSingleton<SecretStateContainer>();
-            services.AddSingleton<NamespaceStateContainer>();
-            services.AddSingleton<StorageClassStateContainer>();
-            services.AddSingleton<NodeStateContainer>();
-            services.AddSingleton<CustomResourceDefinitionStateContainer>();
-            services.AddSingleton<StateContainerBooter>();
-            services.AddSingleton<StateContainerLoadingSupervisor>();
-            services.AddSingleton<PodSelectionPredicateHelper>();
-            services.AddHostedService(provider => provider.GetService<StateContainerBooter>());
+        
             services.AddBootstrapCss();
+            var fusion = services.AddFusion();
+            services.AddSingleton(c => new UpdateDelayer.Options() {
+                // Default update delayer options 
+                Delay = TimeSpan.FromSeconds(0.1),
+            });
+            RegisterFusionDb(fusion);
+            services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
         }
 
-        private static void RegisterCertManagerStateContainers(IServiceCollection services)
+        private static void RegisterFusionDb(FusionBuilder fusion)
         {
-            services.AddSingleton<IssuerStateContainer>();
-            services.AddSingleton<ClusterIssuerStateContainer>();
-            services.AddSingleton<CertificateStateContainer>();
-            services.AddSingleton<OrderStateContainer>();
-            services.AddSingleton<ChallengeStateContainer>();
+            
+            var listTypeDefinition = typeof(IKubernetesObject<V1ListMeta>);
+            var listTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => listTypeDefinition.IsAssignableFrom(p))
+                .ToList();
+            
+            var typeDefinition = typeof(IKubernetesObject<V1ObjectMeta>);
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeDefinition.IsAssignableFrom(p))
+                .ToList();
+            
+            foreach (var listType in listTypes)
+            {
+                try
+                {
+                    var selectedSingleType = types.Single(type => listType.Name.Replace("List", "") == type.Name);
+                    var serviceType = typeof(KubernetesRepository<,>);
+                    var typeToAdd = serviceType.MakeGenericType(listType, selectedSingleType);
+                    fusion.AddComputeService(typeToAdd);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
