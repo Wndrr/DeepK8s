@@ -11,7 +11,7 @@ using Stl.Fusion;
 
 namespace Desktop.Services
 {
-    public class KubernetesRepository<TList, TEntity>
+    public class KubernetesRepository<TList, TEntity> : IDisposable
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
@@ -138,6 +138,11 @@ namespace Desktop.Services
         {
             _items.Remove(entity.Uid(), out var _);
             Computed.Invalidate(() => Get(entity.Metadata.Name, entity.Namespace()));
+        }
+
+        public void Dispose()
+        {
+            _watch?.Dispose();
         }
     }
 }
