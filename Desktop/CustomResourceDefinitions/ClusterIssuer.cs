@@ -20,7 +20,6 @@ namespace Desktop.CustomResourceDefinitions
         public IssuerStatus? Status { get; set; }
     }
     
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
     public class PrivateKeySecretRef    {
         public string Name { get; set; } = null!;  
     }
