@@ -1,6 +1,4 @@
-﻿using k8s;
-
-namespace Desktop.Components.UserInterface
+﻿namespace Desktop.Components.UserInterface
 {
     public static class InMemoryUserPreferencesStore 
     {

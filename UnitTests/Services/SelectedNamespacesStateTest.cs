@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Blazored.SessionStorage;
 using Desktop.Services;
-using Moq;
 using Xunit;
 
 namespace UnitTests.Services

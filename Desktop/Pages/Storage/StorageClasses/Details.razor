@@ -1,6 +1,4 @@
 ﻿@page "/StorageClass/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
 @inherits LiveDetails<V1StorageClassList, V1StorageClass>
 
 <KubernetesResourceDetails Entity="@State.LastValue">

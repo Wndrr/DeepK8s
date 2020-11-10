@@ -1,6 +1,4 @@
 ﻿@page "/Node/{RequestedEntityName}"
-@using k8s
-@using k8s.Models
 @inherits LiveDetails<V1NodeList, V1Node>
 
 <KubernetesResourceDetails Entity="@State.LastValue">
