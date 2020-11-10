@@ -86,7 +86,8 @@ namespace Desktop.Services
 
             _watch = kubernetesRequest.ToWatch<TEntity>(initialRequest.ResourceVersion());
             _watch.EventReceived += EventReceived;
-            _watch.Run();
+            // Capture as discarded var to stop the "use await" warning
+            var _ = _watch.Run();
 
             _isInitialized = true;
             Console.WriteLine("Initialized");
