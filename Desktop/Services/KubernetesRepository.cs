@@ -137,9 +137,27 @@ namespace Desktop.Services
             Computed.Invalidate(() => Get(entity.Metadata.Name, entity.Namespace()));
         }
 
+        #region DISPOSE
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _watch?.Dispose();
+            }
+        }
+
         public void Dispose()
         {
-            _watch?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        ~KubernetesRepository()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }
