@@ -9,7 +9,7 @@ namespace UnitTests.Services
     {
         #region BOILERPLATE
 
-        private static SelectedNamespacesState ConstructSelectedNamespacesStateObject()
+        private static SelectedNamespacesState Construct()
         {
             var state = new SelectedNamespacesState();
             return state;
@@ -22,7 +22,7 @@ namespace UnitTests.Services
         [Fact]
         public void Toggle_nullParameter_throws()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.Throws<ArgumentNullException>(() => state.Toggle(null));
         }
@@ -30,7 +30,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task Toggle_default_removes_default()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.Contains("default", await state.ToList());
             state.Toggle("default");
@@ -39,7 +39,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task Toggle_missing_adds_new()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.DoesNotContain("missingnamespace", await state.ToList());
             state.Toggle("missingnamespace");
@@ -54,7 +54,7 @@ namespace UnitTests.Services
         [Fact]
         public void AddRange_nullParameter_throws()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.Throws<ArgumentNullException>(() => state.AddRange(null));
         }
@@ -62,7 +62,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task AddRange_value_adds()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.AddRange(new[] {"testnamespace", "testnamespace2"});
             var listed = await state.ToList();
             Assert.Contains("testnamespace", listed);
@@ -76,7 +76,7 @@ namespace UnitTests.Services
         [Fact]
         public void Add_nullParameter_throws()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.Throws<ArgumentNullException>(() => state.Add(null));
         }
@@ -84,7 +84,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task Add_value_adds()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Add("testnamespace");
             Assert.Contains("testnamespace", await state.ToList());
         }
@@ -96,7 +96,7 @@ namespace UnitTests.Services
         [Fact]
         public void Remove_nullParameter_throws()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
 
             Assert.Throws<ArgumentNullException>(() => state.Remove(null));
         }
@@ -104,7 +104,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task Remove_value_removes()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Remove("default");
             Assert.Empty(await state.ToList());
         }
@@ -116,7 +116,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task Clear_clears()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Clear();
             Assert.Empty(await state.ToList());
         }
@@ -128,14 +128,14 @@ namespace UnitTests.Services
         [Fact]
         public void Contains_has_default_value()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             Assert.True(state.Contains("default"));
         }
 
         [Fact]
         public void Contains_has_default_and_custom_after_add()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Add("testnamespace");
             Assert.True(state.Contains("default"));
             Assert.True(state.Contains("testnamespace"));
@@ -144,7 +144,7 @@ namespace UnitTests.Services
         [Fact]
         public void Contains_has_custom_but_not_default_after_add_and_remove()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Add("testnamespace");
             state.Remove("default");
             Assert.False(state.Contains("default"));
@@ -154,7 +154,7 @@ namespace UnitTests.Services
         [Fact]
         public void Contains_not_has_default_after_remove()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             state.Remove("default");
             Assert.False(state.Contains("default"));
         }
@@ -164,7 +164,7 @@ namespace UnitTests.Services
         [Fact]
         public async Task default_value_by_default()
         {
-            var state = ConstructSelectedNamespacesStateObject();
+            var state = Construct();
             Assert.Contains("default", await state.ToList());
         }
     }
