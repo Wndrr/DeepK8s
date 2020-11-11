@@ -1,19 +1,27 @@
 ﻿@inherits LayoutComponentBase
 
-<Navigation/>
-
-<div class="main">
-    <div class="top-row px-4">
-        <SwitchContext/>
-        <NavLink class="nav-link" href="/Legend" Match="NavLinkMatch.All">
-            <span class="oi oi-book"></span>
-            Legend
-        </NavLink>
-    </div>
-
-    <div class="content px-4 h-100">
-        @Body
+<div class="container-fluid p-0">
+    <div class="col p-0" id="main">
+        <nav class="navbar fixed-top navbar-light bg-light">
+            <SwitchContext/>
+            <NavLink class="nav-link" href="/Legend" Match="NavLinkMatch.All">
+                <span class="oi oi-book"></span>
+                Legend
+            </NavLink>
+        </nav>
+        <div class="content px-0 pt-6 h-100">
+            <div class="row">
+                <div class="col-2" id="sticky-sidebar">
+                    <div class="sticky-top">
+                        <Navigation/>
+                    </div>
+                </div>
+                <div class="col">
+                    @Body
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<Filtering/>
+@* <NamespaceFiltering/> *@
