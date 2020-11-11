@@ -1,49 +1,16 @@
-﻿@switch (Kind)
-{
-    case KubernetesEntityKind.Pod:
-        <PodReference>
-            @ChildContent
-        </PodReference>
-        break;
-    case KubernetesEntityKind.Service:
-        <ServiceReference>
-            @ChildContent
-        </ServiceReference>
-        break;
-    case KubernetesEntityKind.Ingress:
-        <IngressReference>
-            @ChildContent
-        </IngressReference>
-        break;
-    case KubernetesEntityKind.ReplicaSet:
-        <ReplicaSetReference>
-            @ChildContent
-        </ReplicaSetReference>
-        break;
-    case KubernetesEntityKind.DaemonSet:
-        <DaemonSetReference>
-            @ChildContent
-        </DaemonSetReference>
-        break;
-    case KubernetesEntityKind.StatefulSet:
-        <StatefulSetReference>
-            @ChildContent
-        </StatefulSetReference>
-        break;
-    case KubernetesEntityKind.Namespace:
-        <NamespaceReference>
-            @ChildContent
-        </NamespaceReference>
-        break;
-    case KubernetesEntityKind.Deployment:
-        <DeploymentReference>
-            @ChildContent
-        </DeploymentReference>
-        break;
-    default:
-        throw new ArgumentOutOfRangeException();
-}
+﻿@using k8s
+@using k8s.Models
+@using Microsoft.Extensions.Logging
+@using Desktop.Services
 
+@if (Entity == null)
+{
+    <span class="EntityReference no-url">@ChildContent</span>
+}
+else
+{
+    <EntityReferenceByName Kind="@Entity.Kind" Name="@Entity.Metadata.Name" Namespace="@Entity.Namespace()">@ChildContent</EntityReferenceByName>
+}
 
 @code
 {
@@ -51,5 +18,5 @@
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public KubernetesEntityKind Kind { get; set; }
+    public IKubernetesObject<V1ObjectMeta>? Entity { get; set; }
 }

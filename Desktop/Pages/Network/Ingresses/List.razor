@@ -29,13 +29,13 @@
                 {
                     <tr>
                         <td>
-                            <NamespaceReference>
+                            <EntityReference>
                                 @entity.Metadata.Namespace()
-                            </NamespaceReference>
+                            </EntityReference>
                             <br/>
-                            <IngressReference entity="@entity">
+                            <EntityReference entity="@entity">
                                 @entity.Metadata.Name
-                            </IngressReference>
+                            </EntityReference>
                         </td>
                         <td>
                             @foreach (var tls in entity.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
