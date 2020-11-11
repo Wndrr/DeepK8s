@@ -11,7 +11,7 @@ namespace UnitTests.Services
         {
             var builder = new EntityReferenceUrlBuilder();
 
-            Assert.Throws<ArgumentException>(() => builder.BuildEntityReferenceUri(null, "entityName", "entityNamespace"));
+            Assert.Throws<ArgumentNullException>(() => builder.BuildEntityReferenceUri(null, "entityName", "entityNamespace"));
         }
         
         [Fact]
@@ -19,7 +19,7 @@ namespace UnitTests.Services
         {
             var builder = new EntityReferenceUrlBuilder();
 
-            Assert.Throws<ArgumentException>(() => builder.BuildEntityReferenceUri(string.Empty, "entityName", "entityNamespace"));
+            Assert.Throws<ArgumentNullException>(() => builder.BuildEntityReferenceUri(string.Empty, "entityName", "entityNamespace"));
         }
         
         [Fact]
@@ -27,7 +27,7 @@ namespace UnitTests.Services
         {
             var builder = new EntityReferenceUrlBuilder();
 
-            Assert.Throws<ArgumentException>(() => builder.BuildEntityReferenceUri("pageName", null, "entityNamespace"));
+            Assert.Throws<ArgumentNullException>(() => builder.BuildEntityReferenceUri("pageName", null, "entityNamespace"));
         }
         
         [Fact]
@@ -35,7 +35,7 @@ namespace UnitTests.Services
         {
             var builder = new EntityReferenceUrlBuilder();
 
-            Assert.Throws<ArgumentException>(() => builder.BuildEntityReferenceUri("pageName", string.Empty, "entityNamespace"));
+            Assert.Throws<ArgumentNullException>(() => builder.BuildEntityReferenceUri("pageName", string.Empty, "entityNamespace"));
         }
         
         [Fact]
