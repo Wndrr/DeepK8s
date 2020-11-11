@@ -7,12 +7,10 @@
 </nav>
 <div class="container-fluid">
     <div class="content row pt-6 h-100">
-        <div class="col-2" id="sticky-sidebar">
-            <div class="sticky-top">
-                <Navigation/>
-            </div>
+        <div class="col-2 border-right vh-100 position-fixed overflow-auto" id="sticky-sidebar">
+            <Navigation/>
         </div>
-        <div class="col">
+        <div class="col offset-2">
             @Body
         </div>
     </div>
