@@ -11,7 +11,7 @@ using Stl.Fusion;
 
 namespace Desktop.Services
 {
-    public sealed class KubernetesRepository<TList, TEntity> : IDisposable
+    public class KubernetesRepository<TList, TEntity> : IDisposable
         where TList : class, IKubernetesObject<V1ListMeta>, IItems<TEntity>
         where TEntity : class, IKubernetesObject<V1ObjectMeta>, IKubernetesObject, IMetadata<V1ObjectMeta>
     {
@@ -30,7 +30,7 @@ namespace Desktop.Services
         private readonly ConcurrentDictionary<string, TEntity> _items = new ConcurrentDictionary<string, TEntity>();
 
         [ComputeMethod]
-        public async Task<List<TEntity>> GetAll()
+        public virtual async Task<List<TEntity>> GetAll()
         {
             await EnsureInitialized();
             var kubernetesObjects = _items.Select(s => s.Value).ToList();
@@ -39,7 +39,7 @@ namespace Desktop.Services
         }
 
         [ComputeMethod]
-        public async Task<List<TEntity>> GetAllNamespaced()
+        public virtual async Task<List<TEntity>> GetAllNamespaced()
         {
             var items = await GetAll();
             var selectedNamespaces = await SelectedNamespaces.ToList();
@@ -49,7 +49,7 @@ namespace Desktop.Services
         }
 
         [ComputeMethod]
-        public async Task<TEntity?> Get(string entityName, string? entityNamespace)
+        public virtual async Task<TEntity?> Get(string entityName, string? entityNamespace)
         {
             var items = await GetAll();
             return items.SingleOrDefault(entity =>

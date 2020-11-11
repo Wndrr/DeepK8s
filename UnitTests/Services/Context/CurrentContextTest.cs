@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Desktop.Services.Config;
 using Desktop.Services.Context;
+using Moq;
 using Xunit;
 
 namespace UnitTests.Services.Context
@@ -10,7 +12,8 @@ namespace UnitTests.Services.Context
 
         private static CurrentContext Construct()
         {
-            var state = new CurrentContext();
+            var moq = new Mock<IKubeConfigLoader>();
+            var state = new CurrentContext(moq.Object);
             return state;
         }
 

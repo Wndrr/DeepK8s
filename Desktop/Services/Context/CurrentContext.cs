@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using k8s;
+using Desktop.Services.Config;
 using Stl.Fusion;
 
 namespace Desktop.Services.Context
@@ -7,45 +7,25 @@ namespace Desktop.Services.Context
     [ComputeService]
     public class CurrentContext
     {
-        public CurrentContext()
+        private readonly IKubeConfigLoader _kubeConfigLoader;
+        private string? _currentSelectedContext;
+        
+        public CurrentContext(IKubeConfigLoader kubeConfigLoader)
         {
-            CurrentSelectedContext = KubernetesClientConfiguration.LoadKubeConfig().CurrentContext;
+            _kubeConfigLoader = kubeConfigLoader;
         }
 
-        private string CurrentSelectedContext { get; set; }
-        
         public virtual void Set(string name)
         {
-            CurrentSelectedContext = name;
+            _currentSelectedContext = name;
             Computed.Invalidate(Get);
         }
 
         [ComputeMethod]
         public virtual async Task<string> Get()
         {
-            return await Task.FromResult(CurrentSelectedContext);
-        }
-    }
-
-    [ComputeService]
-    public class KubernetesClientFactory
-    {
-        private readonly CurrentContext _currentContext;
-
-        public KubernetesClientFactory(CurrentContext currentContext)
-        {
-            _currentContext = currentContext;
-        }
-
-        [ComputeMethod]
-        public virtual async Task<Kubernetes> Get()
-        {
-            var configFile = await KubernetesClientConfiguration.LoadKubeConfigAsync();
-
-            configFile.CurrentContext = await _currentContext.Get();
-            var config = KubernetesClientConfiguration.BuildConfigFromConfigObject(configFile);
-
-            return new Kubernetes(config);
+            _currentSelectedContext ??= (await _kubeConfigLoader.Get()).CurrentContext;
+            return _currentSelectedContext;
         }
     }
 }

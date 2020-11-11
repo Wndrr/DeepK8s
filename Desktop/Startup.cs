@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Desktop.Services;
+using Desktop.Services.Config;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using k8s;
@@ -77,6 +78,7 @@ namespace Desktop
                 // Default update delayer options 
                 Delay = TimeSpan.FromSeconds(0.1),
             });
+            fusion.AddComputeService<IKubeConfigLoader, KubeConfigLoader>();
             RegisterFusionDb(fusion);
             services.AttributeBased().AddServicesFrom(Assembly.GetExecutingAssembly());
         }

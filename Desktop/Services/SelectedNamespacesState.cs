@@ -7,12 +7,12 @@ using Stl.Fusion;
 namespace Desktop.Services
 {
     [ComputeService]
-    public sealed class SelectedNamespacesState
+    public class SelectedNamespacesState
     {
         private List<string> Namespaces { get; set; } = GetDefaultState();
 
         [ComputeMethod]
-        public Task<List<string>> ToList()
+        public virtual Task<List<string>> ToList()
         {
             return Task.FromResult(Namespaces.ToList());
         }
