@@ -273,3 +273,10 @@ app {
 {
     height: 100%;
 }
+
+
+.scroll-y
+{
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

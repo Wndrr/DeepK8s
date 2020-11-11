@@ -16,7 +16,7 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     private bool _navMenuIsCollapsed = false;
-    private string NavMenuCssClass => $"sidebar {(_navMenuIsCollapsed ? "collapse" : null)}";
+    private string NavMenuCssClass => $"sidebar scroll-y {(_navMenuIsCollapsed ? "collapse" : null)}";
 
     private void ToggleNavMenu()
     {
