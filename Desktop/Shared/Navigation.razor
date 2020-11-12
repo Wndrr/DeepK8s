@@ -1,165 +1,168 @@
-﻿<CollapsibleSideMenu>
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/overview" Match="NavLinkMatch.All">
-                <span class="oi oi-dashboard"></span>
-                Overview
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Namespaces" Match="NavLinkMatch.All">
-                <NamespaceReference>
-                    Namespaces
-                </NamespaceReference>
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Nodes" Match="NavLinkMatch.All">
-                <NodeReference>
-                    Nodes
-                </NodeReference>
-            </NavLink>
-        </li>
-        <hr>
-        <li class="nav-item px-3">
-            <span>
-                Workloads
-            </span>
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Pods" Match="NavLinkMatch.All">
-                        <PodReference>
-                            Pods
-                        </PodReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Deployments" Match="NavLinkMatch.All">
-                        <DeploymentReference>
-                            Deployments
-                        </DeploymentReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/StatefulSets" Match="NavLinkMatch.All">
-                        <StatefulSetReference>
-                            Stateful Sets
-                        </StatefulSetReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/DaemonSets" Match="NavLinkMatch.All">
-                        <DaemonSetReference>
-                            Daemon Sets
-                        </DaemonSetReference>
-                    </NavLink>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item px-3">
-            <span>
-                Network
-            </span>
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Services" Match="NavLinkMatch.All">
-                        <ServiceReference>
-                            Services
-                        </ServiceReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Ingresses" Match="NavLinkMatch.All">
-                        <IngressReference>
-                            Ingresses
-                        </IngressReference>
-                    </NavLink>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item px-3">
-            <span>
-                Storage
-            </span>
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/StorageClasses" Match="NavLinkMatch.All">
-                        <StorageClassReference>
-                            StorageClasses
-                        </StorageClassReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/PersistentVolumeClaims" Match="NavLinkMatch.All">
-                        <PersistentVolumeClaimReference>
-                            PersistentVolumeClaims
-                        </PersistentVolumeClaimReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/PersistentVolumes" Match="NavLinkMatch.All">
-                        <PersistentVolumeReference>
-                            PersistentVolumes
-                        </PersistentVolumeReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/ConfigMaps" Match="NavLinkMatch.All">
-                        <ConfigMapReference>
-                            ConfigMaps
-                        </ConfigMapReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Secrets" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            Secrets
-                        </SecretReference>
-                    </NavLink>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item px-3">
-            <span>
-                Cert Manager
-            </span>
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Issuers" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            Issuers
-                        </SecretReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/ClusterIssuers" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            ClusterIssuers
-                        </SecretReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Certificates" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            Certificates
-                        </SecretReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Orders" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            Orders
-                        </SecretReference>
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Challenges" Match="NavLinkMatch.All">
-                        <SecretReference>
-                            Challenges
-                        </SecretReference>
-                    </NavLink>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</CollapsibleSideMenu>
+﻿<ul class="nav flex-column">
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="/overview" Match="NavLinkMatch.All">
+            Overview
+        </NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <span>
+            General
+        </span>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Namespaces" Match="NavLinkMatch.All">
+                    <NamespaceReference>
+                        Namespaces
+                    </NamespaceReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Nodes" Match="NavLinkMatch.All">
+                    <NodeReference>
+                        Nodes
+                    </NodeReference>
+                </NavLink>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item px-3">
+        <span>
+            Workloads
+        </span>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Pods" Match="NavLinkMatch.All">
+                    <PodReference>
+                        Pods
+                    </PodReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Deployments" Match="NavLinkMatch.All">
+                    <DeploymentReference>
+                        Deployments
+                    </DeploymentReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/StatefulSets" Match="NavLinkMatch.All">
+                    <StatefulSetReference>
+                        Stateful Sets
+                    </StatefulSetReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/DaemonSets" Match="NavLinkMatch.All">
+                    <DaemonSetReference>
+                        Daemon Sets
+                    </DaemonSetReference>
+                </NavLink>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item px-3">
+        <span>
+            Network
+        </span>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Services" Match="NavLinkMatch.All">
+                    <ServiceReference>
+                        Services
+                    </ServiceReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Ingresses" Match="NavLinkMatch.All">
+                    <IngressReference>
+                        Ingresses
+                    </IngressReference>
+                </NavLink>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item px-3">
+        <span>
+            Storage
+        </span>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/StorageClasses" Match="NavLinkMatch.All">
+                    <StorageClassReference>
+                        StorageClasses
+                    </StorageClassReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/PersistentVolumeClaims" Match="NavLinkMatch.All">
+                    <PersistentVolumeClaimReference>
+                        PersistentVolumeClaims
+                    </PersistentVolumeClaimReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/PersistentVolumes" Match="NavLinkMatch.All">
+                    <PersistentVolumeReference>
+                        PersistentVolumes
+                    </PersistentVolumeReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/ConfigMaps" Match="NavLinkMatch.All">
+                    <ConfigMapReference>
+                        ConfigMaps
+                    </ConfigMapReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Secrets" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        Secrets
+                    </SecretReference>
+                </NavLink>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item px-3">
+        <span>
+            Cert Manager
+        </span>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Issuers" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        Issuers
+                    </SecretReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/ClusterIssuers" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        ClusterIssuers
+                    </SecretReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Certificates" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        Certificates
+                    </SecretReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Orders" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        Orders
+                    </SecretReference>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Challenges" Match="NavLinkMatch.All">
+                    <SecretReference>
+                        Challenges
+                    </SecretReference>
+                </NavLink>
+            </li>
+        </ul>
+    </li>
+</ul>

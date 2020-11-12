@@ -47,6 +47,15 @@ app {
     text-overflow: ellipsis;
 }
 
+.pt-6, .py-6 {
+    padding-top: 4.5rem !important;
+}
+
+.r-0
+{
+    right: 0;
+}
+
 .sidebar {
     
 }
@@ -272,4 +281,11 @@ app {
 .monaco-editor-container
 {
     height: 100%;
+}
+
+
+.scroll-y
+{
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
