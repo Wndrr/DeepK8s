@@ -122,6 +122,39 @@ namespace UnitTests.Services
         }
 
         #endregion
+        
+        #region CLEAR
+
+        [Fact]
+        public async Task Reset_to_default_from_default_gives_default()
+        {
+            var state = Construct();
+            state.ResetToDefault();
+            Assert.Contains("default", await state.ToList());
+        }
+        
+        [Fact]
+        public async Task Reset_to_default_from_non_default_gives_default()
+        {
+            var state = Construct();
+            state.Add("notdefault");
+            Assert.Contains("notdefault", await state.ToList());
+            state.ResetToDefault();
+            Assert.DoesNotContain("notdefault", await state.ToList());
+            Assert.Contains("default", await state.ToList());
+        }
+        
+        [Fact]
+        public async Task Reset_to_default_from_empty_gives_default()
+        {
+            var state = Construct();
+            state.Clear();
+            Assert.Empty(await state.ToList());
+            state.ResetToDefault();
+            Assert.Contains("default", await state.ToList());
+        }
+
+        #endregion
 
         #region CONTAINS
 
