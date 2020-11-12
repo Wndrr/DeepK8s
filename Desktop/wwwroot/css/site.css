@@ -51,6 +51,11 @@ app {
     padding-top: 4.5rem !important;
 }
 
+.r-0
+{
+    right: 0;
+}
+
 .sidebar {
     
 }

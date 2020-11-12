@@ -7,28 +7,58 @@
 @inherits LiveComponentBase<List<string>>
 @inject SelectedNamespacesState SelectedNamespacesState
 @inject KubernetesRepository<V1NamespaceList, V1Namespace> K8SRepository
-
-<div class="btn-group btn-group-justified" role="group" aria-label="Multi selection">
-    <button @onclick="DeselectAll" type="button" class="col btn btn-outline-danger">
-        X
+@if (_navMenuIsCollapsed)
+{
+    <button class="btn btn-outline-info position-fixed r-0 btn-sm bg-light" @onclick="ToggleNavMenu">
+        <span class="oi oi-fullscreen-enter"></span>
     </button>
-    <button @onclick="SelectAll" type="button" class="col btn btn-outline-success">
-        *
-    </button>
-</div>
-<div>
-    @foreach (var names in State.LastValue.OrderBy(s => s))
-    {
-        var checkboxId = "ns_" + names;
+}
+<div class="@NavMenuCssClass" id="sticky-sidebar-right">
+    <div class="nav flex-column">
+        <button @onclick="ToggleNavMenu" class="col btn btn-outline-info">
+            <span class="oi oi-fullscreen-exit"></span>
+        </button>
         <div>
-            <label for="@checkboxId">
-                <input id="@checkboxId" type="checkbox" checked="@(IsNamespaceSelected(names))" @onclick="@(() => ToggleNamespaceFilter(names))"/> @names
-            </label>
+            @foreach (var names in State.LastValue.OrderBy(s => s))
+            {
+                var checkboxId = "ns_" + names;
+                <div>
+                    <label for="@checkboxId">
+                        <input id="@checkboxId" type="checkbox" checked="@(IsNamespaceSelected(names))" @onclick="@(() => ToggleNamespaceFilter(names))"/> @names
+                    </label>
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
 
 @code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private bool _navMenuIsCollapsed = false;
+    private string NavMenuCssClass => $"col border-left position-fixed bg-light sidebar py-6 r-0 overflow-auto {(_navMenuIsCollapsed ? "collapse" : null)}";
+
+    private void ToggleNavMenu()
+    {
+        _navMenuIsCollapsed = !_navMenuIsCollapsed;
+    }
+
+}
+
+@code {
+
+    private void Show(BSModalEvent bsModalEvent)
+    {
+        bsModalEvent.Target.Class += "show d-block";
+    }
+
+    private void Hide(BSModalEvent bsModalEvent)
+    {
+        bsModalEvent.Target.Class = bsModalEvent.Target.Class.Replace("show", String.Empty).Replace("d-block", String.Empty);
+    }
+
     private bool IsNamespaceSelected(string ns)
     {
         return SelectedNamespacesState.Contains(ns);
