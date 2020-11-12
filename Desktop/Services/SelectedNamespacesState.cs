@@ -58,6 +58,12 @@ namespace Desktop.Services
             Namespaces.Clear();
             Invalidate();
         }
+        public void ResetToDefault()
+        {
+            Namespaces.Clear();
+            Namespaces.AddRange(GetDefaultState());
+            Invalidate();
+        }
 
         public void AddRange(IEnumerable<string> range)
         {
@@ -69,5 +75,6 @@ namespace Desktop.Services
         {
             return new List<string> {"default"};
         }
+
     }
 }

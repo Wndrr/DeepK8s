@@ -8,16 +8,19 @@ namespace Desktop.Services.Context
     public class CurrentContext
     {
         private readonly IKubeConfigLoader _kubeConfigLoader;
+        private readonly SelectedNamespacesState SelectedNamespacesState;
         private string? _currentSelectedContext;
         
-        public CurrentContext(IKubeConfigLoader kubeConfigLoader)
+        public CurrentContext(IKubeConfigLoader kubeConfigLoader, SelectedNamespacesState selectedNamespacesState)
         {
             _kubeConfigLoader = kubeConfigLoader;
+            SelectedNamespacesState = selectedNamespacesState;
         }
 
         public virtual void Set(string name)
         {
             _currentSelectedContext = name;
+            SelectedNamespacesState.ResetToDefault();
             Computed.Invalidate(Get);
         }
 
