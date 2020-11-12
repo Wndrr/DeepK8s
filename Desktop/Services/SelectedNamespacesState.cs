@@ -75,6 +75,5 @@ namespace Desktop.Services
         {
             return new List<string> {"default"};
         }
-
     }
 }
