@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Desktop.Services;
 using Desktop.Services.Config;
 using Desktop.Services.Context;
 using Moq;
@@ -13,7 +14,8 @@ namespace UnitTests.Services.Context
         private static CurrentContext Construct()
         {
             var moq = new Mock<IKubeConfigLoader>();
-            var state = new CurrentContext(moq.Object);
+            var namespaces = new SelectedNamespacesState();
+            var state = new CurrentContext(moq.Object, namespaces);
             return state;
         }
 
