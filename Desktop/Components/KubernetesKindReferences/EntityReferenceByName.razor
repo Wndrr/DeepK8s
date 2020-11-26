@@ -3,7 +3,7 @@
 @using Microsoft.Extensions.Logging
 @using Desktop.Services
 
-    @if (@ChildContent == null)
+    @if ((ChildContent?.Target as EntityReference)?.ChildContent == null)
     {
         <a href="@Url" class="EntityReference">@Name</a>
         
@@ -20,7 +20,7 @@
     public EntityReferenceUrlBuilder EntityReferenceUrlBuilder { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
     public string Kind { get; set; }

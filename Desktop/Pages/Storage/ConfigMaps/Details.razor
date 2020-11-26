@@ -1,4 +1,5 @@
 ﻿@page "/{RequestedEntityNamespace}/ConfigMap/{RequestedEntityName}"
+@using Desktop.Services
 @inherits LiveDetails<V1ConfigMapList, V1ConfigMap>
 
 
@@ -15,6 +16,11 @@
                             <BSRow>
                                 <BSCol>
                                     Is immutable: <code>@State.LastValue.Immutable</code>
+                                </BSCol>
+                            </BSRow>
+                            <BSRow>
+                                <BSCol>
+                                    Mounting pods: <ListPodsMountingConfigMap Entity="State.LastValue"  />
                                 </BSCol>
                             </BSRow>
                         </BSCard>

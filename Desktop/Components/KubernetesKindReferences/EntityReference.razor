@@ -9,13 +9,13 @@
 }
 else
 {
-    <EntityReferenceByName Kind="@Entity.Kind" Name="@Entity.Metadata.Name" Namespace="@Entity.Namespace()">@ChildContent</EntityReferenceByName>
+    <EntityReferenceByName Kind="@Entity.Kind" Name="@Entity.Metadata.Name" Namespace="@Entity.Namespace()">@(ChildContent ?? null)</EntityReferenceByName>
 }
 
 @code
 {
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
     public IKubernetesObject<V1ObjectMeta>? Entity { get; set; }
