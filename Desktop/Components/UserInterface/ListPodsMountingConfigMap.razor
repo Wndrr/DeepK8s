@@ -18,7 +18,7 @@ else
         @foreach (var pod in State.LastValue ?? new List<V1Pod>())
         {
             <li>
-                @pod.Name()
+                <EntityReference Entity="pod" />
             </li>
         }
     </ul>
