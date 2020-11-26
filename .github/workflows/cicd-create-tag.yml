@@ -19,7 +19,7 @@ jobs:
           gist_badge_label: 'DeepK8s - Unit Tests: %Counters_passed%/%Counters_total%'
           gist_token: ${{ secrets.GIST_TOKEN }}
       - name: GitHub Tag
-        uses: mathieudutour/github-tag-action@v4.6
+        uses: mathieudutour/github-tag-action@v5.1
         with:
           github_token: ${{ secrets.WORKFLOW }}
           default_bump: false
