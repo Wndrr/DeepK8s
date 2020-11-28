@@ -69,8 +69,26 @@
                                 <ul>
                                     @foreach (var volume in container.VolumeMounts)
                                     {
+                                        var mount = Entity?.Spec?.Volumes?.SingleOrDefault(vm => vm.Name == volume.Name);
+                                        string kind = null, name = null;
+                                        if (mount?.Secret?.SecretName != null)
+                                        {
+                                            kind = "secret";
+                                            name = mount.Secret.SecretName;
+                                        }
+                                        if (mount?.ConfigMap?.Name != null)
+                                        {
+                                            kind = "configmap";
+                                            name = mount?.ConfigMap?.Name;
+                                        }
+                                        if (mount?.PersistentVolumeClaim?.ClaimName != null)
+                                        {
+                                            kind = "persistentvolumeclaim";
+                                            name = mount.PersistentVolumeClaim.ClaimName;
+                                        }
+                                        
                                         <li>
-                                            <code>@volume.Name</code> mounted on <code>@volume.MountPath</code>
+                                            <EntityReferenceByName Kind="@kind" Name="@name" Namespace="@Entity.Namespace()">@volume.Name</EntityReferenceByName> mounted on <code>@volume.MountPath</code>
                                             @if (volume.SubPath != null && volume.SubPathExpr != null)
                                             {
                                                 <text>with sub-path <code>@(volume.SubPath ?? volume.SubPathExpr)</code></text>
