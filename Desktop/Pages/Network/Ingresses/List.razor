@@ -40,9 +40,9 @@
                         <td>
                             @foreach (var tls in entity.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
                             {
-                                <SecretReference>
+                                <EntityReference>
                                     @tls.SecretName
-                                </SecretReference>
+                                </EntityReference>
                             }
                         </td>
                         <td>

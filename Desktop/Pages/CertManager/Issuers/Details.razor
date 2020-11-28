@@ -63,7 +63,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Private key Secret: <SecretReference>@State.LastValue.Spec.Acme.PrivateKeySecretRef.Name</SecretReference> <br>
+                                    Private key Secret: <EntityReference>@State.LastValue.Spec.Acme.PrivateKeySecretRef.Name</EntityReference> <br>
                                     Email: <code>@State.LastValue.Spec.Acme.Email</code><br>
                                     Server: <code>@State.LastValue.Spec.Acme.Server</code><br>
                                     PreferredChain: <code>@State.LastValue.Spec.Acme.PreferredChain</code><br>

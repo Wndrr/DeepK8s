@@ -41,7 +41,7 @@
                                             @foreach (var rule in State.LastValue?.Spec?.Tls ?? new List<Extensionsv1beta1IngressTLS>())
                                             {
                                                 <li>
-                                                    TLS secret <SecretReference>@rule.SecretName</SecretReference> protects
+                                                    TLS secret <EntityReference>@rule.SecretName</EntityReference> protects
                                                     @if (rule.Hosts.Count == 1)
                                                     {
                                                         <a href="//@rule.Hosts.First()" target="_blank">@rule.Hosts.First()</a>

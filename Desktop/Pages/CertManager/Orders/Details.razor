@@ -75,7 +75,7 @@
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Issuer: <SecretReference>@State.LastValue.Spec.IssuerRef.Kind/@State.LastValue.Spec.IssuerRef.Name</SecretReference> <br>
+                                    Issuer: <EntityReference>@State.LastValue.Spec.IssuerRef.Kind/@State.LastValue.Spec.IssuerRef.Name</EntityReference> <br>
                                     Dns names:
                                     <ul>
                                         @foreach (var dnsName in @State.LastValue.Spec.DnsNames)
