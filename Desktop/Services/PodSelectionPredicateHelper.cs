@@ -3,30 +3,12 @@ using k8s.Models;
 
 namespace Desktop.Services
 {
-    public class PodSelectionPredicateHelper
+    public static class PodSelectionPredicateHelper
     {
 
         #region LABELS
 
-        public bool PodHasMatchingLabels(V1Pod pod, V1StatefulSetSpec spec)
-        {
-            return PodHasMatchingLabels(pod, spec.Selector.MatchLabels);
-        }
-        public bool PodHasMatchingLabels(V1Pod pod, V1DaemonSetSpec spec)
-        {
-            return PodHasMatchingLabels(pod, spec.Selector.MatchLabels);
-        }
-        public bool PodHasMatchingLabels(V1Pod pod, V1DeploymentSpec spec)
-        {
-            return PodHasMatchingLabels(pod, spec.Selector.MatchLabels);
-        }
-        
-        public bool PodHasMatchingLabels(V1Pod pod, V1ServiceSpec spec)
-        {
-            return PodHasMatchingLabels(pod, spec.Selector);
-        }
-
-        public bool PodHasMatchingLabels(V1Pod pod, IDictionary<string, string>? selector)
+        public static bool PodHasMatchingLabels(this V1Pod pod, IDictionary<string, string>? selector)
         {
             foreach (var (selectorName, selectorValue) in selector ?? new Dictionary<string, string>())
             {
@@ -44,7 +26,7 @@ namespace Desktop.Services
 
         #region NAMESPACE
 
-        public bool PodHasMatchingNamespace(V1Pod pod, V1ObjectMeta metadata)
+        public static bool PodHasMatchingNamespace(this V1Pod pod, V1ObjectMeta metadata)
         {
             return pod.Metadata.Namespace() == metadata.Namespace();
         }
