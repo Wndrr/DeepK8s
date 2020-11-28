@@ -78,7 +78,7 @@
                                         VolumeMode : <code>@State.LastValue.Spec.VolumeMode</code>
                                     </div>
                                     <div>
-                                        @* Volume : <PersistentVolumeReference Entity="pv">@pv.Metadata.Name</PersistentVolumeReference> *@
+                                        Volume: <EntityReferenceByName Kind="persistentvolume" Name="@State.LastValue.Spec.VolumeName"></EntityReferenceByName>
                                     </div>
                                 </BSCol>
                             </BSRow>
@@ -87,7 +87,7 @@
                 </BSCard>
             </BSCol>
         </BSRow>
-        
+
         <DisplayLabelSelector Source="@State.LastValue.Spec.Selector"/>
     </Specifications>
 </KubernetesResourceDetails>
