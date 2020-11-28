@@ -76,9 +76,8 @@
                         <td>
                             @if (entity.Metadata.CreationTimestamp.HasValue)
                             {
-                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();
-                                <CreationDateDisplay BaseUtcDateTime="@creationTimestamp"/>
-                                <Uptime BaseUtcDateTime="@creationTimestamp"/>
+                                var creationTimestamp = entity.Metadata.CreationTimestamp.Value.ToUniversalTime();                        
+                        <Uptime BaseUtcDateTime="@creationTimestamp"/>
                                 
                             }
                         </td>
