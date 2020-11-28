@@ -1,8 +1,65 @@
 ﻿@page "/{RequestedEntityNamespace}/DaemonSet/{RequestedEntityName}"
+@using Humanizer
 @inherits LiveDetails<V1DaemonSetList, V1DaemonSet>
 
 
 <KubernetesResourceDetails Entity="@State.LastValue">
+    <Status>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            @("Replica".ToQuantity(State.LastValue.Status.CurrentNumberScheduled ))
+                        </BSCard>
+                        <BSCard CardType="CardType.Subtitle">
+                            Available: <code>@(State.LastValue.Status.NumberAvailable ?? 0)</code>
+                            - Ready: <code>@(State.LastValue.Status.NumberReady)</code>
+                            - Unavailable: <code>@(State.LastValue.Status.NumberUnavailable ?? 0)</code>
+                            - Misscheduled: <code>@(State.LastValue.Status.NumberMisscheduled )</code>
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+
+                                    <ShowPodsWithMatchingLabels Entity="@State.LastValue" Labels="@State.LastValue.Spec.Selector"/>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            Conditions
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    <ul>
+                                        @foreach (var condition in State.LastValue.Status.Conditions ?? new List<V1DaemonSetCondition>())
+                                        {
+                                            <li>
+                                                Status: <code>@condition.Status</code> <br>
+                                                Type: <code>@condition.Type</code> <br>
+                                                Reason: <code>@condition.Reason</code> <br>
+                                                Message: <code>@condition.Message</code> <br>
+                                                LastTransitionTime: <code>@condition.LastTransitionTime</code>
+                                            </li>
+                                        }
+                                    </ul>
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
+    </Status>
     <Specifications>
         <DisplayLabelSelector Source="@State.LastValue.Spec.Selector" />
     </Specifications>
