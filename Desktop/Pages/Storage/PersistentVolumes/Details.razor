@@ -4,7 +4,7 @@
 <KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
         <div>
-            @State.LastValue.Status.Phase via 
+            @State.LastValue.Status.Phase via
             @* <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
         </div>
         <div>@State.LastValue.Status.Reason</div>
@@ -45,7 +45,7 @@
                                         VolumeMode : <code>@State.LastValue.Spec.VolumeMode</code>
                                     </div>
                                     <div>
-                                        @* ClaimReference : <PersistentVolumeClaimReference Entity="pvc">@pvc.Metadata.Name</PersistentVolumeClaimReference> *@
+                                        ClaimReference: <EntityReferenceByName Kind="@State.LastValue.Spec.ClaimRef.Kind" Name="@State.LastValue.Spec.ClaimRef.Name" Namespace="@State.LastValue.Spec.ClaimRef.NamespaceProperty"/>
                                     </div>
                                 </BSCol>
                             </BSRow>
