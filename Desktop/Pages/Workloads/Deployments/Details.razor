@@ -5,7 +5,28 @@
 
 <KubernetesResourceDetails Entity="@State.LastValue">
     <Status>
-
+        <BSRow class="my-2">
+            <BSCol>
+                <BSCard CardType="CardType.Card">
+                    <BSCard CardType="CardType.Body">
+                        <BSCard CardType="CardType.Title">
+                            @State.LastValue.Status.Replicas Replicas
+                        </BSCard>
+                        <BSCard CardType="CardType.Text">
+                            <BSRow>
+                                <BSCol>
+                                    Available: <code>@State.LastValue.Status.AvailableReplicas</code>
+                                    Ready: <code>@State.LastValue.Status.ReadyReplicas</code>
+                                    Unavailable: <code>@State.LastValue.Status.UnavailableReplicas</code>
+                                    
+                                    <ShowPodsWithMatchingLabels Entity="@State.LastValue" Labels="@State.LastValue.Spec.Selector" />
+                                </BSCol>
+                            </BSRow>
+                        </BSCard>
+                    </BSCard>
+                </BSCard>
+            </BSCol>
+        </BSRow>
         <BSRow class="my-2">
             <BSCol>
                 <BSCard CardType="CardType.Card">
@@ -28,28 +49,6 @@
                                             </li>
                                         }
                                     </ul>
-                                </BSCol>
-                            </BSRow>
-                        </BSCard>
-                    </BSCard>
-                </BSCard>
-            </BSCol>
-        </BSRow>
-        <BSRow class="my-2">
-            <BSCol>
-                <BSCard CardType="CardType.Card">
-                    <BSCard CardType="CardType.Body">
-                        <BSCard CardType="CardType.Title">
-                            @State.LastValue.Status.Replicas Replicas
-                        </BSCard>
-                        <BSCard CardType="CardType.Text">
-                            <BSRow>
-                                <BSCol>
-                                    Available: <code>@State.LastValue.Status.AvailableReplicas</code>
-                                    Ready: <code>@State.LastValue.Status.ReadyReplicas</code>
-                                    Unavailable: <code>@State.LastValue.Status.UnavailableReplicas</code>
-                                    
-                                    <ShowPodsWithMatchingLabels Entity="@State.LastValue" Labels="@State.LastValue.Spec.Selector" />
                                 </BSCol>
                             </BSRow>
                         </BSCard>
