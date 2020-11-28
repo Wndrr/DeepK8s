@@ -14,9 +14,9 @@
                             @("Replica".ToQuantity(State.LastValue.Status.Replicas ?? 0))
                         </BSCard>
                         <BSCard CardType="CardType.Subtitle">
-                            Available: <code>@State.LastValue.Status.AvailableReplicas</code>
-                            - Ready: <code>@State.LastValue.Status.ReadyReplicas</code>
-                            - Unavailable: <code>@State.LastValue.Status.UnavailableReplicas</code>
+                            Available: <code>@(State.LastValue.Status.AvailableReplicas ?? 0)</code>
+                            - Ready: <code>@(State.LastValue.Status.ReadyReplicas ?? 0)</code>
+                            - Unavailable: <code>@(State.LastValue.Status.UnavailableReplicas ?? 0)</code>
                         </BSCard>
                         <BSCard CardType="CardType.Text">
                             <BSRow>
