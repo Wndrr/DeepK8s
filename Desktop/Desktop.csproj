@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>DeepK8s</AssemblyName>
     <AssemblyVersion>0.5.0</AssemblyVersion>
@@ -179,5 +179,13 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\Entities\StatefulSets\Details.razor" />
     <UpToDateCheckInput Remove="Pages\Entities\StatefulSets\List.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Shared\Layout.razor.css">
+      <DependentUpon>Layout.razor</DependentUpon>
+    </None>
+    <None Update="Shared\Navigation.razor.css">
+      <DependentUpon>Navigation.razor</DependentUpon>
+    </None>
   </ItemGroup>
 </Project>
