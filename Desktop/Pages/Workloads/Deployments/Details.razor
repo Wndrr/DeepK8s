@@ -1,5 +1,6 @@
 ﻿@page "/{RequestedEntityNamespace}/Deployment/{RequestedEntityName}"
 @using Desktop.Services
+@using Humanizer
 @inherits LiveDetails<V1DeploymentList, V1Deployment>
 
 
@@ -10,16 +11,18 @@
                 <BSCard CardType="CardType.Card">
                     <BSCard CardType="CardType.Body">
                         <BSCard CardType="CardType.Title">
-                            @State.LastValue.Status.Replicas Replicas
+                            @("Replica".ToQuantity(State.LastValue.Status.Replicas ?? 0))
+                        </BSCard>
+                        <BSCard CardType="CardType.Subtitle">
+                            @("Available".ToQuantity(State.LastValue.Status.AvailableReplicas ?? 0))
+                            - @("Ready".ToQuantity(State.LastValue.Status.ReadyReplicas ?? 0))
+                            - @("Unavailable".ToQuantity(State.LastValue.Status.UnavailableReplicas ?? 0))
                         </BSCard>
                         <BSCard CardType="CardType.Text">
                             <BSRow>
                                 <BSCol>
-                                    Available: <code>@State.LastValue.Status.AvailableReplicas</code>
-                                    Ready: <code>@State.LastValue.Status.ReadyReplicas</code>
-                                    Unavailable: <code>@State.LastValue.Status.UnavailableReplicas</code>
-                                    
-                                    <ShowPodsWithMatchingLabels Entity="@State.LastValue" Labels="@State.LastValue.Spec.Selector" />
+
+                                    <ShowPodsWithMatchingLabels Entity="@State.LastValue" Labels="@State.LastValue.Spec.Selector"/>
                                 </BSCol>
                             </BSRow>
                         </BSCard>
