@@ -15,7 +15,7 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Run test & Generate report
-        uses: zyborg/dotnet-tests-report@v1.3.0
+        uses: zyborg/dotnet-tests-report@v1.4.0
         with:
           project_path: UnitTests
           report_name: DeepK8s - Unit Tests
