@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.7.0
+        uses: actions/checkout@v4.1.1
       - name: SonarScanner for .NET Core with pull request decoration support
         uses: highbyte/sonarscan-dotnet@2.0
         with:
