@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.7.0
       - name: SonarScanner for .NET Core with pull request decoration support
-        uses: highbyte/sonarscan-dotnet@2.0
+        uses: highbyte/sonarscan-dotnet@v2.5.1
         with:
           sonarProjectKey: Wndrr_DeepK8s
           sonarProjectName:  DeepK8s
